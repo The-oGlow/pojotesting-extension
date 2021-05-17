@@ -42,8 +42,8 @@ build:
     - echo "creating $REPO_DIR"
     - mkdir -p $REPO_DIR
   script:
-    - mvn $MVN_TEST_OPTS verify
+    - mvn $MVN_CLI_OPTS verify
     - mvn $MVN_CLI_OPTS deploy
   after_script:
-  #- *show_repo
-  #- *show_build
+    - *show_repo
+    - *show_build
