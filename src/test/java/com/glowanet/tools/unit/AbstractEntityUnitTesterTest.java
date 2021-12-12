@@ -1,6 +1,6 @@
-package com.glowa_net.tools.unit;
+package com.glowanet.tools.unit;
 
-import com.glowa_net.util.reflect.ReflectionHelper;
+import com.glowanet.util.reflect.ReflectionHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.function.ThrowingRunnable;
@@ -63,8 +63,8 @@ public class AbstractEntityUnitTesterTest {
         }
 
         @Override
-        protected K createEntity() {
-            if (getTypeOfT().equals(AbstractEntityUnitTesterParam.class)) {
+        protected K createObject2Test() {
+            if (getTypeOfo2T().equals(AbstractEntityUnitTesterParam.class)) {
                 return (K) new AbstractEntityUnitTesterParam();
             } else {
                 return (K) new AbstractEntityUnitTesterParamEquals();
@@ -112,7 +112,7 @@ public class AbstractEntityUnitTesterTest {
 
     @Test
     public void test_createEntity_return_entity() {
-        AbstractEntityUnitTesterParam actual = o2T.createEntity();
+        AbstractEntityUnitTesterParam actual = o2T.createObject2Test();
 
         assertThat(actual, notNullValue());
         assertThat(actual, instanceOf(AbstractEntityUnitTesterParamEquals.class));
@@ -121,18 +121,18 @@ public class AbstractEntityUnitTesterTest {
     @Test
     public void test_getEntity_return_null() {
         o2T = new AbstractEntityUnitTesterClazz(AbstractEntityUnitTesterParam.class);
-        AbstractEntityUnitTesterParam actual = o2T.getEntity();
+        AbstractEntityUnitTesterParam actual = o2T.getObject2Test();
 
         assertThat(actual, nullValue());
     }
 
     @Test
     public void test_setEntity_return_value() {
-        AbstractEntityUnitTesterParam before = o2T.getEntity();
+        AbstractEntityUnitTesterParam before = o2T.getObject2Test();
         assertThat(before, instanceOf(AbstractEntityUnitTesterParamEquals.class));
 
-        o2T.setEntity(null);
-        AbstractEntityUnitTesterParam actual = o2T.getEntity();
+        o2T.setObject2Test(null);
+        AbstractEntityUnitTesterParam actual = o2T.getObject2Test();
 
         assertThat(actual, nullValue());
     }

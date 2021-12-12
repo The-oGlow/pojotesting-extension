@@ -1,4 +1,4 @@
-package com.glowa_net.tools.unit;
+package com.glowanet.tools.unit;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class AbstractEntityUnitTesterSerializableTest {
         }
 
         @Override
-        protected K createEntity() {
+        protected K createObject2Test() {
             return (K) new AbstractEntityUnitTesterParamNoSerializable();
         }
     }

@@ -1,5 +1,6 @@
-package com.glowa_net.tools.unit;
+package com.glowanet.tools.unit;
 
+import com.glowanet.tools.random.RandomValueFactory;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -13,31 +14,58 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.fail;
 
-public abstract class AbstractBaseUnitTester<T> {
+/**
+ * Abstract class as base for testing a specilized type of classes, like entities, enums, etc.
+ *
+ * @param <T> the type of {@code object2Test}
+ */
+public abstract class AbstractUnitTester<T> {
 
+    private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
 
     @Rule
-    public final ErrorCollector collector = new ErrorCollector();
+    public final  ErrorCollector collector = new ErrorCollector();
+    private final Class<T>       typeOfo2T;
 
-    private final Class<T> typeOfT;
+    private T object2Test;
 
-    private T entity;
-
-    protected AbstractBaseUnitTester(Class<T> typeOfT) {
-        this.typeOfT = typeOfT;
+    static {
+        try {
+            randomValueFactory = com.glowanet.tools.random.RandomValueFactory.getInstance();
+        } catch (RuntimeException ignored) {
+            // ignore
+        }
     }
 
-    protected static void setFinalStatic(Class<?> clazz, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
-        Field field = clazz.getDeclaredField(fieldName);
+    /**
+     * @param typeOfo2T the class object of {@code T}
+     */
+    protected AbstractUnitTester(Class<T> typeOfo2T) {
+        this.typeOfo2T = typeOfo2T;
+    }
+
+    /**
+     * Put a value into a static final field.
+     *
+     * @param clazzA    the type of the object, where the field is located
+     * @param fieldName the exact name of the field
+     * @param newValue  the new value to put in the field
+     *
+     * @throws NoSuchFieldException   the class does not have a field with this name
+     * @throws IllegalAccessException it is not allowed to modify this field in this class
+     */
+    @SuppressWarnings({"java:S3011"})
+    protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
+        Field field = clazzA.getDeclaredField(fieldName);
         field.setAccessible(true);
         Field modifiersField = Field.class.getDeclaredField("modifiers");
         modifiersField.setAccessible(true);
@@ -45,33 +73,41 @@ public abstract class AbstractBaseUnitTester<T> {
         field.set(null, newValue);
     }
 
+    /**
+     * Initialize the unit tester.
+     */
     protected void setUp() {
-        setEntity(createEntity());
+        setObject2Test(createObject2Test());
     }
 
     /**
      * Create instance (with default constructor, if available).
      *
-     * @return instance of the type.
+     * @return instance of the {@code T}
      *
      * @see #setUp()
      */
-    protected abstract T createEntity();
+    protected abstract T createObject2Test();
 
-    protected Class<T> getTypeOfT() {
-        return this.typeOfT;
+    protected Class<T> getTypeOfo2T() {
+        return this.typeOfo2T;
     }
 
-    public T getEntity() {
-        return entity;
+    public T getObject2Test() {
+        return object2Test;
     }
 
-    public void setEntity(T entity) {
-        this.entity = entity;
+    public void setObject2Test(T object2Test) {
+        this.object2Test = object2Test;
     }
 
-    private List<PropertyDescriptor> getAllPropertyDescriptors(T entityObject) {
-        return Arrays.stream(PropertyUtil.propertyDescriptorsFor(entityObject, null)).collect(Collectors.toList());
+    /**
+     * @param o2T an instance of type {@code T} to inspect
+     *
+     * @return list of all property descriptors of {@code o2T}
+     */
+    private List<PropertyDescriptor> getAllPropertyDescriptors(T o2T) {
+        return Arrays.stream(PropertyUtil.propertyDescriptorsFor(o2T, null)).collect(Collectors.toList());
     }
 
     /**
@@ -79,7 +115,7 @@ public abstract class AbstractBaseUnitTester<T> {
      */
     protected List<PropertyDescriptor> findGetter() {
         List<PropertyDescriptor> getterList = new ArrayList<>();
-        getAllPropertyDescriptors(entity).forEach((PropertyDescriptor pd) -> {
+        getAllPropertyDescriptors(object2Test).forEach((PropertyDescriptor pd) -> {
             if (pd.getReadMethod() != null) {
                 getterList.add(pd);
             }
@@ -92,7 +128,7 @@ public abstract class AbstractBaseUnitTester<T> {
      */
     protected List<PropertyDescriptor> findSetter() {
         List<PropertyDescriptor> setterList = new ArrayList<>();
-        getAllPropertyDescriptors(entity).forEach((PropertyDescriptor pd) -> {
+        getAllPropertyDescriptors(object2Test).forEach((PropertyDescriptor pd) -> {
             if (pd.getWriteMethod() != null) {
                 setterList.add(pd);
             }
@@ -100,11 +136,16 @@ public abstract class AbstractBaseUnitTester<T> {
         return setterList;
     }
 
-    protected boolean hasSerializableIF(Class<?> clazz) {
+    /**
+     * @param clazzA the type to inspect
+     *
+     * @return true=this type has the Serializable-IF, false=otherwise
+     */
+    protected boolean hasSerializableIF(Class<?> clazzA) {
         boolean hasIt = false;
-        List<Class<?>> listIF = ClassUtils.getAllInterfaces(clazz);
-        for (Class<?> clazzIF : listIF) {
-            if (Serializable.class.equals(clazzIF)) {
+        List<Class<?>> listIF = ClassUtils.getAllInterfaces(clazzA);
+        for (Class<?> clazzAIF : listIF) {
+            if (Serializable.class.equals(clazzAIF)) {
                 hasIt = true;
                 break;
             }
@@ -112,7 +153,13 @@ public abstract class AbstractBaseUnitTester<T> {
         return hasIt;
     }
 
-    @SuppressWarnings({"java:S1166", "java:S5960"})
+    /**
+     * @param instance  an instance of {@code T}
+     * @param fieldName the name of the field
+     *
+     * @return a field instance
+     */
+    @SuppressWarnings("java:S5960")
     protected Field findField(T instance, String fieldName) {
         Field idField = null;
         try {
@@ -126,23 +173,26 @@ public abstract class AbstractBaseUnitTester<T> {
         return idField;
     }
 
-    @SuppressWarnings("java:S1166")
-    protected void makeFieldAccessible(Field idField, T instance) {
+    /**
+     * @param field    a field instance
+     * @param instance the current instance where to make the {@code field} accessible
+     */
+    protected void makeFieldAccessible(Field field, T instance) {
         try {
-            if (!idField.canAccess(instance)) {
+            if (!field.canAccess(instance)) {
                 throw new IllegalArgumentException();
             }
         } catch (IllegalArgumentException e) {
-            idField.trySetAccessible();
+            field.trySetAccessible();
         }
     }
 
     /**
      * Retrieves all public constants from a class.
      *
-     * @param clazzT the class from which to retrieve the constants
+     * @param clazzT the type of {@code T} from which to retrieve the constants
      *
-     * @return a list of constants or an empty list.
+     * @return a list of constants as field objects or an empty list.
      */
     protected List<Field> retrievePublicConstantsfromClass(Class<T> clazzT) {
         List<Field> publicConsts = new ArrayList<>();
@@ -188,14 +238,14 @@ public abstract class AbstractBaseUnitTester<T> {
     /**
      * Generating the map of values for the method parameters.
      *
-     * @param inspectMethod the method to inspect
+     * @param method the method to inspect
      *
-     * @return map of types and values
+     * @return map of types and values for a method
      */
-    protected Map<Class<?>, Object> retrieveMethodParameters(Method inspectMethod) {
+    protected Map<Class<?>, Object> retrieveMethodParameters(Method method) {
         Map<Class<?>, Object> setterParams = new LinkedHashMap<>();
-        if (inspectMethod != null) {
-            for (Parameter param : inspectMethod.getParameters()) {
+        if (method != null) {
+            for (Parameter param : method.getParameters()) {
                 Object paramValue = retrieveDefaultValue(param.getType());
                 if (Object.class.isAssignableFrom(param.getType())) {
                     setterParams.put(param.getType(), paramValue);
@@ -210,23 +260,23 @@ public abstract class AbstractBaseUnitTester<T> {
     }
 
     /**
-     * Generating a value based on the class-type.
+     * Generating a value based on the class-clazzV.
      *
-     * @param type the class
-     * @param <V>  the type of of the value
+     * @param clazzV the class type of return value
+     * @param <V>    the type of the return value
      *
      * @return the generated value or null
      */
-    @SuppressWarnings({"java:S1696", "java:S1166"})
-    private <V> Object retrieveDefaultValue(Class<V> type) {
+    @SuppressWarnings("java:S2209")
+    private <V> Object retrieveDefaultValue(Class<V> clazzV) {
         Object result = null;
-/*
-        try {
-            result = createRandomValue(type).randomValue();
-        } catch (NullPointerException e) {
-            result = createLegacyRandomValue().randomValue(type);
+        if (randomValueFactory != null) {
+            try {
+                result = RandomValueFactory.createRandomValue(clazzV).randomValue();
+            } catch (NullPointerException e) {
+                result = RandomValueFactory.createLegacyRandomValue().randomValue(clazzV);
+            }
         }
-*/
         return result;
     }
 

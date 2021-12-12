@@ -1,6 +1,10 @@
-package com.glowa_net.tools.unit;
+package com.glowanet.tools.unit;
 
-import static org.hamcrest.Matchers.equalTo;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -9,11 +13,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.test.util.ReflectionTestUtils;
+import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Abstract class to use for unit-testing on {@link Object}, beans, pojos.
@@ -21,7 +21,7 @@ import org.springframework.test.util.ReflectionTestUtils;
  *
  * @param <T> the type of the class to test
  */
-public abstract class AbstractEnumObjectUnitTester<T> extends AbstractBaseUnitTester<T> {
+public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester<T> {
 
     private static final String  ENUM_NAME_SRCH         = "_(.)";
     private static final String  ENUM_NAME_REPL         = "$1";
@@ -66,15 +66,15 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractBaseUnitTe
 
     @Test
     public void validateAllEnumObjects() {
-        List<Field> allEnumObjects = retrievePublicConstantsfromClass(getTypeOfT());
+        List<Field> allEnumObjects = retrievePublicConstantsfromClass(getTypeOfo2T());
 
         for (Field expectedEnumObject : allEnumObjects) {
-            collector.checkThat("checking '" + expectedEnumObject.getName() + "'", validateEnumObject(expectedEnumObject, getTypeOfT()), equalTo(true));
+            collector.checkThat("checking '" + expectedEnumObject.getName() + "'", validateEnumObject(expectedEnumObject, getTypeOfo2T()), equalTo(true));
         }
     }
 
     @Override
-    protected T createEntity() {
+    protected T createObject2Test() {
         return null;
     }
 

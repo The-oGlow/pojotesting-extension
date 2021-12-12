@@ -1,6 +1,6 @@
-package com.glowa_net.tools.unit;
+package com.glowanet.tools.unit;
 
-import com.glowa_net.util.reflect.ReflectionHelper;
+import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -39,7 +39,7 @@ import static org.hamcrest.Matchers.typeCompatibleWith;
  *
  * @param <T> the type of the class to test
  */
-public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester<T> {
+public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> {
 
     /**
      * Fieldnames in the class, which should be generally ignored on testing {@link #toString()}.
@@ -63,7 +63,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
     @Before
     public void setUp() {
         super.setUp();
-        assertThat(getEntity(), notNullValue());
+        assertThat(getObject2Test(), notNullValue());
 
         allFieldsToIgnoreForToString.addAll(fieldsToIgnoreForToString() == null ? List.of() : fieldsToIgnoreForToString());
         allFieldsToIgnoreForToString = allFieldsToIgnoreForToString.stream().map(String::toLowerCase).collect(Collectors.toSet());
@@ -158,7 +158,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
             String reasonType = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must be valid: " + typeMatcher + "!";
             String reasonRange = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "'it must be valid: " + numberRangeMatcher + "!";
 
-            Object idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, getTypeOfT());
+            Object idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, getTypeOfo2T());
 
             assertThat(idValue, notNullValue());
             assertThat(reasonType, idValue.getClass(), typeMatcher);
@@ -172,10 +172,10 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
     @Test
     public void testAllGetterAccessible() {
         List<PropertyDescriptor> getterList = findGetter();
-        LOGGER.info("Testing access on '{}' for {} getters", getTypeOfT(), getterList.size());
+        LOGGER.info("Testing access on '{}' for {} getters", getTypeOfo2T(), getterList.size());
         for (PropertyDescriptor getter : getterList) {
             try {
-                Object value = MethodUtils.invokeMethod(getEntity(), getter.getReadMethod().getName());
+                Object value = MethodUtils.invokeMethod(getObject2Test(), getter.getReadMethod().getName());
                 collector.checkThat("'" + getter.getName() + "' doesn't have a proper value!", value, anyOf(nullValue(), notNullValue()));
             } catch (IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 collector.addError(e);
@@ -211,7 +211,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
      */
     private void verifyAllGetterSetterCollaboration(boolean verifyValue) {
         List<PropertyDescriptor> setterList = findSetter();
-        LOGGER.info("Testing access{} on '{}' for {} setters", verifyValue ? " and value setting" : "", getTypeOfT(), setterList.size());
+        LOGGER.info("Testing access{} on '{}' for {} setters", verifyValue ? " and value setting" : "", getTypeOfo2T(), setterList.size());
 
         for (PropertyDescriptor setter : setterList) {
             Class<?>[] paramTypes = new Class[0];
@@ -220,10 +220,10 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
                 Map<Class<?>, Object> setterParams = retrieveMethodParameters(setter.getWriteMethod());
                 paramTypes = setterParams.keySet().toArray(new Class[]{});
                 paramValues = setterParams.values().toArray();
-                MethodUtils.invokeMethod(getEntity(), setter.getWriteMethod().getName(), paramValues, paramTypes);
+                MethodUtils.invokeMethod(getObject2Test(), setter.getWriteMethod().getName(), paramValues, paramTypes);
                 if (verifyValue) {
                     Object expected = paramValues[0];
-                    Object actual = MethodUtils.invokeMethod(getEntity(), setter.getReadMethod().getName());
+                    Object actual = MethodUtils.invokeMethod(getObject2Test(), setter.getReadMethod().getName());
                     collector.checkThat("'" + setter.getName() + "' doesn't have a proper value!", actual, equalTo(expected));
                 }
             } catch (NoSuchMethodException | IllegalAccessException e) {
@@ -243,7 +243,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
      */
     @Test
     public void testToString() {
-        CharSequence actual = getEntity().toString();
+        CharSequence actual = getObject2Test().toString();
 
         assertThat(actual, notNullValue());
 
@@ -266,19 +266,19 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
 
     @Test
     public void testHashcodeOtherThan0() {
-        assertThat("Hashcode must differ from '0'!", getEntity().hashCode(), not(is(0)));
+        assertThat("Hashcode must differ from '0'!", getObject2Test().hashCode(), not(is(0)));
     }
 
     @SuppressWarnings({"EqualsWithItself", "java:S1764"})
     @Test
     public void testEqualsWithItself() {
-        assertThat(getEntity().equals(getEntity()), is(true));
+        assertThat(getObject2Test().equals(getObject2Test()), is(true));
     }
 
     @SuppressWarnings({"ConstantConditions", "ObjectEqualsCanBeEquality", "RedundantSuppression", "RedundantCast"})
     @Test
     public void testEqualsWithNull() {
-        assertThat(getEntity().equals((T) null), is(false));
+        assertThat(getObject2Test().equals((T) null), is(false));
     }
 
     /**
@@ -287,12 +287,12 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
      */
     @Test
     public void testEqualsLogicalAreTheSame() {
-        T entity2 = createEntity();
+        T entity2 = createObject2Test();
         boolean expected = false;
         if (checkLogicalEqualsOnly) {
             expected = true;
         }
-        assertThat(getEntity().equals(entity2), is(expected));
+        assertThat(getObject2Test().equals(entity2), is(expected));
     }
 
     /**
@@ -301,7 +301,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractBaseUnitTester
      */
     @Test
     public void testSerialVersionUIDIsCorrectInEntity() {
-        validateSerialVersionUID(getEntity());
+        validateSerialVersionUID(getObject2Test());
     }
 
 }
