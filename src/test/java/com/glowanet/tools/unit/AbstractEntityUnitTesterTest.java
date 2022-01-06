@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -20,10 +21,20 @@ import static org.junit.Assert.assertThrows;
 
 public class AbstractEntityUnitTesterTest {
 
+    protected static final String NOT_THROWN = "expected %s to be thrown, but nothing was thrown";
 
-    static class AbstractEntityUnitTesterParam {
+    /**
+     * Test Object with
+     * <ul>
+     *     <li>a default {@code #equals()}, {@code #hashCode()}, {@code #testToString()}-method.</li>
+     * </ul>
+     */
+    static class AbstractEntityUnitTesterDefaultEquals {
         private Integer simInt;
         private String  simString;
+
+        private AbstractEntityUnitTesterDefaultEquals() {
+        }
 
         public Integer getSimInt() {
             return simInt;
@@ -32,16 +43,32 @@ public class AbstractEntityUnitTesterTest {
         public String getSimString() {
             return simString;
         }
+
+        static AbstractEntityUnitTesterDefaultEquals newInstance() {
+            return new AbstractEntityUnitTesterDefaultEquals();
+        }
     }
 
 
-    static class AbstractEntityUnitTesterParamEquals extends AbstractEntityUnitTesterParam {
+    /**
+     * Test Object with
+     * <ul>
+     *     <li>an {@code #equals()}-method, which compares only logically equalness</li>
+     *     <li>a default {@code #hashCode()}, {@code #testToString()}-method.</li>
+     * </ul>
+     */
+    static class AbstractEntityUnitTesterLogicalEquals extends AbstractEntityUnitTesterDefaultEquals {
+
+        static AbstractEntityUnitTesterDefaultEquals newInstance() {
+            return new AbstractEntityUnitTesterLogicalEquals();
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            AbstractEntityUnitTesterParam that = (AbstractEntityUnitTesterParam) o;
+            AbstractEntityUnitTesterDefaultEquals that = (AbstractEntityUnitTesterDefaultEquals) o;
 
             if (getSimInt() != null ? !getSimInt().equals(that.getSimInt()) : that.getSimInt() != null) return false;
             return getSimString() != null ? getSimString().equals(that.getSimString()) : that.getSimString() == null;
@@ -55,24 +82,33 @@ public class AbstractEntityUnitTesterTest {
         }
     }
 
+    /**
+     * Container class, which holds the class which will be tested.
+     *
+     * @param <K> the type of the class to test
+     */
     @SuppressWarnings("UnconstructableJUnitTestCase")
-    static class AbstractEntityUnitTesterClazz<K extends AbstractEntityUnitTesterParam> extends AbstractEntityUnitTester<K> {
+    static class AbstractEntityUnitTesterClazz<K extends AbstractEntityUnitTesterDefaultEquals> extends AbstractEntityUnitTester<K> {
 
-        protected AbstractEntityUnitTesterClazz(Class<K> typeOfT) {
+        static <K extends AbstractEntityUnitTesterDefaultEquals> AbstractEntityUnitTesterClazz<K> newInstance(Class<K> typeOfT) {
+            return new AbstractEntityUnitTesterClazz<>(typeOfT);
+        }
+
+        private AbstractEntityUnitTesterClazz(Class<K> typeOfT) {
             super(typeOfT);
         }
 
         @Override
         protected K createObject2Test() {
-            if (getTypeOfo2T().equals(AbstractEntityUnitTesterParam.class)) {
-                return (K) new AbstractEntityUnitTesterParam();
+            if (getTypeOfo2T().equals(AbstractEntityUnitTesterDefaultEquals.class)) {
+                return (K) AbstractEntityUnitTesterDefaultEquals.newInstance();
             } else {
-                return (K) new AbstractEntityUnitTesterParamEquals();
+                return (K) AbstractEntityUnitTesterLogicalEquals.newInstance();
             }
         }
     }
 
-    AbstractEntityUnitTesterClazz<? extends AbstractEntityUnitTesterParam> o2T;
+    protected AbstractEntityUnitTesterClazz<?> o2T;
 
     @Before
     public void setUp() {
@@ -80,12 +116,12 @@ public class AbstractEntityUnitTesterTest {
     }
 
     public void initWithoutEqual() {
-        o2T = new AbstractEntityUnitTesterClazz(AbstractEntityUnitTesterParam.class);
+        o2T = new AbstractEntityUnitTesterClazz<>(AbstractEntityUnitTesterDefaultEquals.class);
         o2T.setUp();
     }
 
     public void initWithEqual() {
-        o2T = new AbstractEntityUnitTesterClazz(AbstractEntityUnitTesterParamEquals.class);
+        o2T = new AbstractEntityUnitTesterClazz<>(AbstractEntityUnitTesterLogicalEquals.class);
         o2T.setUp();
     }
 
@@ -102,6 +138,12 @@ public class AbstractEntityUnitTesterTest {
         assertThat(((Collection<?>) actualThrows), hasSize(size));
     }
 
+    public void verifyNoException(ThrowingRunnable instance) {
+        AssertionError actual = assertThrows(AssertionError.class, () -> assertThrows(Throwable.class, instance));
+        assertThat(actual, notNullValue());
+        assertThat(actual.toString(), containsString(String.format(NOT_THROWN, Throwable.class.getName())));
+    }
+
     public void verifyException(ThrowingRunnable instance, Class<?> expected) {
         Throwable actual = assertThrows(Throwable.class, instance);
 
@@ -112,27 +154,27 @@ public class AbstractEntityUnitTesterTest {
 
     @Test
     public void test_createEntity_return_entity() {
-        AbstractEntityUnitTesterParam actual = o2T.createObject2Test();
+        AbstractEntityUnitTesterDefaultEquals actual = o2T.createObject2Test();
 
         assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(AbstractEntityUnitTesterParamEquals.class));
+        assertThat(actual, instanceOf(AbstractEntityUnitTesterLogicalEquals.class));
     }
 
     @Test
     public void test_getEntity_return_null() {
-        o2T = new AbstractEntityUnitTesterClazz(AbstractEntityUnitTesterParam.class);
-        AbstractEntityUnitTesterParam actual = o2T.getObject2Test();
+        o2T = new AbstractEntityUnitTesterClazz<>(AbstractEntityUnitTesterDefaultEquals.class);
+        AbstractEntityUnitTesterDefaultEquals actual = o2T.getObject2Test();
 
         assertThat(actual, nullValue());
     }
 
     @Test
     public void test_setEntity_return_value() {
-        AbstractEntityUnitTesterParam before = o2T.getObject2Test();
-        assertThat(before, instanceOf(AbstractEntityUnitTesterParamEquals.class));
+        AbstractEntityUnitTesterDefaultEquals before = o2T.getObject2Test();
+        assertThat(before, instanceOf(AbstractEntityUnitTesterLogicalEquals.class));
 
         o2T.setObject2Test(null);
-        AbstractEntityUnitTesterParam actual = o2T.getObject2Test();
+        AbstractEntityUnitTesterDefaultEquals actual = o2T.getObject2Test();
 
         assertThat(actual, nullValue());
     }
@@ -140,6 +182,7 @@ public class AbstractEntityUnitTesterTest {
     @Test
     public void test_findGetter_return_list() {
         List<PropertyDescriptor> actual = o2T.findGetter();
+
         assertThat(actual, hasSize(3));
     }
 
@@ -147,11 +190,12 @@ public class AbstractEntityUnitTesterTest {
     public void test_findSetter_return_emptyList() {
         List<PropertyDescriptor> actual = o2T.findSetter();
 
+        assertThat(actual, notNullValue());
         assertThat(actual, hasSize(0));
     }
 
     @Test
-    public void test_fieldsDeniedForToString() {
+    public void test_fieldsDeniedForToString_return_emptyList() {
         List<String> actual = o2T.fieldsDeniedForToString();
 
         assertThat(actual, notNullValue());
@@ -159,15 +203,7 @@ public class AbstractEntityUnitTesterTest {
     }
 
     @Test
-    public void test_allFieldsToIgnoreForToString() {
-        Collection<String> actual = ReflectionHelper.readField("allFieldsToIgnoreForToString", o2T);
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(1));
-    }
-
-    @Test
-    public void test_allFieldsDeniedForToString() {
+    public void test_allFieldsDeniedForToString_return_emptyList() {
         Collection<String> actual = ReflectionHelper.readField("allFieldsDeniedForToString", o2T);
 
         assertThat(actual, notNullValue());
@@ -175,52 +211,76 @@ public class AbstractEntityUnitTesterTest {
     }
 
     @Test
-    public void test_testAllGetterAccessible() {
+    public void test_fieldsToIgnoreForToString_return_emptyList() {
+        List<String> actual = o2T.fieldsToIgnoreForToString();
+
+        assertThat(actual, notNullValue());
+        assertThat(actual, hasSize(0));
+    }
+
+    @Test
+    public void test_allFieldsToIgnoreForToString_return_oneElement() {
+        Collection<String> actual = ReflectionHelper.readField("allFieldsToIgnoreForToString", o2T);
+
+        assertThat(actual, notNullValue());
+        assertThat(actual, hasSize(1));
+    }
+
+    @Test
+    public void test_testAllGetterAccessiblewith_raise_noException() {
         o2T.testAllGetterAccessible();
+
+        verifyCollector(o2T, 0);
     }
 
     @Test
-    public void test_testAllSetterAccessible() {
+    public void test_testAllSetterAccessible_raise_noException() {
         o2T.testAllSetterAccessible();
+
+        verifyCollector(o2T, 0);
     }
 
     @Test
-    public void test_testGetterSetterCollaboration() {
+    public void test_testGetterSetterCollaboration_raise_noException() {
         o2T.testGetterSetterCollaboration();
+
+        verifyCollector(o2T, 0);
     }
 
     @Test
-    public void test_testToString() {
+    public void test_testToString_raise_2Exception() {
         o2T.testToString();
+
+        verifyCollector(o2T, 2);
     }
 
     @Test
-    public void test_testToStringWithValues() {
+    public void test_testToStringWithValues_raise_exception() {
         o2T.testToStringWithValues();
 
         verifyCollector(o2T, 1);
     }
 
     @Test
-    public void test_testHashcodeOtherThan0_valid() {
+    public void test_testHashcodeOtherThan0_raise_exception() {
         verifyException(() -> o2T.testHashcodeOtherThan0(), AssertionError.class);
     }
 
     @Test
-    public void test_testHashcodeOtherThan0_with_incompleteEquals_valid() {
+    public void test_testHashcodeOtherThan0_with_incompleteEquals_raise_noException() {
         initWithoutEqual();
         o2T.testHashcodeOtherThan0();
     }
 
     @Test
-    public void test_testEqualsLogicalAreTheSame_valid() {
+    public void test_testEqualsLogicalAreTheSame_with_logicalEquals_defaultCompare_raise_exception() {
         assertThat(o2T.isCheckLogicalEqualsOnly(), is(false));
-        o2T.testEqualsLogicalAreTheSame();
+        verifyException(() -> o2T.testEqualsLogicalAreTheSame(), AssertionError.class);
     }
 
 
     @Test
-    public void test_testEqualsLogicalAreTheSame_logicalEquals_valid() {
+    public void test_testEqualsLogicalAreTheSame_with_logicalEquals_logicalCompare_raise_noException() {
         o2T.setCheckLogicalEqualsOnly(true);
         assertThat(o2T.isCheckLogicalEqualsOnly(), is(true));
 
@@ -228,45 +288,43 @@ public class AbstractEntityUnitTesterTest {
     }
 
     @Test
-    public void test_testEqualsLogicalAreTheSame_with_incompleteEquals_invalid() {
+    public void test_testEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
         initWithoutEqual();
+        o2T.setCheckLogicalEqualsOnly(false);
         assertThat(o2T.isCheckLogicalEqualsOnly(), is(false));
-        o2T.testEqualsLogicalAreTheSame();
 
-        verifyException(() -> o2T.testEqualsLogicalAreTheSame(), AssertionError.class);
+        o2T.testEqualsLogicalAreTheSame();
     }
 
     @Test
-    public void test_testEqualsLogicalAreTheSame_with_incompleteEquals_logicalEquals_invalid() {
+    public void test_testEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
         initWithoutEqual();
         o2T.setCheckLogicalEqualsOnly(true);
         assertThat(o2T.isCheckLogicalEqualsOnly(), is(true));
-        o2T.testEqualsLogicalAreTheSame();
 
         verifyException(() -> o2T.testEqualsLogicalAreTheSame(), AssertionError.class);
     }
 
 
     @Test
-    public void test_testEqualsWithNull_valid() {
+    public void test_testEqualsWithNull_raise_noException() {
         o2T.testEqualsWithNull();
     }
 
     @Test
-    public void test_testEqualsWithNull__with_incompleteEquals_valid() {
+    public void test_testEqualsWithNull_with_incompleteEquals_raise_noException() {
         initWithoutEqual();
         o2T.testEqualsWithNull();
     }
 
     @Test
-    public void test_testEqualsWithItself_valid() {
+    public void test_testEqualsWithItself_raise_noException() {
         o2T.testEqualsWithItself();
     }
 
     @Test
-    public void test_testEqualsWithItself__with_incompleteEquals_valid() {
+    public void test_testEqualsWithItself_with_incompleteEquals_raise_noException() {
         initWithoutEqual();
         o2T.testEqualsWithItself();
     }
-
 }

@@ -119,7 +119,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     /**
      * Flag, if #testEqualsLogicalAreTheSame expects only logical equalness.
      *
-     * @return TRUE = will be checked, else FALSE
+     * @return TRUE = will check only logical equalness, else FALSE = checks object equalness
      *
      * @see #testEqualsLogicalAreTheSame()
      */
@@ -282,16 +282,15 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
+     * Verify, if the
+     *
      * @see #isCheckLogicalEqualsOnly()
      * @see #setCheckLogicalEqualsOnly(boolean)
      */
     @Test
     public void testEqualsLogicalAreTheSame() {
         T entity2 = createObject2Test();
-        boolean expected = false;
-        if (checkLogicalEqualsOnly) {
-            expected = true;
-        }
+        boolean expected = isCheckLogicalEqualsOnly();
         assertThat(getObject2Test().equals(entity2), is(expected));
     }
 
