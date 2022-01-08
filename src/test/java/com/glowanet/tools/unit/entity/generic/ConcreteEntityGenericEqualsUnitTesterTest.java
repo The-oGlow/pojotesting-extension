@@ -1,15 +1,28 @@
-package com.glowanet.tools.unit;
+package com.glowanet.tools.unit.entity.generic;
 
-public class AbstractEntityUnitTesterTest {
-/*
+import com.glowanet.tools.unit.entity.AbstractCommonEntityEqualsUnitTester;
+import com.glowanet.util.reflect.ReflectionHelper;
+import org.junit.Before;
+import org.junit.Test;
 
-    protected static final String NOT_THROWN = "expected %s to be thrown, but nothing was thrown";
+import java.beans.PropertyDescriptor;
+import java.util.Collection;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+
+public class ConcreteEntityGenericEqualsUnitTesterTest extends AbstractCommonEntityEqualsUnitTester {
 
     protected ConcreteEntityGenericEqualsUnitTester<?> entityUnitTester;
 
     @Before
     public void setUp() {
-        initWithEqual();
+        initWithoutEqual();
     }
 
     public void initWithoutEqual() {
@@ -17,43 +30,12 @@ public class AbstractEntityUnitTesterTest {
         entityUnitTester.setUp();
     }
 
-    public void initWithEqual() {
-        entityUnitTester = new ConcreteEntityGenericEqualsUnitTester<>(ConcreteEntityLogicalEquals.class);
-        entityUnitTester.setUp();
-    }
-
-    public void verifyCollector(Object instance, int size) {
-        Object actual = ReflectionHelper.readField("collector", instance);
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(ErrorCollector.class));
-
-        Object actualThrows = ReflectionHelper.readField("errors", actual);
-
-        assertThat(actualThrows, notNullValue());
-        assertThat(actualThrows, instanceOf(Collection.class));
-        assertThat(((Collection<?>) actualThrows), hasSize(size));
-    }
-
-    public void verifyNoException(ThrowingRunnable instance) {
-        AssertionError actual = assertThrows(AssertionError.class, () -> assertThrows(Throwable.class, instance));
-        assertThat(actual, notNullValue());
-        assertThat(actual.toString(), containsString(String.format(NOT_THROWN, Throwable.class.getName())));
-    }
-
-    public void verifyException(ThrowingRunnable instance, Class<?> expected) {
-        Throwable actual = assertThrows(Throwable.class, instance);
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(expected));
-    }
-
     @Test
     public void test_createEntity_return_entity() {
         Object actual = entityUnitTester.createObject2Test();
 
         assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(ConcreteEntityLogicalEquals.class));
+        assertThat(actual, instanceOf(ConcreteEntityGenericEquals.class));
     }
 
     @Test
@@ -67,7 +49,7 @@ public class AbstractEntityUnitTesterTest {
     @Test
     public void test_setEntity_return_value() {
         Object before = entityUnitTester.getObject2Test();
-        assertThat(before, instanceOf(ConcreteEntityLogicalEquals.class));
+        assertThat(before, instanceOf(ConcreteEntityGenericEquals.class));
 
         entityUnitTester.setObject2Test(null);
         Object actual = entityUnitTester.getObject2Test();
@@ -77,14 +59,14 @@ public class AbstractEntityUnitTesterTest {
 
     @Test
     public void test_findGetter_return_list() {
-        List<PropertyDescriptor> actual = entityUnitTester.findGetter();
+        List<PropertyDescriptor> actual = entityUnitTester._findGetter();
 
         assertThat(actual, hasSize(3));
     }
 
     @Test
     public void test_findSetter_return_emptyList() {
-        List<PropertyDescriptor> actual = entityUnitTester.findSetter();
+        List<PropertyDescriptor> actual = entityUnitTester._findSetter();
 
         assertThat(actual, notNullValue());
         assertThat(actual, hasSize(0));
@@ -92,7 +74,7 @@ public class AbstractEntityUnitTesterTest {
 
     @Test
     public void test_fieldsDeniedForToString_return_emptyList() {
-        List<String> actual = entityUnitTester.fieldsDeniedForToString();
+        List<String> actual = entityUnitTester._fieldsDeniedForToString();
 
         assertThat(actual, notNullValue());
         assertThat(actual, hasSize(0));
@@ -108,7 +90,7 @@ public class AbstractEntityUnitTesterTest {
 
     @Test
     public void test_fieldsToIgnoreForToString_return_emptyList() {
-        List<String> actual = entityUnitTester.fieldsToIgnoreForToString();
+        List<String> actual = entityUnitTester._fieldsToIgnoreForToString();
 
         assertThat(actual, notNullValue());
         assertThat(actual, hasSize(0));
@@ -168,26 +150,12 @@ public class AbstractEntityUnitTesterTest {
         entityUnitTester.testHashcodeOtherThan0();
     }
 
-    @Test
-    public void test_testEqualsLogicalAreTheSame_with_logicalEquals_defaultCompare_raise_exception() {
-        assertThat(entityUnitTester.isCheckLogicalEqualsOnly(), is(false));
-        verifyException(() -> entityUnitTester.testEqualsLogicalAreTheSame(), AssertionError.class);
-    }
-
-
-    @Test
-    public void test_testEqualsLogicalAreTheSame_with_logicalEquals_logicalCompare_raise_noException() {
-        entityUnitTester.setCheckLogicalEqualsOnly(true);
-        assertThat(entityUnitTester.isCheckLogicalEqualsOnly(), is(true));
-
-        entityUnitTester.testEqualsLogicalAreTheSame();
-    }
 
     @Test
     public void test_testEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
         initWithoutEqual();
-        entityUnitTester.setCheckLogicalEqualsOnly(false);
-        assertThat(entityUnitTester.isCheckLogicalEqualsOnly(), is(false));
+        entityUnitTester._setCheckLogicalEqualsOnly(false);
+        assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(false));
 
         entityUnitTester.testEqualsLogicalAreTheSame();
     }
@@ -195,8 +163,8 @@ public class AbstractEntityUnitTesterTest {
     @Test
     public void test_testEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
         initWithoutEqual();
-        entityUnitTester.setCheckLogicalEqualsOnly(true);
-        assertThat(entityUnitTester.isCheckLogicalEqualsOnly(), is(true));
+        entityUnitTester._setCheckLogicalEqualsOnly(true);
+        assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(true));
 
         verifyException(() -> entityUnitTester.testEqualsLogicalAreTheSame(), AssertionError.class);
     }
@@ -223,5 +191,4 @@ public class AbstractEntityUnitTesterTest {
         initWithoutEqual();
         entityUnitTester.testEqualsWithItself();
     }
-*/
 }
