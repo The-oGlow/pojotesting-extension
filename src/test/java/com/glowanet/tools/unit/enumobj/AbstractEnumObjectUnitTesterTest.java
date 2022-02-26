@@ -1,4 +1,6 @@
-package com.glowanet.tools.unit;
+package com.glowanet.tools.unit.enumobj;
+
+import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterTest;
 
 public class AbstractEnumObjectUnitTesterTest extends AbstractEntityUnitTesterTest {
 

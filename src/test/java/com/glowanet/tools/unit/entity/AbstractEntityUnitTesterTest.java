@@ -1,4 +1,4 @@
-package com.glowanet.tools.unit;
+package com.glowanet.tools.unit.entity;
 
 public class AbstractEntityUnitTesterTest {
 /*

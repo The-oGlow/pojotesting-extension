@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity.logical;
 
-import com.glowanet.tools.unit.entity.generic.ConcreteEntityGenericEquals;
+import com.glowanet.tools.unit.entity.generic.DataEntityUnitTesterGenericEquals;
 
 /**
  * Test Object with
@@ -9,14 +9,14 @@ import com.glowanet.tools.unit.entity.generic.ConcreteEntityGenericEquals;
  *     <li>a default {@code #hashCode()}, {@code #testToString()}-method.</li>
  * </ul>
  */
-public class ConcreteEntityLogicalEquals extends ConcreteEntityGenericEquals {
+public class ConcreteEntityLogicalEquals extends DataEntityUnitTesterGenericEquals {
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ConcreteEntityGenericEquals that = (ConcreteEntityGenericEquals) o;
+        DataEntityUnitTesterGenericEquals that = (DataEntityUnitTesterGenericEquals) o;
 
         if (getSimInt() != null ? !getSimInt().equals(that.getSimInt()) : that.getSimInt() != null) return false;
         return getSimString() != null ? getSimString().equals(that.getSimString()) : that.getSimString() == null;

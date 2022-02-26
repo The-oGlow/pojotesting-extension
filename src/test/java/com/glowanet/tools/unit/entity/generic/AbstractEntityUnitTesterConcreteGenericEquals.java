@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity.generic;
 
-import com.glowanet.tools.unit.AbstractEntityUnitTester;
+import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
 
 import java.beans.PropertyDescriptor;
 import java.util.List;
@@ -10,19 +10,19 @@ import java.util.List;
  *
  * @param <T> the type of the class to test
  */
-public class ConcreteEntityGenericEqualsUnitTester<T extends ConcreteEntityGenericEquals> extends AbstractEntityUnitTester<T> {
+public class AbstractEntityUnitTesterConcreteGenericEquals<T extends DataEntityUnitTesterGenericEquals> extends AbstractEntityUnitTester<T> {
 
-    public ConcreteEntityGenericEqualsUnitTester() {
-        this((Class<T>) ConcreteEntityGenericEquals.class);
+    public AbstractEntityUnitTesterConcreteGenericEquals() {
+        this((Class<T>) DataEntityUnitTesterGenericEquals.class);
     }
 
-    protected ConcreteEntityGenericEqualsUnitTester(Class<T> typeOfT) {
+    protected AbstractEntityUnitTesterConcreteGenericEquals(Class<T> typeOfT) {
         super(typeOfT);
     }
 
     @Override
     protected T createObject2Test() {
-        return (T) new ConcreteEntityGenericEquals();
+        return (T) new DataEntityUnitTesterGenericEquals();
     }
 
     public List<PropertyDescriptor> _findGetter() {

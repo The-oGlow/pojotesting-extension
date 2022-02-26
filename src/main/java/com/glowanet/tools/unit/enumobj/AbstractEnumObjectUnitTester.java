@@ -1,5 +1,6 @@
-package com.glowanet.tools.unit;
+package com.glowanet.tools.unit.enumobj;
 
+import com.glowanet.tools.unit.AbstractUnitTester;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Before;

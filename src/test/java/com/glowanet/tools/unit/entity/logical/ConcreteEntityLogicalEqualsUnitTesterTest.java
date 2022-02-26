@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity.logical;
 
-import com.glowanet.tools.unit.entity.AbstractCommonEntityEqualsUnitTester;
+import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-public class ConcreteEntityLogicalEqualsUnitTesterTest extends AbstractCommonEntityEqualsUnitTester {
+public class ConcreteEntityLogicalEqualsUnitTesterTest extends AbstractEntityUnitTesterCommon {
 
     protected ConcreteEntityLogicalEqualsUnitTester<?> entityUnitTester;
 

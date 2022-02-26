@@ -6,11 +6,11 @@ package com.glowanet.tools.unit.entity.generic;
  *     <li>a default {@code #equals()}, {@code #hashCode()}, {@code #testToString()}-method.</li>
  * </ul>
  */
-public class ConcreteEntityGenericEquals {
+public class DataEntityUnitTesterGenericEquals {
     private Integer simInt;
     private String  simString;
 
-    public ConcreteEntityGenericEquals() {
+    public DataEntityUnitTesterGenericEquals() {
     }
 
     public Integer getSimInt() {

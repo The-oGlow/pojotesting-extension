@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity.logical;
 
-import com.glowanet.tools.unit.AbstractEntityUnitTester;
+import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
 
 import java.beans.PropertyDescriptor;
 import java.util.List;

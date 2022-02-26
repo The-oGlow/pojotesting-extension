@@ -60,17 +60,19 @@ public abstract class AbstractUnitTester<T> {
      * @param fieldName the exact name of the field
      * @param newValue  the new value to put in the field
      *
-     * @throws NoSuchFieldException   the class does not have a field with this name
      * @throws IllegalAccessException it is not allowed to modify this field in this class
      */
     @SuppressWarnings({"java:S3011"})
-    protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
+    protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws IllegalAccessException {
+        throw new IllegalAccessException("Function currently not supported");
+/*
         Field field = clazzA.getDeclaredField(fieldName);
         field.setAccessible(true);
         Field modifiersField = Field.class.getDeclaredField("modifiers");
         modifiersField.setAccessible(true);
         modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
         field.set(null, newValue);
+*/
     }
 
     /**
@@ -141,7 +143,7 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return true=this type has the Serializable-IF, false=otherwise
      */
-    protected boolean hasSerializableIF(Class<?> clazzA) {
+    public boolean hasSerializableIF(Class<?> clazzA) {
         boolean hasIt = false;
         List<Class<?>> listIF = ClassUtils.getAllInterfaces(clazzA);
         for (Class<?> clazzAIF : listIF) {
@@ -190,13 +192,13 @@ public abstract class AbstractUnitTester<T> {
     /**
      * Retrieves all public constants from a class.
      *
-     * @param clazzT the type of {@code T} from which to retrieve the constants
+     * @param clazzA the type from which to retrieve the constants
      *
      * @return a list of constants as field objects or an empty list.
      */
-    protected List<Field> retrievePublicConstantsfromClass(Class<T> clazzT) {
+    protected List<Field> retrievePublicConstantsfromClass(Class<?> clazzA) {
         List<Field> publicConsts = new ArrayList<>();
-        for (Field field : clazzT.getDeclaredFields()) {
+        for (Field field : clazzA.getDeclaredFields()) {
             int modifiers = field.getModifiers();
             if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
                 publicConsts.add(field);

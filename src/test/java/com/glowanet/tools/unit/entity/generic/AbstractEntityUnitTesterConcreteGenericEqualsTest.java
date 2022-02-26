@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity.generic;
 
-import com.glowanet.tools.unit.entity.AbstractCommonEntityEqualsUnitTester;
+import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +16,9 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-public class ConcreteEntityGenericEqualsUnitTesterTest extends AbstractCommonEntityEqualsUnitTester {
+public class AbstractEntityUnitTesterConcreteGenericEqualsTest extends AbstractEntityUnitTesterCommon {
 
-    protected ConcreteEntityGenericEqualsUnitTester<?> entityUnitTester;
+    protected AbstractEntityUnitTesterConcreteGenericEquals<?> entityUnitTester;
 
     @Before
     public void setUp() {
@@ -26,7 +26,7 @@ public class ConcreteEntityGenericEqualsUnitTesterTest extends AbstractCommonEnt
     }
 
     public void initWithoutEqual() {
-        entityUnitTester = new ConcreteEntityGenericEqualsUnitTester<>(ConcreteEntityGenericEquals.class);
+        entityUnitTester = new AbstractEntityUnitTesterConcreteGenericEquals<>(DataEntityUnitTesterGenericEquals.class);
         entityUnitTester.setUp();
     }
 
@@ -35,12 +35,12 @@ public class ConcreteEntityGenericEqualsUnitTesterTest extends AbstractCommonEnt
         Object actual = entityUnitTester.createObject2Test();
 
         assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(ConcreteEntityGenericEquals.class));
+        assertThat(actual, instanceOf(DataEntityUnitTesterGenericEquals.class));
     }
 
     @Test
     public void test_getEntity_return_null() {
-        entityUnitTester = new ConcreteEntityGenericEqualsUnitTester<>(ConcreteEntityGenericEquals.class);
+        entityUnitTester = new AbstractEntityUnitTesterConcreteGenericEquals<>(DataEntityUnitTesterGenericEquals.class);
         Object actual = entityUnitTester.getObject2Test();
 
         assertThat(actual, nullValue());
@@ -49,7 +49,7 @@ public class ConcreteEntityGenericEqualsUnitTesterTest extends AbstractCommonEnt
     @Test
     public void test_setEntity_return_value() {
         Object before = entityUnitTester.getObject2Test();
-        assertThat(before, instanceOf(ConcreteEntityGenericEquals.class));
+        assertThat(before, instanceOf(DataEntityUnitTesterGenericEquals.class));
 
         entityUnitTester.setObject2Test(null);
         Object actual = entityUnitTester.getObject2Test();

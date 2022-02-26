@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThrows;
 
-public abstract class AbstractCommonEntityEqualsUnitTester {
+public abstract class AbstractEntityUnitTesterCommon {
 
     protected static final String NOT_THROWN = "expected %s to be thrown, but nothing was thrown";
 
