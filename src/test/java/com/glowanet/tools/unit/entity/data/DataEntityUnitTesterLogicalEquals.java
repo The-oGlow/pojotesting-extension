@@ -1,15 +1,13 @@
-package com.glowanet.tools.unit.entity.logical;
-
-import com.glowanet.tools.unit.entity.generic.DataEntityUnitTesterGenericEquals;
+package com.glowanet.tools.unit.entity.data;
 
 /**
  * Test Object with
  * <ul>
  *     <li>an {@code #equals()}-method, which compares only logically equalness</li>
- *     <li>a default {@code #hashCode()}, {@code #testToString()}-method.</li>
+ *     <li>an implemented {@code #hashCode()}, {@code #toString()}-method.</li>
  * </ul>
  */
-public class ConcreteEntityLogicalEquals extends DataEntityUnitTesterGenericEquals {
+public class DataEntityUnitTesterLogicalEquals extends DataEntityUnitTesterGenericEqualsToString {
 
     @Override
     public boolean equals(Object o) {

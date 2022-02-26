@@ -1,20 +1,13 @@
 package com.glowanet.tools.unit.entity.generic;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
-import com.glowanet.util.reflect.ReflectionHelper;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.beans.PropertyDescriptor;
-import java.util.Collection;
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
 
 public class AbstractEntityUnitTesterConcreteGenericEqualsTest extends AbstractEntityUnitTesterCommon {
 
@@ -22,173 +15,95 @@ public class AbstractEntityUnitTesterConcreteGenericEqualsTest extends AbstractE
 
     @Before
     public void setUp() {
-        initWithoutEqual();
-    }
-
-    public void initWithoutEqual() {
         entityUnitTester = new AbstractEntityUnitTesterConcreteGenericEquals<>(DataEntityUnitTesterGenericEquals.class);
         entityUnitTester.setUp();
     }
 
     @Test
-    public void test_createEntity_return_entity() {
+    public void testCreateObject2Test_return_newCreatedObject() {
         Object actual = entityUnitTester.createObject2Test();
 
-        assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(DataEntityUnitTesterGenericEquals.class));
+        verifyInstance(actual, DataEntityUnitTesterGenericEquals.class);
     }
 
     @Test
-    public void test_getEntity_return_null() {
-        entityUnitTester = new AbstractEntityUnitTesterConcreteGenericEquals<>(DataEntityUnitTesterGenericEquals.class);
+    public void testGetObject2Test_return_currentUsedObject() {
         Object actual = entityUnitTester.getObject2Test();
 
-        assertThat(actual, nullValue());
+        verifyInstance(actual, DataEntityUnitTesterGenericEquals.class);
     }
 
     @Test
-    public void test_setEntity_return_value() {
+    public void testSetEntity_return_null() {
         Object before = entityUnitTester.getObject2Test();
         assertThat(before, instanceOf(DataEntityUnitTesterGenericEquals.class));
 
         entityUnitTester.setObject2Test(null);
         Object actual = entityUnitTester.getObject2Test();
 
-        assertThat(actual, nullValue());
+        verifyNull(actual);
     }
 
     @Test
-    public void test_findGetter_return_list() {
-        List<PropertyDescriptor> actual = entityUnitTester._findGetter();
-
-        assertThat(actual, hasSize(3));
-    }
-
-    @Test
-    public void test_findSetter_return_emptyList() {
-        List<PropertyDescriptor> actual = entityUnitTester._findSetter();
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(0));
-    }
-
-    @Test
-    public void test_fieldsDeniedForToString_return_emptyList() {
-        List<String> actual = entityUnitTester._fieldsDeniedForToString();
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(0));
-    }
-
-    @Test
-    public void test_allFieldsDeniedForToString_return_emptyList() {
-        Collection<String> actual = ReflectionHelper.readField("allFieldsDeniedForToString", entityUnitTester);
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(0));
-    }
-
-    @Test
-    public void test_fieldsToIgnoreForToString_return_emptyList() {
-        List<String> actual = entityUnitTester._fieldsToIgnoreForToString();
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(0));
-    }
-
-    @Test
-    public void test_allFieldsToIgnoreForToString_return_oneElement() {
-        Collection<String> actual = ReflectionHelper.readField("allFieldsToIgnoreForToString", entityUnitTester);
-
-        assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(1));
-    }
-
-    @Test
-    public void test_testAllGetterAccessiblewith_raise_noException() {
+    public void testTestAllGetterAccessiblewith_raise_noException() {
         entityUnitTester.testAllGetterAccessible();
 
-        verifyCollector(entityUnitTester, 0);
+        verifyCollector(entityUnitTester, NO_ERROR);
     }
 
     @Test
-    public void test_testAllSetterAccessible_raise_noException() {
+    public void testTestAllSetterAccessible_raise_noException() {
         entityUnitTester.testAllSetterAccessible();
 
-        verifyCollector(entityUnitTester, 0);
+        verifyCollector(entityUnitTester, NO_ERROR);
     }
 
     @Test
-    public void test_testGetterSetterCollaboration_raise_noException() {
+    public void testTestGetterSetterCollaboration_raise_noException() {
         entityUnitTester.testGetterSetterCollaboration();
 
-        verifyCollector(entityUnitTester, 0);
+        verifyCollector(entityUnitTester, NO_ERROR);
     }
 
     @Test
-    public void test_testToString_raise_2Exception() {
-        entityUnitTester.testToString();
-
-        verifyCollector(entityUnitTester, 2);
-    }
-
-    @Test
-    public void test_testToStringWithValues_raise_exception() {
-        entityUnitTester.testToStringWithValues();
-
-        verifyCollector(entityUnitTester, 1);
-    }
-
-    @Test
-    public void test_testHashcodeOtherThan0_raise_exception() {
-        verifyException(() -> entityUnitTester.testHashcodeOtherThan0(), AssertionError.class);
-    }
-
-    @Test
-    public void test_testHashcodeOtherThan0_with_incompleteEquals_raise_noException() {
-        initWithoutEqual();
+    public void testTestHashcodeOtherThan0_raise_noException() {
         entityUnitTester.testHashcodeOtherThan0();
+
+        verifyCollector(entityUnitTester, NO_ERROR);
     }
 
+    @Test
+    public void testTestEqualsWithNull_raise_noException() {
+        entityUnitTester.testEqualsWithNull();
+
+        verifyCollector(entityUnitTester, NO_ERROR);
+    }
 
     @Test
-    public void test_testEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
-        initWithoutEqual();
+    public void testTestEqualsWithItself_raise_noException() {
+        entityUnitTester.testEqualsWithItself();
+
+        verifyCollector(entityUnitTester, NO_ERROR);
+    }
+
+    @Test
+    public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
         entityUnitTester._setCheckLogicalEqualsOnly(false);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(false));
 
         entityUnitTester.testEqualsLogicalAreTheSame();
+
+        verifyCollector(entityUnitTester, NO_ERROR);
     }
 
     @Test
-    public void test_testEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
-        initWithoutEqual();
+    public void testTestEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
         entityUnitTester._setCheckLogicalEqualsOnly(true);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(true));
 
-        verifyException(() -> entityUnitTester.testEqualsLogicalAreTheSame(), AssertionError.class);
+        entityUnitTester.testEqualsLogicalAreTheSame();
+
+        verifyCollector(entityUnitTester, WITH_ERROR);
     }
 
-
-    @Test
-    public void test_testEqualsWithNull_raise_noException() {
-        entityUnitTester.testEqualsWithNull();
-    }
-
-    @Test
-    public void test_testEqualsWithNull_with_incompleteEquals_raise_noException() {
-        initWithoutEqual();
-        entityUnitTester.testEqualsWithNull();
-    }
-
-    @Test
-    public void test_testEqualsWithItself_raise_noException() {
-        entityUnitTester.testEqualsWithItself();
-    }
-
-    @Test
-    public void test_testEqualsWithItself_with_incompleteEquals_raise_noException() {
-        initWithoutEqual();
-        entityUnitTester.testEqualsWithItself();
-    }
 }

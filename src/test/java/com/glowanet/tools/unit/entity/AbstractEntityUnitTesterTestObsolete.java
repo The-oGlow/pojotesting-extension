@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity;
 
-public class AbstractEntityUnitTesterTest {
+public class AbstractEntityUnitTesterTestObsolete {
 /*
 
     protected static final String NOT_THROWN = "expected %s to be thrown, but nothing was thrown";

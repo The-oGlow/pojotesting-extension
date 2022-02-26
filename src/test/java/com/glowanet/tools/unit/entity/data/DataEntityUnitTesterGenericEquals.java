@@ -1,9 +1,9 @@
-package com.glowanet.tools.unit.entity.generic;
+package com.glowanet.tools.unit.entity.data;
 
 /**
  * Test Object with
  * <ul>
- *     <li>a default {@code #equals()}, {@code #hashCode()}, {@code #testToString()}-method.</li>
+ *     <li>a default {@code #equals()}, {@code #hashCode()}, {@code #toString()}-method.</li>
  * </ul>
  */
 public class DataEntityUnitTesterGenericEquals {

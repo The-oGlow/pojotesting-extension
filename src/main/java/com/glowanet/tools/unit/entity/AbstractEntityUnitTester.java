@@ -210,7 +210,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
      *
      * @param verifyValue TRUE= compares the values from setter and getter, FALSE = just checks if setting the value won't raise an exception
      */
-    private void verifyAllGetterSetterCollaboration(boolean verifyValue) {
+    protected void verifyAllGetterSetterCollaboration(boolean verifyValue) {
         List<PropertyDescriptor> setterList = findSetter();
         LOGGER.info("Testing access{} on '{}' for {} setters", verifyValue ? " and value setting" : "", getTypeOfo2T(), setterList.size());
 
@@ -267,19 +267,19 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
 
     @Test
     public void testHashcodeOtherThan0() {
-        assertThat("Hashcode must differ from '0'!", getObject2Test().hashCode(), not(is(0)));
+        collector.checkThat("Hashcode must differ from '0'!", getObject2Test().hashCode(), not(is(0)));
     }
 
     @SuppressWarnings({"EqualsWithItself", "java:S1764"})
     @Test
     public void testEqualsWithItself() {
-        assertThat(getObject2Test().equals(getObject2Test()), is(true));
+        collector.checkThat(getObject2Test().equals(getObject2Test()), is(true));
     }
 
     @SuppressWarnings({"ConstantConditions", "ObjectEqualsCanBeEquality", "RedundantSuppression", "RedundantCast"})
     @Test
     public void testEqualsWithNull() {
-        assertThat(getObject2Test().equals((T) null), is(false));
+        collector.checkThat(getObject2Test().equals((T) null), is(false));
     }
 
     /**
@@ -292,7 +292,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     public void testEqualsLogicalAreTheSame() {
         T entity2 = createObject2Test();
         boolean expected = isCheckLogicalEqualsOnly();
-        assertThat(getObject2Test().equals(entity2), is(expected));
+        collector.checkThat(getObject2Test().equals(entity2), is(expected));
     }
 
     /**

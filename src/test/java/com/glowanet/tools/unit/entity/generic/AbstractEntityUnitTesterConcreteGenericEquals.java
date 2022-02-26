@@ -1,8 +1,9 @@
 package com.glowanet.tools.unit.entity.generic;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
+import org.junit.Ignore;
 
-import java.beans.PropertyDescriptor;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ import java.util.List;
  *
  * @param <T> the type of the class to test
  */
+@Ignore("Do not call this call directly!")
 public class AbstractEntityUnitTesterConcreteGenericEquals<T extends DataEntityUnitTesterGenericEquals> extends AbstractEntityUnitTester<T> {
 
     public AbstractEntityUnitTesterConcreteGenericEquals() {
@@ -25,14 +27,6 @@ public class AbstractEntityUnitTesterConcreteGenericEquals<T extends DataEntityU
         return (T) new DataEntityUnitTesterGenericEquals();
     }
 
-    public List<PropertyDescriptor> _findGetter() {
-        return super.findGetter();
-    }
-
-    protected List<PropertyDescriptor> _findSetter() {
-        return super.findSetter();
-    }
-
     public List<String> _fieldsDeniedForToString() {
         return super.fieldsDeniedForToString();
     }
@@ -41,11 +35,27 @@ public class AbstractEntityUnitTesterConcreteGenericEquals<T extends DataEntityU
         return super.fieldsToIgnoreForToString();
     }
 
-    protected boolean _isCheckLogicalEqualsOnly() {
+    public boolean _isCheckSVUID() {
+        return super.isCheckSVUID();
+    }
+
+    public void _setCheckSVUID(boolean checkSVUID) {
+        super.setCheckSVUID(checkSVUID);
+    }
+
+    public boolean _isCheckLogicalEqualsOnly() {
         return super.isCheckLogicalEqualsOnly();
     }
 
-    protected void _setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
+    public void _setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
         super.setCheckLogicalEqualsOnly(checkLogicalEqualsOnly);
+    }
+
+    public void _validateSerialVersionUID(Object instance) {
+        super.validateSerialVersionUID(instance);
+    }
+
+    public void _verifyAllGetterSetterCollaboration(boolean verifyValue) {
+        super.verifyAllGetterSetterCollaboration(verifyValue);
     }
 }

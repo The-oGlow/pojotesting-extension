@@ -1,8 +1,8 @@
 package com.glowanet.tools.unit.enumobj;
 
-import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterTest;
+import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterTestObsolete;
 
-public class AbstractEnumObjectUnitTesterTest extends AbstractEntityUnitTesterTest {
+public class AbstractEnumObjectUnitTesterTest extends AbstractEntityUnitTesterTestObsolete {
 
 /*
     static class ConcreteEnumObjectGenericEquals extends ConcreteEntityGenericEquals {
