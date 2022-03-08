@@ -42,6 +42,9 @@ import static org.hamcrest.Matchers.typeCompatibleWith;
  */
 public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> {
 
+    public static final boolean DEFAULT_CHECK_SVUID               = true;
+    public static final boolean DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
+
     /**
      * Fieldnames in the class, which should be generally ignored on testing {@link #toString()}.
      */
@@ -53,8 +56,8 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
 
     private Collection<String> allFieldsToIgnoreForToString = FIELDS_COMMON_IGNORE;
     private Collection<String> allFieldsDeniedForToString   = new HashSet<>();
-    private boolean            checkSVUID                   = true;
-    private boolean            checkLogicalEqualsOnly;
+    private boolean            checkSVUID                   = DEFAULT_CHECK_SVUID;
+    private boolean            checkLogicalEqualsOnly       = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
 
     protected AbstractEntityUnitTester(Class<T> typeOfT) {
         super(typeOfT);
@@ -154,16 +157,25 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         if (checkSVUID && ReflectionHelper.hasSerializableIF(instance.getClass())) {
             Field idField = ReflectionHelper.findField(SERIAL_VERSION_UID_NAME, instance);
 
+            Matcher<Object> notNullMatcher = notNullValue();
             Matcher<Class<?>> typeMatcher = typeCompatibleWith(Number.class);
             Matcher<Long> numberRangeMatcher = not(inBetweenWithBounds(SERIAL_VERSION_UID_INVALID_RANGE));
+
+            String reasonNull = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must not be null!";
             String reasonType = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must be valid: " + typeMatcher + "!";
             String reasonRange = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "'it must be valid: " + numberRangeMatcher + "!";
 
-            Object idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, getTypeOfo2T());
-
-            assertThat(idValue, notNullValue());
-            assertThat(reasonType, idValue.getClass(), typeMatcher);
-            assertThat(reasonRange, Long.parseLong(idValue.toString()), numberRangeMatcher);
+            Object idValue = null;
+            try {
+                idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, getTypeOfo2T());
+            } catch (AssertionError error) {
+                // can be ignored
+            }
+            collector.checkThat(reasonNull, idValue, notNullMatcher);
+            if (idValue != null) {
+                collector.checkThat(reasonType, idValue.getClass(), typeMatcher);
+                collector.checkThat(reasonRange, Long.parseLong(idValue.toString()), numberRangeMatcher);
+            }
         }
     }
 

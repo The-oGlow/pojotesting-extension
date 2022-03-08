@@ -8,24 +8,24 @@ import java.io.Serializable;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class AbstractEntityUnitTesterSerializableTest {
+public class AbstractEntityUnitTesterSerializableTest extends AbstractEntityUnitTesterCommon {
 
-    static class ClazzNoSerializable {
+    public static class ClazzNoSerializable {
     }
 
-    static class ClazzWithSerializable extends ClazzNoSerializable implements Serializable {
+    public static class ClazzWithSerializable extends ClazzNoSerializable implements Serializable {
     }
 
-    static class ClazzWithWrongSerialVersionId extends ClazzWithSerializable {
+    public static class ClazzWithWrongSerialVersionId extends ClazzWithSerializable {
         private static final long serialVersionUID = AbstractEntityUnitTester.SERIAL_VERSION_UID_INVALID_RANGE.getLeft();
     }
 
-    static class ClazzWithSerialVersionId extends ClazzWithSerializable {
+    public static class ClazzWithSerialVersionId extends ClazzWithSerializable {
         private static final long serialVersionUID = AbstractEntityUnitTester.SERIAL_VERSION_UID_INVALID_RANGE.getRight() + 1;
     }
 
     @SuppressWarnings("UnconstructableJUnitTestCase")
-    static class AbstractEntityUnitTesterConcrete<T extends ClazzNoSerializable> extends AbstractEntityUnitTester<T> {
+    private static class AbstractEntityUnitTesterConcrete<T extends ClazzNoSerializable> extends AbstractEntityUnitTester<T> {
 
         protected AbstractEntityUnitTesterConcrete(Class<T> typeOfT) {
             super(typeOfT);
@@ -37,7 +37,7 @@ public class AbstractEntityUnitTesterSerializableTest {
         }
     }
 
-    AbstractEntityUnitTesterConcrete<? extends ClazzNoSerializable> o2T;
+    private AbstractEntityUnitTesterConcrete<? extends ClazzNoSerializable> o2T;
 
     @Before
     public void setUp() {
@@ -63,6 +63,8 @@ public class AbstractEntityUnitTesterSerializableTest {
         o2T = new AbstractEntityUnitTesterConcrete<>(instance.getClass());
 
         o2T.validateSerialVersionUID(instance);
+
+        verifyCollector(o2T, NO_ERROR);
     }
 
     @Test(expected = AssertionError.class)
@@ -73,12 +75,14 @@ public class AbstractEntityUnitTesterSerializableTest {
         o2T.validateSerialVersionUID(instance);
     }
 
-    @Test(expected = AssertionError.class)
+    @Test
     public void testValidateSerialVersionUID_invalid_WrongSerialVersionUID() {
         ClazzWithWrongSerialVersionId instance = new ClazzWithWrongSerialVersionId();
         o2T = new AbstractEntityUnitTesterConcrete<>(instance.getClass());
 
         o2T.validateSerialVersionUID(instance);
+
+        verifyCollector(o2T, WITH_ERROR);
     }
 
     @Test
@@ -87,12 +91,15 @@ public class AbstractEntityUnitTesterSerializableTest {
         o2T = new AbstractEntityUnitTesterConcrete<>(instance.getClass());
 
         o2T.validateSerialVersionUID(instance);
+
+        verifyCollector(o2T, NO_ERROR);
     }
 
 
     @Test
     public void test_testSerialVersionUIDIsCorrectInEntity() {
         o2T.testSerialVersionUIDIsCorrectInEntity();
-    }
 
+        verifyCollector(o2T, NO_ERROR);
+    }
 }
