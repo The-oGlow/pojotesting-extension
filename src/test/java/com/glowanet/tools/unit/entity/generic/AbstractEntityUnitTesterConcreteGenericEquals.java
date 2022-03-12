@@ -51,8 +51,8 @@ public class AbstractEntityUnitTesterConcreteGenericEquals<T extends DataEntityU
         super.setCheckLogicalEqualsOnly(checkLogicalEqualsOnly);
     }
 
-    public void _validateSerialVersionUID(Object instance) {
-        super.validateSerialVersionUID(instance);
+    public void _validateSerialVersionUID() {
+        super.validateSerialVersionUID();
     }
 
     public void _verifyAllGetterSetterCollaboration(boolean verifyValue) {

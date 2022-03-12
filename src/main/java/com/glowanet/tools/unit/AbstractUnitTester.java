@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anyOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 /**
@@ -51,6 +55,9 @@ public abstract class AbstractUnitTester<T> {
      */
     protected AbstractUnitTester(Class<T> typeOfo2T) {
         this.typeOfo2T = typeOfo2T;
+        this.object2Test = createObject2Test();
+        validateObjectAndType();
+        init();
     }
 
     /**
@@ -78,8 +85,8 @@ public abstract class AbstractUnitTester<T> {
     /**
      * Initialize the unit tester.
      */
-    protected void setUp() {
-        setObject2Test(createObject2Test());
+    protected void init() {
+        //
     }
 
     /**
@@ -87,20 +94,27 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return instance of the {@code T}
      *
-     * @see #setUp()
+     * @see #init()
      */
     protected abstract T createObject2Test();
 
     protected Class<T> getTypeOfo2T() {
+        validateObjectAndType();
         return this.typeOfo2T;
     }
 
     public T getObject2Test() {
-        return object2Test;
+        validateObjectAndType();
+        return this.object2Test;
     }
 
     public void setObject2Test(T object2Test) {
+        validateObjectAndType();
         this.object2Test = object2Test;
+    }
+
+    private void validateObjectAndType() {
+        assertThat(this.object2Test, anyOf(nullValue(), instanceOf(this.typeOfo2T)));
     }
 
     /**

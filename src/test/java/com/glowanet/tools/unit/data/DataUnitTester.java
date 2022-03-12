@@ -1,8 +1,8 @@
-package com.glowanet.tools.unit;
+package com.glowanet.tools.unit.data;
 
 import java.io.Serializable;
 
-public class DataUnitTesterConcrete implements Serializable {
+public class DataUnitTester implements Serializable {
 
     public static final int CONST_COUNT  = 11;
     public static final int SETTER_COUNT = 3;

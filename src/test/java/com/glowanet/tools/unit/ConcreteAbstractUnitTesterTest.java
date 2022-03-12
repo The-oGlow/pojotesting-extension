@@ -1,5 +1,6 @@
 package com.glowanet.tools.unit;
 
+import com.glowanet.tools.unit.data.DataUnitTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,69 +23,69 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThrows;
 
-public class AbstractUnitTesterConcreteTest {
+public class ConcreteAbstractUnitTesterTest {
 
     private static final String VAL_HELLO = "HELLO";
     private static final Number VAL_99    = 99;
     private static final String VAL_1     = "1";
 
-    AbstractUnitTesterConcrete o2T;
+    ConcreteAbstractUnitTester o2T;
 
     @Before
     public void setUp() {
-        o2T = new AbstractUnitTesterConcrete();
-        o2T._setUp();
+        o2T = new ConcreteAbstractUnitTester();
+        //o2T._setUp();
     }
 
     @Test(expected = IllegalAccessException.class)
     public void testSetFinalStatic_throw_IAException() throws NoSuchFieldException, IllegalAccessException {
-        DataUnitTesterConcrete actual = new DataUnitTesterConcrete();
+        DataUnitTester actual = new DataUnitTester();
         Class<?> clazzActual = actual.getClass();
-        String fieldName = DataUnitTesterConcrete.PRIV_CONST_NAME;
-        Object oldValue = DataUnitTesterConcrete.VAL_PREV;
-        Object newValue = DataUnitTesterConcrete.VAL_NEW;
+        String fieldName = DataUnitTester.PRIV_CONST_NAME;
+        Object oldValue = DataUnitTester.VAL_PREV;
+        Object newValue = DataUnitTester.VAL_NEW;
 
-        assertThat(DataUnitTesterConcrete.VAL_PREV, not(equalTo(DataUnitTesterConcrete.VAL_NEW)));
-        assertThat(DataUnitTesterConcrete.PRIV_CONST, equalTo(DataUnitTesterConcrete.VAL_PREV));
+        assertThat(DataUnitTester.VAL_PREV, not(equalTo(DataUnitTester.VAL_NEW)));
+        assertThat(DataUnitTester.PRIV_CONST, equalTo(DataUnitTester.VAL_PREV));
 
-        AbstractUnitTesterConcrete._setFinalStatic(clazzActual, fieldName, newValue);
+        ConcreteAbstractUnitTester._setFinalStatic(clazzActual, fieldName, newValue);
 
-        assertThat(DataUnitTesterConcrete.VAL_PREV, not(equalTo(DataUnitTesterConcrete.VAL_NEW)));
-        assertThat(DataUnitTesterConcrete.PRIV_CONST, equalTo(DataUnitTesterConcrete.VAL_NEW));
+        assertThat(DataUnitTester.VAL_PREV, not(equalTo(DataUnitTester.VAL_NEW)));
+        assertThat(DataUnitTester.PRIV_CONST, equalTo(DataUnitTester.VAL_NEW));
     }
 
     @Test
     public void testFindGetter_return_listOfPropertyDescriptor() {
         List<PropertyDescriptor> actual = o2T._findGetter();
         assertThat(actual, isA(List.class));
-        assertThat(actual, hasSize(DataUnitTesterConcrete.GETTER_COUNT));
+        assertThat(actual, hasSize(DataUnitTester.GETTER_COUNT));
     }
 
     @Test
     public void testFindSetter_return_listOfPropertyDesriptor() {
         List<PropertyDescriptor> actual = o2T._findSetter();
         assertThat(actual, isA(List.class));
-        assertThat(actual, hasSize(DataUnitTesterConcrete.SETTER_COUNT));
+        assertThat(actual, hasSize(DataUnitTester.SETTER_COUNT));
     }
 
     @Test
     public void testCreateObject2Test_return_newCreatedObject() {
         Object actual = o2T._createObject2Test();
         Object actual2 = o2T._createObject2Test();
-        assertThat(actual, isA(DataUnitTesterConcrete.class));
-        assertThat(actual2, isA(DataUnitTesterConcrete.class));
+        assertThat(actual, isA(DataUnitTester.class));
+        assertThat(actual2, isA(DataUnitTester.class));
         assertThat(actual, not(equalToObject(actual2)));
     }
 
     @Test
     public void testGetObject2Test_return_currentUsedObject() {
         Object actual = o2T._getObject2Test();
-        assertThat(actual, isA(DataUnitTesterConcrete.class));
+        assertThat(actual, isA(DataUnitTester.class));
     }
 
     @Test
     public void testSetObject2Test_set_newUsedObject() {
-        DataUnitTesterConcrete expected = new DataUnitTesterConcrete();
+        DataUnitTester expected = new DataUnitTester();
         o2T._setObject2Test(expected);
         Object actual = o2T._getObject2Test();
         assertThat(actual, equalToObject(expected));
@@ -92,13 +93,13 @@ public class AbstractUnitTesterConcreteTest {
 
     @Test
     public void testGetTypeOfo2T_return_typeOfCurrentUsedObject() {
-        Class<DataUnitTesterConcrete> actual = o2T._getTypeOfo2T();
-        assertThat(actual.getTypeName(), equalTo(DataUnitTesterConcrete.class.getName()));
+        Class<DataUnitTester> actual = o2T._getTypeOfo2T();
+        assertThat(actual.getTypeName(), equalTo(DataUnitTester.class.getName()));
     }
 
     @Test
     public void testHasSerializableIF_return_true() {
-        boolean actual = o2T._hasSerializableIF(DataUnitTesterConcrete.class);
+        boolean actual = o2T._hasSerializableIF(DataUnitTester.class);
         assertThat(actual, equalTo(true));
     }
 
@@ -110,26 +111,26 @@ public class AbstractUnitTesterConcreteTest {
 
     @Test
     public void testFindField_return_fieldIsFound() {
-        DataUnitTesterConcrete instance = o2T._getObject2Test();
-        Field actual = o2T._findField(instance, DataUnitTesterConcrete.FIELD_EXISTS);
+        DataUnitTester instance = o2T._getObject2Test();
+        Field actual = o2T._findField(instance, DataUnitTester.FIELD_EXISTS);
         assertThat(actual, notNullValue());
-        assertThat(actual.getName(), equalTo(DataUnitTesterConcrete.FIELD_EXISTS));
+        assertThat(actual.getName(), equalTo(DataUnitTester.FIELD_EXISTS));
         assertThat(actual.canAccess(instance), equalTo(true));
     }
 
     @Test
     public void testFindField_throws_fieldNotFoundException() {
-        DataUnitTesterConcrete instance = o2T._getObject2Test();
-        Throwable actual = assertThrows(Throwable.class, () -> o2T._findField(instance, DataUnitTesterConcrete.FIELD_NOT_EXISTS));
+        DataUnitTester instance = o2T._getObject2Test();
+        Throwable actual = assertThrows(Throwable.class, () -> o2T._findField(instance, DataUnitTester.FIELD_NOT_EXISTS));
         assertThat(actual, notNullValue());
         assertThat(actual, instanceOf(AssertionError.class));
-        assertThat(actual.getMessage(), matchesRegex("^No " + DataUnitTesterConcrete.FIELD_NOT_EXISTS + " defined : .+$"));
+        assertThat(actual.getMessage(), matchesRegex("^No " + DataUnitTester.FIELD_NOT_EXISTS + " defined : .+$"));
     }
 
     @Test
     public void testMakeFieldAccessible_void_fieldIsAccessibleNow() throws NoSuchFieldException {
-        DataUnitTesterConcrete instance = o2T._getObject2Test();
-        Field actual = instance.getClass().getDeclaredField(DataUnitTesterConcrete.FIELD_EXISTS);
+        DataUnitTester instance = o2T._getObject2Test();
+        Field actual = instance.getClass().getDeclaredField(DataUnitTester.FIELD_EXISTS);
         assertThat(actual.canAccess(instance), equalTo(false));
         o2T._makeFieldAccessible(actual, instance);
         assertThat(actual.canAccess(instance), equalTo(true));
@@ -157,20 +158,20 @@ public class AbstractUnitTesterConcreteTest {
 
     @Test
     public void testRetrieveMethodParameters_return_mapOfMethodParameter() throws NoSuchMethodException {
-        Method method = o2T.getObject2Test().getClass().getDeclaredMethod(DataUnitTesterConcrete.METH_NAME, DataUnitTesterConcrete.METH_PARAM);
+        Method method = o2T.getObject2Test().getClass().getDeclaredMethod(DataUnitTester.METH_NAME, DataUnitTester.METH_PARAM);
         Map<Class<?>, Object> actual = o2T._retrieveMethodParameters(method);
 
         assertThat(actual, notNullValue());
-        assertThat(actual.entrySet(), hasSize(DataUnitTesterConcrete.METH_PARAM.length));
-        assertThat(actual.keySet(), containsInAnyOrder(DataUnitTesterConcrete.METH_PARAM));
+        assertThat(actual.entrySet(), hasSize(DataUnitTester.METH_PARAM.length));
+        assertThat(actual.keySet(), containsInAnyOrder(DataUnitTester.METH_PARAM));
     }
 
     @Test
     public void testRetrievePublicConstantsfromClass_return_listOfPublicConstants() {
-        Class<DataUnitTesterConcrete> unitTestDataClass = DataUnitTesterConcrete.class;
+        Class<DataUnitTester> unitTestDataClass = DataUnitTester.class;
         List<Field> actual = o2T._retrievePublicConstantsfromClass(unitTestDataClass);
 
         assertThat(actual, notNullValue());
-        assertThat(actual, hasSize(DataUnitTesterConcrete.CONST_COUNT));
+        assertThat(actual, hasSize(DataUnitTester.CONST_COUNT));
     }
 }

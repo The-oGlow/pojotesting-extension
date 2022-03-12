@@ -1,36 +1,38 @@
 package com.glowanet.tools.unit;
 
+import com.glowanet.tools.unit.data.DataUnitTester;
+
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-public class AbstractUnitTesterConcrete extends AbstractUnitTester<DataUnitTesterConcrete> {
+public class ConcreteAbstractUnitTester extends AbstractUnitTester<DataUnitTester> {
 
-    public AbstractUnitTesterConcrete() {
-        this(DataUnitTesterConcrete.class);
+    public ConcreteAbstractUnitTester() {
+        this(DataUnitTester.class);
     }
 
     /**
      * @param typeOfo2T the class object of {@code T}
      */
-    protected AbstractUnitTesterConcrete(Class<DataUnitTesterConcrete> typeOfo2T) {
+    protected ConcreteAbstractUnitTester(Class<DataUnitTester> typeOfo2T) {
         super(typeOfo2T);
     }
 
     @Override
-    protected DataUnitTesterConcrete createObject2Test() {
-        return new DataUnitTesterConcrete();
+    protected DataUnitTester createObject2Test() {
+        return new DataUnitTester();
     }
 
     public static void _setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
     }
 
-    public void _setUp() {
-        super.setUp();
-    }
+//    public void _setUp() {
+//        super.setUp();
+//    }
 
     public List<PropertyDescriptor> _findGetter() {
         return super.findGetter();
@@ -40,19 +42,19 @@ public class AbstractUnitTesterConcrete extends AbstractUnitTester<DataUnitTeste
         return super.findSetter();
     }
 
-    public DataUnitTesterConcrete _createObject2Test() {
+    public DataUnitTester _createObject2Test() {
         return this.createObject2Test();
     }
 
-    public DataUnitTesterConcrete _getObject2Test() {
+    public DataUnitTester _getObject2Test() {
         return super.getObject2Test();
     }
 
-    public void _setObject2Test(DataUnitTesterConcrete dataUnitTesterConcrete) {
-        super.setObject2Test(dataUnitTesterConcrete);
+    public void _setObject2Test(DataUnitTester dataUnitTester) {
+        super.setObject2Test(dataUnitTester);
     }
 
-    public Class<DataUnitTesterConcrete> _getTypeOfo2T() {
+    public Class<DataUnitTester> _getTypeOfo2T() {
         return super.getTypeOfo2T();
     }
 
@@ -60,12 +62,12 @@ public class AbstractUnitTesterConcrete extends AbstractUnitTester<DataUnitTeste
         return super.hasSerializableIF(unitTestDataClass);
     }
 
-    public Field _findField(DataUnitTesterConcrete dataUnitTesterConcrete, String fieldName) {
-        return super.findField(dataUnitTesterConcrete, fieldName);
+    public Field _findField(DataUnitTester dataUnitTester, String fieldName) {
+        return super.findField(dataUnitTester, fieldName);
     }
 
-    public void _makeFieldAccessible(Field field, DataUnitTesterConcrete dataUnitTesterConcrete) {
-        super.makeFieldAccessible(field, dataUnitTesterConcrete);
+    public void _makeFieldAccessible(Field field, DataUnitTester dataUnitTester) {
+        super.makeFieldAccessible(field, dataUnitTester);
     }
 
     public Number _retrieveNumberFromText(String textWithNumber) {
@@ -80,7 +82,7 @@ public class AbstractUnitTesterConcrete extends AbstractUnitTester<DataUnitTeste
         return super.retrieveMethodParameters(method);
     }
 
-    public List<Field> _retrievePublicConstantsfromClass(Class<DataUnitTesterConcrete> unitTestDataClass) {
+    public List<Field> _retrievePublicConstantsfromClass(Class<DataUnitTester> unitTestDataClass) {
         return super.retrievePublicConstantsfromClass(unitTestDataClass);
     }
 }

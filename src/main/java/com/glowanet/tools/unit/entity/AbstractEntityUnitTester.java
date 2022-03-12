@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,19 +43,21 @@ import static org.hamcrest.Matchers.typeCompatibleWith;
  */
 public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> {
 
-    public static final boolean DEFAULT_CHECK_SVUID               = true;
-    public static final boolean DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
-
+    public static final boolean            DEFAULT_CHECK_SVUID               = true;
+    public static final boolean            DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
+    public static final String             SERIAL_VERSION_UID_NAME           = "serialVersionUID";
+    /**
+     * Range of IDs which are not allowed to use.
+     */
+    public static final Pair<Long, Long>   SERIAL_VERSION_UID_INVALID_RANGE  = new ImmutablePair<>(-100L, 100L);
     /**
      * Fieldnames in the class, which should be generally ignored on testing {@link #toString()}.
      */
-    protected static final Collection<String> FIELDS_COMMON_IGNORE             = new HashSet<>(List.of("class"));
-    protected static final String             SERIAL_VERSION_UID_NAME          = "serialVersionUID";
-    protected static final Pair<Long, Long>   SERIAL_VERSION_UID_INVALID_RANGE = new ImmutablePair<>(-100L, 100L);
+    public static final Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private Collection<String> allFieldsToIgnoreForToString = FIELDS_COMMON_IGNORE;
+    private Collection<String> allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
     private Collection<String> allFieldsDeniedForToString   = new HashSet<>();
     private boolean            checkSVUID                   = DEFAULT_CHECK_SVUID;
     private boolean            checkLogicalEqualsOnly       = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
@@ -63,10 +66,8 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         super(typeOfT);
     }
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         assertThat(getObject2Test(), notNullValue());
 
         allFieldsToIgnoreForToString.addAll(fieldsToIgnoreForToString() == null ? List.of() : fieldsToIgnoreForToString());
@@ -153,8 +154,9 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
      * #see #isCheckSVUID()
      * #see #setCheckSVUID(boolean)
      */
-    protected void validateSerialVersionUID(Object instance) {
-        if (checkSVUID && ReflectionHelper.hasSerializableIF(instance.getClass())) {
+    protected void validateSerialVersionUID() {
+        Object instance = getObject2Test();
+        if (checkSVUID && instance != null && ReflectionHelper.hasSerializableIF(instance.getClass())) {
             Field idField = ReflectionHelper.findField(SERIAL_VERSION_UID_NAME, instance);
 
             Matcher<Object> notNullMatcher = notNullValue();
@@ -167,7 +169,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
 
             Object idValue = null;
             try {
-                idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, getTypeOfo2T());
+                idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, instance.getClass());
             } catch (AssertionError error) {
                 // can be ignored
             }
@@ -313,7 +315,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
      */
     @Test
     public void testSerialVersionUIDIsCorrectInEntity() {
-        validateSerialVersionUID(getObject2Test());
+        validateSerialVersionUID();
     }
 
 }

@@ -57,10 +57,8 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
         super(typeOfT);
     }
 
-    @Override
     @Before
     public void setUp() {
-        super.setUp();
         allFieldsToIgnoreForCode.addAll(enumObjectsToIgnoreForCode() == null ? List.of() : enumObjectsToIgnoreForCode());
         allFieldsToIgnoreForCode = allFieldsToIgnoreForCode.stream().map(String::toLowerCase).collect(Collectors.toSet());
     }

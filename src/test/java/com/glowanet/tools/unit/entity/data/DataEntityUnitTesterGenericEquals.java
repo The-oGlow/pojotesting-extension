@@ -20,4 +20,6 @@ public class DataEntityUnitTesterGenericEquals {
     public String getSimString() {
         return simString;
     }
+    
+
 }
