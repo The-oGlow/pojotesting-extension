@@ -8,16 +8,16 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-public class ConcreteAbstractUnitTester extends AbstractUnitTester<DataUnitTester> {
+public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
 
-    public ConcreteAbstractUnitTester() {
+    public ConcreteUnitTester() {
         this(DataUnitTester.class);
     }
 
     /**
      * @param typeOfo2T the class object of {@code T}
      */
-    protected ConcreteAbstractUnitTester(Class<DataUnitTester> typeOfo2T) {
+    protected ConcreteUnitTester(Class<DataUnitTester> typeOfo2T) {
         super(typeOfo2T);
     }
 

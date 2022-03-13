@@ -1,7 +1,7 @@
 package com.glowanet.tools.unit.entity.generic;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import org.junit.Ignore;
 
 import java.util.List;
@@ -12,19 +12,19 @@ import java.util.List;
  * @param <T> the type of the class to test
  */
 @Ignore("Do not call this call directly!")
-public class AbstractEntityUnitTesterConcreteGenericEquals<T extends DataEntityUnitTesterGenericEquals> extends AbstractEntityUnitTester<T> {
+public class ConcreteEntityUnitTesterGeneric<T extends DataEntityUnitTester> extends AbstractEntityUnitTester<T> {
 
-    public AbstractEntityUnitTesterConcreteGenericEquals() {
-        this((Class<T>) DataEntityUnitTesterGenericEquals.class);
+    public ConcreteEntityUnitTesterGeneric() {
+        this((Class<T>) DataEntityUnitTester.class);
     }
 
-    protected AbstractEntityUnitTesterConcreteGenericEquals(Class<T> typeOfT) {
+    protected ConcreteEntityUnitTesterGeneric(Class<T> typeOfT) {
         super(typeOfT);
     }
 
     @Override
     protected T createObject2Test() {
-        return (T) new DataEntityUnitTesterGenericEquals();
+        return (T) new DataEntityUnitTester();
     }
 
     public List<String> _fieldsDeniedForToString() {

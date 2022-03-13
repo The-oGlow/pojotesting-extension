@@ -1,8 +1,6 @@
 package com.glowanet.tools.unit.enumobj;
 
-import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterTestObsolete;
-
-public class AbstractEnumObjectUnitTesterTest extends AbstractEntityUnitTesterTestObsolete {
+public class AbstractEnumObjectUnitTesterTest { // extends AbstractEntityUnitTesterTestObsolete {
 
 /*
     static class ConcreteEnumObjectGenericEquals extends ConcreteEntityGenericEquals {
@@ -14,7 +12,7 @@ public class AbstractEnumObjectUnitTesterTest extends AbstractEntityUnitTesterTe
     public void testValidateAllEnumObjects_raise_noException() {
         o2T.validateAllEnumObjects();
 
-        verifyCollector(o2T, 0);
+        TestResultHelper.verifyCollector(o2T, 0);
     }
 
     public void testCreate() {

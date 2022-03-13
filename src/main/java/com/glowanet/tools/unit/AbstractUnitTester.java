@@ -1,12 +1,12 @@
 package com.glowanet.tools.unit;
 
 import com.glowanet.tools.random.RandomValueFactory;
+import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hamcrest.beans.PropertyUtil;
 import org.junit.Rule;
-import org.junit.rules.ErrorCollector;
 
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
@@ -37,8 +37,8 @@ public abstract class AbstractUnitTester<T> {
     private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
 
     @Rule
-    public final  ErrorCollector collector = new ErrorCollector();
-    private final Class<T>       typeOfo2T;
+    public final  ErrorCollectorExt collector = new ErrorCollectorExt();
+    private final Class<T>          typeOfo2T;
 
     private T object2Test;
 

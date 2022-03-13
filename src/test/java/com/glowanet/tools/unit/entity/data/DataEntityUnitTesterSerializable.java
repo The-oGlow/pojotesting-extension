@@ -4,8 +4,8 @@ import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
 
 import java.io.Serializable;
 
-public class DataClazzSerializable {
-    public static class ClazzNoSerializable extends DataEntityUnitTesterGenericEquals {
+public class DataEntityUnitTesterSerializable {
+    public static class ClazzNoSerializable extends DataEntityUnitTester {
     }
 
     public static class ClazzWithSerializableNoSerialVersionUid extends ClazzNoSerializable implements Serializable {

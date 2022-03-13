@@ -1,7 +1,7 @@
 package com.glowanet.tools.unit.entity.logical;
 
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterLogicalEquals;
-import com.glowanet.tools.unit.entity.generic.AbstractEntityUnitTesterConcreteGenericEquals;
+import com.glowanet.tools.unit.entity.generic.ConcreteEntityUnitTesterGeneric;
 import org.junit.Ignore;
 
 /**
@@ -10,13 +10,13 @@ import org.junit.Ignore;
  * @param <T> the type of the class to test
  */
 @Ignore("Do not call this call directly!")
-public class AbstractEntityUnitTesterConcreteLogicalEquals<T extends DataEntityUnitTesterLogicalEquals> extends AbstractEntityUnitTesterConcreteGenericEquals<T> {
+public class ConcreteEntityUnitTesterLogical<T extends DataEntityUnitTesterLogicalEquals> extends ConcreteEntityUnitTesterGeneric<T> {
 
-    public AbstractEntityUnitTesterConcreteLogicalEquals() {
+    public ConcreteEntityUnitTesterLogical() {
         this((Class<T>) DataEntityUnitTesterLogicalEquals.class);
     }
 
-    protected AbstractEntityUnitTesterConcreteLogicalEquals(Class<T> typeOfT) {
+    protected ConcreteEntityUnitTesterLogical(Class<T> typeOfT) {
         super(typeOfT);
     }
 

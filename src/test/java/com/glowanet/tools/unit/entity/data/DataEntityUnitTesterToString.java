@@ -7,7 +7,7 @@ package com.glowanet.tools.unit.entity.data;
  *     <li>an implemented {@code #toString()}-method.</li>
  * </ul>
  */
-public class DataEntityUnitTesterGenericEqualsToString extends DataEntityUnitTesterGenericEquals {
+public class DataEntityUnitTesterToString extends DataEntityUnitTester {
     @Override
     public String toString() {
         return "DataEntityUnitTesterGenericEqualsToString{" +

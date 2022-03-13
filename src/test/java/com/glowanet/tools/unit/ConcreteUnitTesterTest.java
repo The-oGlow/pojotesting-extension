@@ -23,17 +23,17 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThrows;
 
-public class ConcreteAbstractUnitTesterTest {
+public class ConcreteUnitTesterTest {
 
     private static final String VAL_HELLO = "HELLO";
     private static final Number VAL_99    = 99;
     private static final String VAL_1     = "1";
 
-    ConcreteAbstractUnitTester o2T;
+    ConcreteUnitTester o2T;
 
     @Before
     public void setUp() {
-        o2T = new ConcreteAbstractUnitTester();
+        o2T = new ConcreteUnitTester();
         //o2T._setUp();
     }
 
@@ -48,7 +48,7 @@ public class ConcreteAbstractUnitTesterTest {
         assertThat(DataUnitTester.VAL_PREV, not(equalTo(DataUnitTester.VAL_NEW)));
         assertThat(DataUnitTester.PRIV_CONST, equalTo(DataUnitTester.VAL_PREV));
 
-        ConcreteAbstractUnitTester._setFinalStatic(clazzActual, fieldName, newValue);
+        ConcreteUnitTester._setFinalStatic(clazzActual, fieldName, newValue);
 
         assertThat(DataUnitTester.VAL_PREV, not(equalTo(DataUnitTester.VAL_NEW)));
         assertThat(DataUnitTester.PRIV_CONST, equalTo(DataUnitTester.VAL_NEW));
