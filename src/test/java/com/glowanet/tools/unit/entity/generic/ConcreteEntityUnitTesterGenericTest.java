@@ -3,15 +3,18 @@ package com.glowanet.tools.unit.entity.generic;
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
+import com.glowanet.tools.unit.entity.generic.ConcreteEntityUnitTesterGeneric.Callback;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
 import java.util.List;
 
+import static com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzNoSerializable;
+import static com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid;
+import static com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester> extends AbstractEntityUnitTesterCommon {
@@ -19,9 +22,31 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
     //protected AbstractEntityUnitTesterConcreteGenericEquals<?> entityUnitTester;
 
     public ConcreteEntityUnitTesterGeneric<T> prepareEntityUnitTester(Class<?> typeOfO2T) {
-        ConcreteEntityUnitTesterGeneric<T> entityUnitTester = new ConcreteEntityUnitTesterGeneric<T>((Class<T>) typeOfO2T);
+        ConcreteEntityUnitTesterGeneric<T> entityUnitTester = new ConcreteEntityUnitTesterGeneric<T>((Class<T>) typeOfO2T, prepareCallback(typeOfO2T));
 //        entityUnitTester.setUp();
         return entityUnitTester;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Callback<T> prepareCallback(Class<?> typeOfO2T) {
+        return new Callback<T>() {
+            @Override
+            public void run() {
+                T newO2T;
+                if (ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzWithSerialVersionUid();
+                } else if (ClazzWithWrongSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzWithWrongSerialVersionUid();
+                } else if (ClazzWithSerializableNoSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzWithSerializableNoSerialVersionUid();
+                } else if (ClazzNoSerializable.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzNoSerializable();
+                } else {
+                    newO2T = (T) new DataEntityUnitTester();
+                }
+                this.newO2T = newO2T;
+            }
+        };
     }
 
     @Test
@@ -81,7 +106,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
     public void testValidateSerialVersionUID_simplePojo_raise_noException() {
         ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
 
-        Object instance = new DataEntityUnitTesterSerializable.ClazzNoSerializable();
+        Object instance = new ClazzNoSerializable();
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
@@ -89,14 +114,16 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testValidateSerialVersionUID_serialPojoWithoutId_raise_twoException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class);
+        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(ClazzWithWrongSerialVersionUid.class);
 
-        TestResultHelper.verifyException(() -> entityUnitTester._validateSerialVersionUID(), AssertionError.class);
+        entityUnitTester._validateSerialVersionUID();
+
+        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
     }
 
     @Test
     public void testValidateSerialVersionUID_serialPojoWrongId_raise_oneException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class);
+        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(ClazzWithWrongSerialVersionUid.class);
 
         entityUnitTester._validateSerialVersionUID();
 
@@ -105,7 +132,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testValidateSerialVersionUID_serialPojo_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid.class);
+        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(ClazzWithSerialVersionUid.class);
 
         entityUnitTester._validateSerialVersionUID();
 
@@ -130,18 +157,18 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
         TestResultHelper.verifyInstance(actual, DataEntityUnitTester.class);
     }
 
-    @Test
-    public void testSetEntity_return_null() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        Object before = entityUnitTester.getObject2Test();
-        assertThat(before, instanceOf(DataEntityUnitTester.class));
-
-        entityUnitTester.setObject2Test(null);
-        Object actual = entityUnitTester.getObject2Test();
-
-        TestResultHelper.verifyNull(actual);
-    }
+//    @Test
+//    public void testSetEntity_return_null() {
+//        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+//
+//        Object before = entityUnitTester.getObject2Test();
+//        assertThat(before, instanceOf(DataEntityUnitTester.class));
+//
+//        entityUnitTester.setObject2Test(null);
+//        Object actual = entityUnitTester.getObject2Test();
+//
+//        TestResultHelper.verifyNull(actual);
+//    }
 
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {

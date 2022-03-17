@@ -11,20 +11,38 @@ import java.util.List;
  *
  * @param <T> the type of the class to test
  */
+@SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this call directly!")
 public class ConcreteEntityUnitTesterGeneric<T extends DataEntityUnitTester> extends AbstractEntityUnitTester<T> {
 
-    public ConcreteEntityUnitTesterGeneric() {
-        this((Class<T>) DataEntityUnitTester.class);
+    public abstract static class Callback<T> implements Runnable {
+        protected T newO2T;
+
+        public T getNewO2T() {
+            this.run();
+            return newO2T;
+        }
     }
 
+    private final Callback<T> callbackForT;
+
     protected ConcreteEntityUnitTesterGeneric(Class<T> typeOfT) {
+        this(typeOfT, null);
+    }
+
+    protected ConcreteEntityUnitTesterGeneric(Class<T> typeOfT, Callback<T> callbackForT) {
         super(typeOfT);
+        this.callbackForT = callbackForT;
+    }
+
+    @Override
+    protected void init() {
+        //
     }
 
     @Override
     protected T createObject2Test() {
-        return (T) new DataEntityUnitTester();
+        return callbackForT == null ? null : callbackForT.getNewO2T();
     }
 
     public List<String> _fieldsDeniedForToString() {

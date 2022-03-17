@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 public class ConcreteEntityUnitTesterLogicalTest extends AbstractEntityUnitTesterCommon {
@@ -39,16 +38,16 @@ public class ConcreteEntityUnitTesterLogicalTest extends AbstractEntityUnitTeste
         TestResultHelper.verifyInstance(actual, DataEntityUnitTesterLogicalEquals.class);
     }
 
-    @Test
-    public void testSetEntity_return_null() {
-        Object before = entityUnitTester.getObject2Test();
-        assertThat(before, instanceOf(DataEntityUnitTesterLogicalEquals.class));
-
-        entityUnitTester.setObject2Test(null);
-        Object actual = entityUnitTester.getObject2Test();
-
-        TestResultHelper.verifyNull(actual);
-    }
+//    @Test
+//    public void testSetEntity_return_null() {
+//        Object before = entityUnitTester.getObject2Test();
+//        assertThat(before, instanceOf(DataEntityUnitTesterLogicalEquals.class));
+//
+//        entityUnitTester.setObject2Test(null);
+//        Object actual = entityUnitTester.getObject2Test();
+//
+//        TestResultHelper.verifyNull(actual);
+//    }
 
 
     @Test

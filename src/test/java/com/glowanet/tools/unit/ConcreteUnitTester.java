@@ -50,9 +50,9 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         return super.getObject2Test();
     }
 
-    public void _setObject2Test(DataUnitTester dataUnitTester) {
-        super.setObject2Test(dataUnitTester);
-    }
+//    public void _setObject2Test(DataUnitTester dataUnitTester) {
+//        super.setObject2Test(dataUnitTester);
+//    }
 
     public Class<DataUnitTester> _getTypeOfo2T() {
         return super.getTypeOfo2T();

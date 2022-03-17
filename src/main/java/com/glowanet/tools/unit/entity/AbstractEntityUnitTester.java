@@ -4,12 +4,10 @@ import com.glowanet.tools.unit.AbstractUnitTester;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.MethodUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
+import org.hamcrest.core.IsBetween.Range;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -34,6 +32,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.Matchers.typeCompatibleWith;
+import static org.hamcrest.MatchersExtend.betweenWithBound;
 
 /**
  * Abstract class to use for unit-testing on entities, beans, pojos.
@@ -49,7 +48,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     /**
      * Range of IDs which are not allowed to use.
      */
-    public static final Pair<Long, Long>   SERIAL_VERSION_UID_INVALID_RANGE  = new ImmutablePair<>(-100L, 100L);
+    public static final Range<Long>        SERIAL_VERSION_UID_INVALID_RANGE  = new Range<>(-100L, 100L);
     /**
      * Fieldnames in the class, which should be generally ignored on testing {@link #toString()}.
      */
@@ -78,7 +77,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Fields in the current class, which should be ignored on testing @toString().
+     * The Fields in the current class, which should be ignored on testing @toString().
      *
      * @return list of fieldnames
      *
@@ -89,7 +88,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Fields in the current class, which are denied to appear on testing @toString().
+     * The Fields in the current class, which are denied to appear on testing @toString().
      *
      * @return list of fieldnames
      *
@@ -100,7 +99,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Flag, if @SERIAL_VERSION_UID_NAME should be checked.
+     * The flag, if @SERIAL_VERSION_UID_NAME should be checked.
      *
      * @return TRUE = will be checked, else FALSE
      *
@@ -143,16 +142,11 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         this.checkLogicalEqualsOnly = checkLogicalEqualsOnly;
     }
 
-
-    private Matcher<Long> inBetweenWithBounds(Pair<Long, Long> numberRange) {
-        Matcher<Long> greater = Matchers.greaterThanOrEqualTo(numberRange.getLeft());
-        Matcher<Long> smaller = Matchers.lessThanOrEqualTo(numberRange.getRight());
-        return Matchers.allOf(greater, smaller);
-    }
-
     /**
-     * #see #isCheckSVUID()
-     * #see #setCheckSVUID(boolean)
+     * Verify, that a {@code serialVersionUid} is correctly defined.
+     *
+     * @see #isCheckSVUID()
+     * @see #setCheckSVUID(boolean)
      */
     protected void validateSerialVersionUID() {
         Object instance = getObject2Test();
@@ -161,7 +155,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
 
             Matcher<Object> notNullMatcher = notNullValue();
             Matcher<Class<?>> typeMatcher = typeCompatibleWith(Number.class);
-            Matcher<Long> numberRangeMatcher = not(inBetweenWithBounds(SERIAL_VERSION_UID_INVALID_RANGE));
+            Matcher<Long> numberRangeMatcher = not(betweenWithBound(SERIAL_VERSION_UID_INVALID_RANGE));
 
             String reasonNull = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must not be null!";
             String reasonType = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must be valid: " + typeMatcher + "!";
@@ -279,43 +273,60 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         collector.addError(new NotImplementedException("TBD"));
     }
 
+    /**
+     * Tests, that the result of {@link #hashCode()} is not 0;
+     */
     @Test
     public void testHashcodeOtherThan0() {
         collector.checkThat("Hashcode must differ from '0'!", getObject2Test().hashCode(), not(is(0)));
     }
 
+    /**
+     * Tests, if the object compares to itSelf is always {@code TRUE}, regardless if object or logical equalness.
+     */
     @SuppressWarnings({"EqualsWithItself", "java:S1764"})
     @Test
     public void testEqualsWithItself() {
-        collector.checkThat(getObject2Test().equals(getObject2Test()), is(true));
-    }
-
-    @SuppressWarnings({"ConstantConditions", "ObjectEqualsCanBeEquality", "RedundantSuppression", "RedundantCast"})
-    @Test
-    public void testEqualsWithNull() {
-        collector.checkThat(getObject2Test().equals((T) null), is(false));
+        T itSelf = getObject2Test();
+        collector.checkThat(itSelf.equals(itSelf), is(true));
     }
 
     /**
-     * Verify, if the
+     * Tests, if the object compares to {@code NULL} is always {@code FALSE}.
+     */
+    @SuppressWarnings({"ConstantConditions", "ObjectEqualsCanBeEquality", "RedundantSuppression", "RedundantCast"})
+    @Test
+    public void testEqualsWithNull() {
+        T itSelf = getObject2Test();
+        collector.checkThat(itSelf.equals((T) null), is(false));
+    }
+
+    /**
+     * Tests, if two objects from the same type are logical equal:
+     * <ul>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -> logical equalness is expected</li>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -> object equalness is expected</li>
+     * </ul>
      *
      * @see #isCheckLogicalEqualsOnly()
      * @see #setCheckLogicalEqualsOnly(boolean)
      */
     @Test
     public void testEqualsLogicalAreTheSame() {
-        T entity2 = createObject2Test();
+        T itSelf = getObject2Test();
+        T itSelf2 = getObject2Test();
         boolean expected = isCheckLogicalEqualsOnly();
-        collector.checkThat(getObject2Test().equals(entity2), is(expected));
+        collector.checkThat(itSelf.equals(itSelf2), is(expected));
     }
 
     /**
-     * #see #isCheckSVUID()
-     * #see #setCheckSVUID(boolean)
+     * Tests, that a {@code serialVersionUid} is correctly defined.
+     *
+     * @see #isCheckSVUID()
+     * @see #setCheckSVUID(boolean)
      */
     @Test
     public void testSerialVersionUIDIsCorrectInEntity() {
         validateSerialVersionUID();
     }
-
 }

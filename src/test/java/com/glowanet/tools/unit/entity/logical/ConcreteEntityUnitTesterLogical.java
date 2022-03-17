@@ -9,6 +9,7 @@ import org.junit.Ignore;
  *
  * @param <T> the type of the class to test
  */
+@SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this call directly!")
 public class ConcreteEntityUnitTesterLogical<T extends DataEntityUnitTesterLogicalEquals> extends ConcreteEntityUnitTesterGeneric<T> {
 
