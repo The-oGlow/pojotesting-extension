@@ -38,18 +38,6 @@ public class ConcreteEntityUnitTesterLogicalTest extends AbstractEntityUnitTeste
         TestResultHelper.verifyInstance(actual, DataEntityUnitTesterLogicalEquals.class);
     }
 
-//    @Test
-//    public void testSetEntity_return_null() {
-//        Object before = entityUnitTester.getObject2Test();
-//        assertThat(before, instanceOf(DataEntityUnitTesterLogicalEquals.class));
-//
-//        entityUnitTester.setObject2Test(null);
-//        Object actual = entityUnitTester.getObject2Test();
-//
-//        TestResultHelper.verifyNull(actual);
-//    }
-
-
     @Test
     public void testTestEqualsLogicalAreTheSame_with_logicalEquals_defaultCompare_raise_noException() {
         entityUnitTester._setCheckLogicalEqualsOnly(false);

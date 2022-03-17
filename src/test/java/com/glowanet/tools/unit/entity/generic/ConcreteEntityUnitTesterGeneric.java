@@ -37,7 +37,7 @@ public class ConcreteEntityUnitTesterGeneric<T extends DataEntityUnitTester> ext
 
     @Override
     protected void init() {
-        //
+        //nothing2do
     }
 
     @Override

@@ -40,13 +40,11 @@ public abstract class AbstractUnitTester<T> {
     public final  ErrorCollectorExt collector = new ErrorCollectorExt();
     private final Class<T>          typeOfo2T;
 
-    //private T object2Test;
-
     static {
         try {
             randomValueFactory = com.glowanet.tools.random.RandomValueFactory.getInstance();
         } catch (RuntimeException ignored) {
-            // ignore
+            //ignore
         }
     }
 
@@ -55,7 +53,6 @@ public abstract class AbstractUnitTester<T> {
      */
     protected AbstractUnitTester(Class<T> typeOfo2T) {
         this.typeOfo2T = typeOfo2T;
-        //this.object2Test = createObject2Test();
         init();
     }
 
@@ -104,17 +101,10 @@ public abstract class AbstractUnitTester<T> {
     public T getObject2Test() {
         validateObjectAndType();
         return createObject2Test();
-        //return this.object2Test;
     }
-
-//    public void setObject2Test(T object2Test) {
-//        validateObjectAndType();
-//        this.object2Test = object2Test;
-//    }
 
     private void validateObjectAndType() {
         assertThat(createObject2Test(), anyOf(nullValue(), isA(this.typeOfo2T)));
-//        assertThat(this.object2Test, anyOf(nullValue(), isA(this.typeOfo2T)));
     }
 
     /**

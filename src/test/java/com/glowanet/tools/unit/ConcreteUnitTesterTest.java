@@ -34,7 +34,6 @@ public class ConcreteUnitTesterTest {
     @Before
     public void setUp() {
         o2T = new ConcreteUnitTester();
-        //o2T._setUp();
     }
 
     @Test(expected = IllegalAccessException.class)
@@ -82,14 +81,6 @@ public class ConcreteUnitTesterTest {
         Object actual = o2T._getObject2Test();
         assertThat(actual, isA(DataUnitTester.class));
     }
-
-//    @Test
-//    public void testSetObject2Test_set_newUsedObject() {
-//        DataUnitTester expected = new DataUnitTester();
-//        o2T._setObject2Test(expected);
-//        Object actual = o2T._getObject2Test();
-//        assertThat(actual, equalToObject(expected));
-//    }
 
     @Test
     public void testGetTypeOfo2T_return_typeOfCurrentUsedObject() {

@@ -30,10 +30,6 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
     }
 
-//    public void _setUp() {
-//        super.setUp();
-//    }
-
     public List<PropertyDescriptor> _findGetter() {
         return super.findGetter();
     }
@@ -49,10 +45,6 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
     public DataUnitTester _getObject2Test() {
         return super.getObject2Test();
     }
-
-//    public void _setObject2Test(DataUnitTester dataUnitTester) {
-//        super.setObject2Test(dataUnitTester);
-//    }
 
     public Class<DataUnitTester> _getTypeOfo2T() {
         return super.getTypeOfo2T();

@@ -19,11 +19,8 @@ import static org.hamcrest.Matchers.is;
 
 public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester> extends AbstractEntityUnitTesterCommon {
 
-    //protected AbstractEntityUnitTesterConcreteGenericEquals<?> entityUnitTester;
-
     public ConcreteEntityUnitTesterGeneric<T> prepareEntityUnitTester(Class<?> typeOfO2T) {
         ConcreteEntityUnitTesterGeneric<T> entityUnitTester = new ConcreteEntityUnitTesterGeneric<T>((Class<T>) typeOfO2T, prepareCallback(typeOfO2T));
-//        entityUnitTester.setUp();
         return entityUnitTester;
     }
 
@@ -156,19 +153,6 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
         TestResultHelper.verifyInstance(actual, DataEntityUnitTester.class);
     }
-
-//    @Test
-//    public void testSetEntity_return_null() {
-//        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-//
-//        Object before = entityUnitTester.getObject2Test();
-//        assertThat(before, instanceOf(DataEntityUnitTester.class));
-//
-//        entityUnitTester.setObject2Test(null);
-//        Object actual = entityUnitTester.getObject2Test();
-//
-//        TestResultHelper.verifyNull(actual);
-//    }
 
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {

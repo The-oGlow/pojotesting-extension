@@ -165,7 +165,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
             try {
                 idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, instance.getClass());
             } catch (AssertionError error) {
-                // can be ignored
+                //can be ignored
             }
             collector.checkThat(reasonNull, idValue, notNullMatcher);
             if (idValue != null) {
