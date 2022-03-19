@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="85-mvn [deploy]" type="MavenRunConfiguration" factoryName="Maven" folderName="pojotesting-extension">
+  <configuration default="false" name="81-mvn [signed-install]" type="MavenRunConfiguration" factoryName="Maven" folderName="pojotesting-extension">
     <MavenSettings>
       <option name="myGeneralSettings" />
       <option name="myRunnerSettings">
@@ -27,12 +27,16 @@
           </option>
           <option name="goals">
             <list>
-              <option value="deploy" />
+              <option value="clean" />
+              <option value="install" />
             </list>
           </option>
           <option name="pomFileName" />
           <option name="profilesMap">
             <map>
+              <entry key="activate-sign-settings" value="true" />
+              <entry key="build-signer" value="true" />
+              <entry key="build-$IJ_SIGN_ALIAS$" value="true" />
               <entry key="artifact-release" value="true" />
             </map>
           </option>
