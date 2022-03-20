@@ -182,9 +182,10 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     public void testAllGetterAccessible() {
         List<PropertyDescriptor> getterList = findGetter();
         LOGGER.info("Testing access on '{}' for {} getters", getTypeOfo2T(), getterList.size());
+        Object instance = getObject2Test();
         for (PropertyDescriptor getter : getterList) {
             try {
-                Object value = MethodUtils.invokeMethod(getObject2Test(), getter.getReadMethod().getName());
+                Object value = MethodUtils.invokeMethod(instance, getter.getReadMethod().getName());
                 collector.checkThat("'" + getter.getName() + "' doesn't have a proper value!", value, anyOf(nullValue(), notNullValue()));
             } catch (IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 collector.addError(e);
@@ -213,7 +214,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Tests,if the getter and setter are working smoothly together, which means
+     * Tests, if the getter and setter are working smoothly together, which means
      * what you put in the field by the setter is the same what you will retrieve from the getter.
      *
      * @param verifyValue TRUE= compares the values from setter and getter, FALSE = just checks if setting the value won't raise an exception
@@ -222,6 +223,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         List<PropertyDescriptor> setterList = findSetter();
         LOGGER.info("Testing access{} on '{}' for {} setters", verifyValue ? " and value setting" : "", getTypeOfo2T(), setterList.size());
 
+        Object instance = getObject2Test();
         for (PropertyDescriptor setter : setterList) {
             Class<?>[] paramTypes = new Class[0];
             Object[] paramValues = new Object[0];
@@ -229,10 +231,10 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
                 Map<Class<?>, Object> setterParams = retrieveMethodParameters(setter.getWriteMethod());
                 paramTypes = setterParams.keySet().toArray(new Class[]{});
                 paramValues = setterParams.values().toArray();
-                MethodUtils.invokeMethod(getObject2Test(), setter.getWriteMethod().getName(), paramValues, paramTypes);
+                MethodUtils.invokeMethod(instance, setter.getWriteMethod().getName(), paramValues, paramTypes);
                 if (verifyValue) {
                     Object expected = paramValues[0];
-                    Object actual = MethodUtils.invokeMethod(getObject2Test(), setter.getReadMethod().getName());
+                    Object actual = MethodUtils.invokeMethod(instance, setter.getReadMethod().getName());
                     collector.checkThat("'" + setter.getName() + "' doesn't have a proper value!", actual, equalTo(expected));
                 }
             } catch (NoSuchMethodException | IllegalAccessException e) {
