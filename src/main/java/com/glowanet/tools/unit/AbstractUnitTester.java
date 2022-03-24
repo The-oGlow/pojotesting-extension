@@ -1,5 +1,7 @@
 package com.glowanet.tools.unit;
 
+import com.glowanet.tools.random.IRandomValue;
+import com.glowanet.tools.random.IRandomValueByType;
 import com.glowanet.tools.random.RandomValueFactory;
 import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import org.apache.commons.lang3.ClassUtils;
@@ -277,10 +279,13 @@ public abstract class AbstractUnitTester<T> {
     private <V> Object retrieveDefaultValue(Class<V> clazzV) {
         Object result = null;
         if (randomValueFactory != null) {
-            try {
-                result = RandomValueFactory.createRandomValue(clazzV).randomValue();
-            } catch (NullPointerException e) {
-                result = RandomValueFactory.createLegacyRandomValue().randomValue(clazzV);
+            IRandomValue<Object> randomValueCreator = RandomValueFactory.createRandomValue(clazzV);
+            if (randomValueCreator != null) {
+                if (IRandomValueByType.class.isAssignableFrom(randomValueCreator.getClass())) {
+                    result = ((IRandomValueByType) randomValueCreator).randomValue(clazzV);
+                } else {
+                    result = randomValueCreator.randomValue();
+                }
             }
         }
         return result;

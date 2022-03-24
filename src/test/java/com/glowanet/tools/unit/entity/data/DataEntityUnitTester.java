@@ -21,5 +21,11 @@ public class DataEntityUnitTester {
         return simString;
     }
 
+    public void setSimInt(Integer simInt) {
+        this.simInt = simInt;
+    }
 
+    public void setSimString(String simString) {
+        this.simString = simString;
+    }
 }

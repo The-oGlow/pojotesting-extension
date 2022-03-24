@@ -1,6 +1,7 @@
 package com.glowanet.tools.unit.entity.logical;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
+import com.glowanet.tools.unit.entity.Callback;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterLogicalEquals;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Before;
@@ -22,6 +23,16 @@ public class ConcreteEntityUnitTesterLogicalTest extends AbstractEntityUnitTeste
     public void initWithEqual() {
         entityUnitTester = new ConcreteEntityUnitTesterLogical(DataEntityUnitTesterLogicalEquals.class);
         entityUnitTester.setUp();
+    }
+
+    @Override
+    public Object prepareEntityUnitTester(Class<?> typeOfO2T) {
+        return null;
+    }
+
+    @Override
+    protected Callback<?> prepareCallback(Class<?> typeOfO2T) {
+        return null;
     }
 
     @Test
@@ -57,4 +68,5 @@ public class ConcreteEntityUnitTesterLogicalTest extends AbstractEntityUnitTeste
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
     }
+
 }

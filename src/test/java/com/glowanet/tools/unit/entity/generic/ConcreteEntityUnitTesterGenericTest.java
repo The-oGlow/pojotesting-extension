@@ -2,9 +2,9 @@ package com.glowanet.tools.unit.entity.generic;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
+import com.glowanet.tools.unit.entity.Callback;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
-import com.glowanet.tools.unit.entity.generic.ConcreteEntityUnitTesterGeneric.Callback;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
@@ -19,16 +19,17 @@ import static org.hamcrest.Matchers.is;
 
 public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester> extends AbstractEntityUnitTesterCommon {
 
-    public ConcreteEntityUnitTesterGeneric<T> prepareEntityUnitTester(Class<?> typeOfO2T) {
-        ConcreteEntityUnitTesterGeneric<T> entityUnitTester = new ConcreteEntityUnitTesterGeneric<T>((Class<T>) typeOfO2T, prepareCallback(typeOfO2T));
+    @Override
+    public ConcreteEntityUnitTesterGeneric<?> prepareEntityUnitTester(Class<?> typeOfO2T) {
+        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = new ConcreteEntityUnitTesterGeneric(typeOfO2T, prepareCallback(typeOfO2T));
         return entityUnitTester;
     }
 
     @SuppressWarnings("unchecked")
-    public Callback<T> prepareCallback(Class<?> typeOfO2T) {
-        return new Callback<T>() {
+    public Callback<?> prepareCallback(Class<?> typeOfO2T) {
+        return new Callback<>() {
             @Override
-            public void run() {
+            public T call() {
                 T newO2T;
                 if (ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
                     newO2T = (T) new ClazzWithSerialVersionUid();
@@ -41,14 +42,14 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
                 } else {
                     newO2T = (T) new DataEntityUnitTester();
                 }
-                this.newO2T = newO2T;
+                return newO2T;
             }
         };
     }
 
     @Test
     public void testFieldsDeniedForToString_return_emptyList() {
-        ConcreteEntityUnitTesterGeneric<T> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
 
         List<String> actual = entityUnitTester._fieldsDeniedForToString();
 
@@ -152,33 +153,6 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
         Object actual = entityUnitTester.getObject2Test();
 
         TestResultHelper.verifyInstance(actual, DataEntityUnitTester.class);
-    }
-
-    @Test
-    public void testTestAllGetterAccessiblewith_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        entityUnitTester.testAllGetterAccessible();
-
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
-    }
-
-    @Test
-    public void testTestAllSetterAccessible_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        entityUnitTester.testAllSetterAccessible();
-
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
-    }
-
-    @Test
-    public void testTestGetterSetterCollaboration_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        entityUnitTester.testGetterSetterCollaboration();
-
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
     }
 
     @Test

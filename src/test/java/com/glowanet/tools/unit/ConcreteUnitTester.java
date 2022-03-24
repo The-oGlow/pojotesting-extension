@@ -1,6 +1,7 @@
 package com.glowanet.tools.unit;
 
 import com.glowanet.tools.unit.data.DataUnitTester;
+import com.glowanet.tools.unit.entity.IConcreteEntityUnitTester;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -8,7 +9,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 
-public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
+public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> implements IConcreteEntityUnitTester {
 
     public ConcreteUnitTester() {
         this(DataUnitTester.class);

@@ -13,6 +13,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 public class ConcreteEntityUnitTesterToStringTest extends AbstractEntityUnitTesterCommon {
 
+    @Override
+    public Object prepareEntityUnitTester(Class<?> typeOfO2T) {
+        ConcreteEntityUnitTester entityUnitTester = new ConcreteEntityUnitTester(typeOfO2T, prepareCallback(typeOfO2T));
+        return entityUnitTester;
+    }
+
+    @Override
+    protected Callback<?> prepareCallback(Class<?> typeOfO2T) {
+        return new Callback<>() {
+            @Override
+            public Object call() {
+                return new DataEntityUnitTester();
+            }
+        };
+    }
+
     protected ConcreteEntityUnitTesterToStringDefault prepareEntityTesterWithClazzDefaultToString() {
         ConcreteEntityUnitTesterToStringDefault entityUnitTester = new ConcreteEntityUnitTesterToStringDefault(DataEntityUnitTester.class);
         entityUnitTester.setUp();

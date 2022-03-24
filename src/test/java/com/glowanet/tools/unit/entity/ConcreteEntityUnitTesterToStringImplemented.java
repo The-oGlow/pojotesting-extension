@@ -3,7 +3,7 @@ package com.glowanet.tools.unit.entity;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterToString;
 
 @SuppressWarnings("UnconstructableJUnitTestCase")
-class ConcreteEntityUnitTesterToStringImplemented extends AbstractEntityUnitTester<DataEntityUnitTesterToString> {
+class ConcreteEntityUnitTesterToStringImplemented extends AbstractEntityUnitTester<DataEntityUnitTesterToString> implements IConcreteEntityUnitTester {
     protected ConcreteEntityUnitTesterToStringImplemented(Class<DataEntityUnitTesterToString> typeOfT) {
         super(typeOfT);
     }
