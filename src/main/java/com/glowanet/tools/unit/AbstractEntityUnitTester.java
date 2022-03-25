@@ -9,7 +9,7 @@ package com.glowanet.tools.unit;
 @SuppressWarnings({"java:S2176", "java:S1133"})
 public abstract class AbstractEntityUnitTester<T> extends com.glowanet.tools.unit.entity.AbstractEntityUnitTester<T> {
 
-    protected AbstractEntityUnitTester(Class<T> typeOfT) {
-        super(typeOfT);
+    protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
+        super(typeOfo2T);
     }
 }

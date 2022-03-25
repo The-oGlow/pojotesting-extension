@@ -61,8 +61,8 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     private boolean            checkSVUID                   = DEFAULT_CHECK_SVUID;
     private boolean            checkLogicalEqualsOnly       = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
 
-    protected AbstractEntityUnitTester(Class<T> typeOfT) {
-        super(typeOfT);
+    protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
+        super(typeOfo2T);
     }
 
     @Before

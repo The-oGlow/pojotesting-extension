@@ -4,27 +4,31 @@ import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
-public class ConcreteEntityUnitTesterGetterSetterTest extends AbstractEntityUnitTesterCommon {
+public class ConcreteEntityUnitTesterGetterSetterTest<
+        T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
     @Override
-    protected Callback<?> prepareCallback(Class<?> typeOfO2T) {
-        return new Callback<>() {
+    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
+        return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
+    }
+
+    @Override
+    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
+        return new CallTheCreator<>() {
             @Override
-            public Object call() {
-                return new DataEntityUnitTester();
+            public T call() {
+                T newO2T = null;
+                if (DataEntityUnitTester.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTester();
+                }
+                return newO2T;
             }
         };
     }
 
-    @Override
-    public ConcreteEntityUnitTester prepareEntityUnitTester(Class<?> typeOfO2T) {
-        ConcreteEntityUnitTester entityUnitTester = new ConcreteEntityUnitTester(typeOfO2T, prepareCallback(typeOfO2T));
-        return entityUnitTester;
-    }
-
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {
-        ConcreteEntityUnitTester entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
 
         entityUnitTester.testAllGetterAccessible();
 
@@ -34,7 +38,7 @@ public class ConcreteEntityUnitTesterGetterSetterTest extends AbstractEntityUnit
 
     @Test
     public void testTestAllSetterAccessible_raise_noException() {
-        ConcreteEntityUnitTester entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
 
         entityUnitTester.testAllSetterAccessible();
 
@@ -43,7 +47,7 @@ public class ConcreteEntityUnitTesterGetterSetterTest extends AbstractEntityUnit
 
     @Test
     public void testTestGetterSetterCollaboration_raise_noException() {
-        ConcreteEntityUnitTester entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
 
         entityUnitTester.testGetterSetterCollaboration();
 

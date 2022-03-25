@@ -1,5 +1,6 @@
 package com.glowanet.tools.unit.entity.logical;
 
+import com.glowanet.tools.unit.entity.CallTheCreator;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterLogicalEquals;
 import com.glowanet.tools.unit.entity.generic.ConcreteEntityUnitTesterGeneric;
 import org.junit.Ignore;
@@ -11,18 +12,10 @@ import org.junit.Ignore;
  */
 @SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this as test class!!")
-public class ConcreteEntityUnitTesterLogical<T extends DataEntityUnitTesterLogicalEquals> extends ConcreteEntityUnitTesterGeneric<T> {
+public class ConcreteEntityUnitTesterLogical<
+        T extends DataEntityUnitTesterLogicalEquals> extends ConcreteEntityUnitTesterGeneric<T> {
 
-    public ConcreteEntityUnitTesterLogical() {
-        this((Class<T>) DataEntityUnitTesterLogicalEquals.class);
-    }
-
-    protected ConcreteEntityUnitTesterLogical(Class<T> typeOfT) {
-        super(typeOfT);
-    }
-
-    @Override
-    protected T createObject2Test() {
-        return (T) new DataEntityUnitTesterLogicalEquals();
+    protected ConcreteEntityUnitTesterLogical(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
+        super(typeOfo2T, callTheCreatorForT);
     }
 }

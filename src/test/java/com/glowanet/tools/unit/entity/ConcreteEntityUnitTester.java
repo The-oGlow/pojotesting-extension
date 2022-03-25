@@ -3,23 +3,17 @@ package com.glowanet.tools.unit.entity;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzNoSerializable;
 import org.junit.Ignore;
 
+/**
+ * This simulates a class which will act as an unit-test to check {@code T}.
+ *
+ * @param <T> the type of the pojo which will be tested
+ */
 @SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this as test class!!")
-class ConcreteEntityUnitTester<T extends ClazzNoSerializable> extends AbstractEntityUnitTester<T> implements IConcreteEntityUnitTester {
+class ConcreteEntityUnitTester<
+        T extends ClazzNoSerializable> extends SimulationEntityTester<T> {
 
-    private final Callback<T> callbackForT;
-
-    protected ConcreteEntityUnitTester(Class<T> typeOfT) {
-        this(typeOfT, null);
-    }
-
-    protected ConcreteEntityUnitTester(Class<T> typeOfT, Callback<T> callbackForT) {
-        super(typeOfT);
-        this.callbackForT = callbackForT;
-    }
-
-    @Override
-    public T createObject2Test() {
-        return callbackForT == null ? null : callbackForT.call();
+    protected ConcreteEntityUnitTester(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
+        super(typeOfo2T, callTheCreatorForT);
     }
 }

@@ -7,7 +7,7 @@ package com.glowanet.tools.unit.entity.data;
  *     <li>an implemented {@code #hashCode()}, {@code #toString()}-method.</li>
  * </ul>
  */
-public class DataEntityUnitTesterLogicalEquals extends DataEntityUnitTesterToString {
+public class DataEntityUnitTesterLogicalEquals extends DataEntityUnitTesterGenericEquals {
 
     @Override
     public boolean equals(Object o) {

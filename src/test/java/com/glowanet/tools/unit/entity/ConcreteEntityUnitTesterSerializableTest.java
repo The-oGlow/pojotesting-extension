@@ -10,35 +10,27 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnitTesterCommon {
-
-//    private ConcreteEntityUnitTester<? extends ClazzNoSerializable> o2T;
-
-//    @Before
-//    public void setUp() {
-//        o2T = new ConcreteEntityUnitTester(ClazzNoSerializable.class, prepareCallback(ClazzNoSerializable.class));
-//        o2T.setUp();
-//    }
+public class ConcreteEntityUnitTesterSerializableTest<
+        T extends ClazzNoSerializable> extends SimulationEntityTesterCommon<T> {
 
     @Override
-    public Object prepareEntityUnitTester(Class<?> typeOfO2T) {
-        ConcreteEntityUnitTester entityUnitTester = new ConcreteEntityUnitTester(typeOfO2T, prepareCallback(typeOfO2T));
-        return entityUnitTester;
+    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
+        return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
     }
 
-    public Callback<?> prepareCallback(Class<?> typeOfO2T) {
-        return new Callback<>() {
+    public CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
+        return new CallTheCreator<>() {
             @Override
-            public Object call() {
-                ClazzNoSerializable newO2T = null;
+            public T call() {
+                T newO2T = null;
                 if (ClazzNoSerializable.class.equals(typeOfO2T)) {
-                    newO2T = new ClazzNoSerializable();
+                    newO2T = (T) new ClazzNoSerializable();
                 } else if (ClazzWithSerializableNoSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = new ClazzWithSerializableNoSerialVersionUid();
+                    newO2T = (T) new ClazzWithSerializableNoSerialVersionUid();
                 } else if (ClazzWithWrongSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = new ClazzWithWrongSerialVersionUid();
+                    newO2T = (T) new ClazzWithWrongSerialVersionUid();
                 } else if (ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = new ClazzWithSerialVersionUid();
+                    newO2T = (T) new ClazzWithSerialVersionUid();
                 }
                 return newO2T;
             }
@@ -47,8 +39,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void testHasSerializableIF_return_true() {
-        Class<?> typeOfT = ClazzNoSerializable.class;
-        ConcreteEntityUnitTester<?> o2T = new ConcreteEntityUnitTester(typeOfT, prepareCallback(typeOfT));
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
 
         boolean actual = o2T.hasSerializableIF(ClazzWithSerializableNoSerialVersionUid.class);
         assertThat(actual, equalTo(true));
@@ -56,8 +47,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void testHasSerializableIF_return_false() {
-        Class<?> typeOfT = ClazzNoSerializable.class;
-        ConcreteEntityUnitTester<?> o2T = new ConcreteEntityUnitTester(typeOfT, prepareCallback(typeOfT));
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
 
         boolean actual = o2T.hasSerializableIF(ClazzNoSerializable.class);
         assertThat(actual, equalTo(false));
@@ -65,7 +55,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void testValidateSerialVersionUID_valid_NotSerializable() {
-        ConcreteEntityUnitTester o2T = new ConcreteEntityUnitTester<>(ClazzNoSerializable.class);
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
 
         o2T.validateSerialVersionUID();
 
@@ -74,7 +64,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void testValidateSerialVersionUID_invalid_NoSerialVersionUID() {
-        ConcreteEntityUnitTester o2T = new ConcreteEntityUnitTester<>(ClazzWithSerializableNoSerialVersionUid.class);
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzWithSerializableNoSerialVersionUid.class);
 
         o2T.validateSerialVersionUID();
 
@@ -83,7 +73,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void testValidateSerialVersionUID_invalid_WrongSerialVersionUID() {
-        ConcreteEntityUnitTester o2T = new ConcreteEntityUnitTester<>(ClazzWithWrongSerialVersionUid.class);
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzWithWrongSerialVersionUid.class);
 
         o2T.validateSerialVersionUID();
 
@@ -92,7 +82,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void testValidateSerialVersionUID_valid_CorrectSerialVersionUID() {
-        ConcreteEntityUnitTester o2T = new ConcreteEntityUnitTester<>(ClazzWithSerialVersionUid.class);
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzWithSerialVersionUid.class);
 
         o2T.validateSerialVersionUID();
 
@@ -102,8 +92,7 @@ public class ConcreteEntityUnitTesterSerializableTest extends AbstractEntityUnit
 
     @Test
     public void test_testSerialVersionUIDIsCorrectInEntity() {
-        Class<?> typeOfT = ClazzNoSerializable.class;
-        ConcreteEntityUnitTester<?> o2T = new ConcreteEntityUnitTester(typeOfT, prepareCallback(typeOfT));
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
 
         o2T.testSerialVersionUIDIsCorrectInEntity();
 

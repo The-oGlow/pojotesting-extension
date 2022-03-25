@@ -9,7 +9,7 @@ package com.glowanet.tools.unit;
 @SuppressWarnings({"java:S2176", "java:S1133"})
 public abstract class AbstractEnumObjectUnitTester<T> extends com.glowanet.tools.unit.enumobj.AbstractEnumObjectUnitTester<T> {
 
-    protected AbstractEnumObjectUnitTester(Class<T> typeOfT) {
-        super(typeOfT);
+    protected AbstractEnumObjectUnitTester(Class<T> typeOfo2T) {
+        super(typeOfo2T);
     }
 }

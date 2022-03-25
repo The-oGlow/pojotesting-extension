@@ -53,8 +53,8 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
     private NAME_CHECK_ENUM    nameCheckType            = NAME_CHECK_ENUM.CF;
     private boolean            codeCheckEnabled         = true;
 
-    protected AbstractEnumObjectUnitTester(Class<T> typeOfT) {
-        super(typeOfT);
+    protected AbstractEnumObjectUnitTester(Class<T> typeOfo2T) {
+        super(typeOfo2T);
     }
 
     @Before

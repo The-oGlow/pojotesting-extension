@@ -1,45 +1,50 @@
 package com.glowanet.tools.unit.entity.generic;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
-import com.glowanet.tools.unit.entity.AbstractEntityUnitTesterCommon;
-import com.glowanet.tools.unit.entity.Callback;
+import com.glowanet.tools.unit.entity.CallTheCreator;
+import com.glowanet.tools.unit.entity.SimulationEntityTester;
+import com.glowanet.tools.unit.entity.SimulationEntityTesterCommon;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterLogicalEquals;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
 import java.util.List;
 
-import static com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzNoSerializable;
-import static com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid;
-import static com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester> extends AbstractEntityUnitTesterCommon {
+public class ConcreteEntityUnitTesterGenericTest<
+        T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
     @Override
-    public ConcreteEntityUnitTesterGeneric<?> prepareEntityUnitTester(Class<?> typeOfO2T) {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = new ConcreteEntityUnitTesterGeneric(typeOfO2T, prepareCallback(typeOfO2T));
-        return entityUnitTester;
+    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
+        return new ConcreteEntityUnitTesterGeneric(typeOfO2T, prepareTheCreator(typeOfO2T));
     }
 
-    @SuppressWarnings("unchecked")
-    public Callback<?> prepareCallback(Class<?> typeOfO2T) {
-        return new Callback<>() {
+    @Override
+    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
+        return new CallTheCreator<>() {
+            @SuppressWarnings("unchecked")
             @Override
             public T call() {
-                T newO2T;
-                if (ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = (T) new ClazzWithSerialVersionUid();
-                } else if (ClazzWithWrongSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = (T) new ClazzWithWrongSerialVersionUid();
-                } else if (ClazzWithSerializableNoSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = (T) new ClazzWithSerializableNoSerialVersionUid();
-                } else if (ClazzNoSerializable.class.equals(typeOfO2T)) {
-                    newO2T = (T) new ClazzNoSerializable();
-                } else {
+                T newO2T = null;
+                if (DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid();
+                } else if (DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid();
+                } else if (DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid();
+                } else if (DataEntityUnitTesterSerializable.ClazzNoSerializable.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzNoSerializable();
+                } else if (DataEntityUnitTesterLogicalEquals.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTesterLogicalEquals();
+                } else if (DataEntityUnitTesterGenericEquals.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTesterGenericEquals();
+                } else if (DataEntityUnitTester.class.equals(typeOfO2T)) {
                     newO2T = (T) new DataEntityUnitTester();
                 }
                 return newO2T;
@@ -47,10 +52,33 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
         };
     }
 
+    protected SimulationEntityTester<T> prepareEntityTesterGeneric() {
+        return prepareEntityUnitTester((Class<T>) DataEntityUnitTesterGenericEquals.class);
+    }
+
+    protected SimulationEntityTester<?> prepareEntityTesterGenericForSerializable(Class<?> typeOfQ) {
+        return prepareEntityUnitTester((Class<T>) typeOfQ);
+    }
+
+    @Test
+    public void testCreateObject2Test_return_newCreatedObject() {
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
+        Object actual = entityUnitTester.createObject2Test();
+
+        TestResultHelper.verifyInstance(actual, DataEntityUnitTesterGenericEquals.class);
+    }
+
+    @Test
+    public void testGetObject2Test_return_currentUsedObject() {
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
+        Object actual = entityUnitTester.getObject2Test();
+
+        TestResultHelper.verifyInstance(actual, DataEntityUnitTesterGenericEquals.class);
+    }
+
     @Test
     public void testFieldsDeniedForToString_return_emptyList() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         List<String> actual = entityUnitTester._fieldsDeniedForToString();
 
         assertThat(actual, TestResultHelper.EMPTY_LIST);
@@ -58,8 +86,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testIsCheckSVUID_return_true() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         boolean actual = entityUnitTester._isCheckSVUID();
 
         assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_SVUID));
@@ -67,7 +94,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testSetCheckSVUID_return_false() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
 
         boolean actual = entityUnitTester._isCheckSVUID();
         assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_SVUID));
@@ -80,8 +107,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testIsCheckLogicalEqualsOnly_return_true() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         boolean actual = entityUnitTester._isCheckLogicalEqualsOnly();
 
         assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
@@ -89,8 +115,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testIsCheckLogicalEqualsOnly_return_false() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         boolean actual = entityUnitTester._isCheckLogicalEqualsOnly();
         assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
 
@@ -102,9 +127,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testValidateSerialVersionUID_simplePojo_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        Object instance = new ClazzNoSerializable();
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
@@ -112,8 +135,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testValidateSerialVersionUID_serialPojoWithoutId_raise_twoException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(ClazzWithWrongSerialVersionUid.class);
-
+        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class);
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
@@ -121,8 +143,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testValidateSerialVersionUID_serialPojoWrongId_raise_oneException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(ClazzWithWrongSerialVersionUid.class);
-
+        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class);
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
@@ -130,35 +151,15 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testValidateSerialVersionUID_serialPojo_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(ClazzWithSerialVersionUid.class);
-
+        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid.class);
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
     }
 
     @Test
-    public void testCreateObject2Test_return_newCreatedObject() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        Object actual = entityUnitTester.createObject2Test();
-
-        TestResultHelper.verifyInstance(actual, DataEntityUnitTester.class);
-    }
-
-    @Test
-    public void testGetObject2Test_return_currentUsedObject() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
-        Object actual = entityUnitTester.getObject2Test();
-
-        TestResultHelper.verifyInstance(actual, DataEntityUnitTester.class);
-    }
-
-    @Test
     public void testTestHashcodeOtherThan0_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester.testHashcodeOtherThan0();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
@@ -166,8 +167,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testTestEqualsWithNull_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester.testEqualsWithNull();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
@@ -175,8 +175,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testTestEqualsWithItself_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
-
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester.testEqualsWithItself();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
@@ -184,7 +183,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
 
         entityUnitTester._setCheckLogicalEqualsOnly(false);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(false));
@@ -196,7 +195,7 @@ public class ConcreteEntityUnitTesterGenericTest<T extends DataEntityUnitTester>
 
     @Test
     public void testTestEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
-        ConcreteEntityUnitTesterGeneric<?> entityUnitTester = prepareEntityUnitTester(DataEntityUnitTester.class);
+        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
 
         entityUnitTester._setCheckLogicalEqualsOnly(true);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(true));

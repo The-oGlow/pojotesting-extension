@@ -5,16 +5,16 @@ import java.util.List;
 /**
  * Container class, which holds the class which will be tested.
  *
- * @param <K> the type of the class to test
+ * @param <T> the type of the class to test
  */
-public class ConcreteEnumObjectUnitTester<K> extends AbstractEnumObjectUnitTester<K> {
+public class ConcreteEnumObjectUnitTester<T> extends AbstractEnumObjectUnitTester<T> {
 
     public ConcreteEnumObjectUnitTester() {
-        this((Class<K>) String.class);
+        this((Class<T>) String.class);
     }
 
-    protected ConcreteEnumObjectUnitTester(Class<K> typeOfT) {
-        super(typeOfT);
+    protected ConcreteEnumObjectUnitTester(Class<T> typeOfo2T) {
+        super(typeOfo2T);
     }
 
     @Override

@@ -1,15 +1,19 @@
 package com.glowanet.tools.unit.entity;
 
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
+import org.junit.Ignore;
 
+/**
+ * This simulates a class which will act as an unit-test to check {@code T}.
+ *
+ * @param <T> the type of the pojo which will be tested
+ */
 @SuppressWarnings("UnconstructableJUnitTestCase")
-class ConcreteEntityUnitTesterToStringDefault extends AbstractEntityUnitTester<DataEntityUnitTester> implements IConcreteEntityUnitTester {
-    protected ConcreteEntityUnitTesterToStringDefault(Class<DataEntityUnitTester> typeOfT) {
-        super(typeOfT);
-    }
+@Ignore("Do not call this as test class!!")
+class ConcreteEntityUnitTesterToStringDefault<
+        T extends DataEntityUnitTester> extends SimulationEntityTester<T> {
 
-    @Override
-    protected DataEntityUnitTester createObject2Test() {
-        return new DataEntityUnitTester();
+    protected ConcreteEntityUnitTesterToStringDefault(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
+        super(typeOfo2T, callTheCreatorForT);
     }
 }
