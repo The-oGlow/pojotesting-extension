@@ -36,7 +36,7 @@ import static org.hamcrest.MatchersExtend.betweenWithBound;
 
 /**
  * Abstract class to use for unit-testing on entities, beans, pojos.
- * However you name your classes with an amount of getter and setter.
+ * However, you name your classes with an amount of getter and setter.
  *
  * @param <T> the type of the class to test
  */
@@ -50,7 +50,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
      */
     public static final Range<Long>        SERIAL_VERSION_UID_INVALID_RANGE  = new Range<>(-100L, 100L);
     /**
-     * Fieldnames in the class, which should be generally ignored on testing {@link #toString()}.
+     * Field names in the class, which should be generally ignored on testing {@link #toString()}.
      */
     public static final Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
 
@@ -79,7 +79,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     /**
      * The Fields in the current class, which should be ignored on testing @toString().
      *
-     * @return list of fieldnames
+     * @return list of field names
      *
      * @see #testToString()
      */
@@ -90,7 +90,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     /**
      * The Fields in the current class, which are denied to appear on testing @toString().
      *
-     * @return list of fieldnames
+     * @return list of field names
      *
      * @see #testToString()
      */
@@ -121,9 +121,9 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Flag, if #testEqualsLogicalAreTheSame expects only logical equalness.
+     * Flag, if #testEqualsLogicalAreTheSame expects only logical equality.
      *
-     * @return TRUE = will check only logical equalness, else FALSE = checks object equalness
+     * @return TRUE = will check only logical equality, else FALSE = checks object equality
      *
      * @see #testEqualsLogicalAreTheSame()
      */
@@ -132,7 +132,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Sets the flag, if #testEqualsLogicalAreTheSame expects only logical equalness.
+     * Sets the flag, if #testEqualsLogicalAreTheSame expects only logical equality.
      *
      * @param checkLogicalEqualsOnly TRUE = will be checked, else FALSE
      *
@@ -204,7 +204,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Tests, if using all setters is possible, what means it doesn't raise an exception AND the same value could be retrieved from the getter.
+     * Tests, if using all setters is possible, what means it doesn't raise an exception, AND the same value could be retrieved from the getter.
      *
      * @see #verifyAllGetterSetterCollaboration(boolean)
      */
@@ -284,7 +284,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Tests, if the object compares to itSelf is always {@code TRUE}, regardless if object or logical equalness.
+     * Tests, if the object compares to itSelf is always {@code TRUE}, regardless if object or logical equality.
      */
     @SuppressWarnings({"EqualsWithItself", "java:S1764"})
     @Test
@@ -304,10 +304,10 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Tests, if two objects from the same type are logical equal:
+     * Tests, if two objects from the same type are logical equal.
      * <ul>
-     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -> logical equalness is expected</li>
-     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -> object equalness is expected</li>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -> expecting logical equality</li>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -> expecting object equality</li>
      * </ul>
      *
      * @see #isCheckLogicalEqualsOnly()

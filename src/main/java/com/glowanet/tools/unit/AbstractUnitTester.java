@@ -1,8 +1,7 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.random.IRandomValue;
-import com.glowanet.tools.random.IRandomValueByType;
-import com.glowanet.tools.random.RandomValueFactory;
+import com.glowanet.tools.random.IRandomStrategy;
+import com.glowanet.tools.random.IRandomStrategyByType;
 import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +29,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 /**
- * Abstract class as base for testing a specilized type of classes, like entities, enums, etc.
+ * Abstract class as base for testing a specialized type of classes, like entities, enums, etc.
  *
  * @param <T> the type of {@code object2Test}
  */
@@ -227,7 +226,7 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
-     * Extracts a number from an string.
+     * Extracts a number from a string.
      *
      * @param textWithNumber the text with the number
      *
@@ -275,16 +274,16 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return the generated value or null
      */
-    @SuppressWarnings("java:S2209")
+    @SuppressWarnings({"java:S2209"})
     private <V> Object retrieveDefaultValue(Class<V> clazzV) {
         Object result = null;
         if (randomValueFactory != null) {
-            IRandomValue<Object> randomValueCreator = RandomValueFactory.createRandomValue(clazzV);
+            IRandomStrategy<?> randomValueCreator = randomValueFactory.getProvider(clazzV);
             if (randomValueCreator != null) {
-                if (IRandomValueByType.class.isAssignableFrom(randomValueCreator.getClass())) {
-                    result = ((IRandomValueByType) randomValueCreator).randomValue(clazzV);
+                if (IRandomStrategyByType.class.isAssignableFrom(randomValueCreator.getClass())) {
+                    result = ((IRandomStrategyByType) randomValueCreator).next(clazzV);
                 } else {
-                    result = randomValueCreator.randomValue();
+                    result = randomValueCreator.next();
                 }
             }
         }
