@@ -50,10 +50,6 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         return super.getTypeOfo2T();
     }
 
-    public boolean _hasSerializableIF(Class<?> unitTestDataClass) {
-        return super.hasSerializableIF(unitTestDataClass);
-    }
-
     public Field _findField(DataUnitTester dataUnitTester, String fieldName) {
         return super.findField(dataUnitTester, fieldName);
     }

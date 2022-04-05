@@ -7,6 +7,7 @@ import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.hamcrest.beans.PropertyUtil;
+import org.hamcrest.core.IsBetween;
 import org.junit.Rule;
 
 import java.beans.PropertyDescriptor;
@@ -34,6 +35,13 @@ import static org.junit.Assert.fail;
  * @param <T> the type of {@code object2Test}
  */
 public abstract class AbstractUnitTester<T> {
+
+    public static final boolean               DEFAULT_CHECK_SVUID              = true;
+    public static final String                SERIAL_VERSION_UID_NAME          = "serialVersionUID";
+    /**
+     * Range of IDs which are not allowed to use.
+     */
+    public static final IsBetween.Range<Long> SERIAL_VERSION_UID_INVALID_RANGE = new IsBetween.Range<>(-100L, 100L);
 
     private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
 
@@ -148,7 +156,7 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return true=this type has the Serializable-IF, false=otherwise
      */
-    public boolean hasSerializableIF(Class<?> clazzA) {
+    protected boolean hasSerializableIF(Class<?> clazzA) {
         boolean hasIt = false;
         List<Class<?>> listIF = ClassUtils.getAllInterfaces(clazzA);
         for (Class<?> clazzAIF : listIF) {
@@ -289,5 +297,4 @@ public abstract class AbstractUnitTester<T> {
         }
         return result;
     }
-
 }

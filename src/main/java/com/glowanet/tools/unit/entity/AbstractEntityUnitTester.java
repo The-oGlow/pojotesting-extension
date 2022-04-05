@@ -7,7 +7,6 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
-import org.hamcrest.core.IsBetween.Range;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -42,24 +41,19 @@ import static org.hamcrest.MatchersExtend.betweenWithBound;
  */
 public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> {
 
-    public static final boolean            DEFAULT_CHECK_SVUID               = true;
-    public static final boolean            DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
-    public static final String             SERIAL_VERSION_UID_NAME           = "serialVersionUID";
-    /**
-     * Range of IDs which are not allowed to use.
-     */
-    public static final Range<Long>        SERIAL_VERSION_UID_INVALID_RANGE  = new Range<>(-100L, 100L);
     /**
      * Field names in the class, which should be generally ignored on testing {@link #toString()}.
      */
-    public static final Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
+    public static final  Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
+    public static final  boolean            DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
+    private static final Logger             LOGGER                            = LogManager.getLogger();
 
-    private static final Logger LOGGER = LogManager.getLogger();
+    private boolean checkLogicalEqualsOnly = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
+    private boolean checkSVUID             = DEFAULT_CHECK_SVUID;
+
 
     private Collection<String> allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
     private Collection<String> allFieldsDeniedForToString   = new HashSet<>();
-    private boolean            checkSVUID                   = DEFAULT_CHECK_SVUID;
-    private boolean            checkLogicalEqualsOnly       = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
 
     protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
@@ -99,6 +93,28 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
+     * Flag, if #testEqualsLogicalAreTheSame expects only logical equality.
+     *
+     * @return TRUE = will check only logical equality, else FALSE = checks object equality
+     *
+     * @see #testEqualsLogicalAreTheSame()
+     */
+    protected boolean isCheckLogicalEqualsOnly() {
+        return checkLogicalEqualsOnly;
+    }
+
+    /**
+     * Sets the flag, if #testEqualsLogicalAreTheSame expects only logical equality.
+     *
+     * @param checkLogicalEqualsOnly TRUE = will be checked, else FALSE
+     *
+     * @see #testEqualsLogicalAreTheSame()
+     */
+    protected void setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
+        this.checkLogicalEqualsOnly = checkLogicalEqualsOnly;
+    }
+
+    /**
      * The flag, if @SERIAL_VERSION_UID_NAME should be checked.
      *
      * @return TRUE = will be checked, else FALSE
@@ -120,27 +136,6 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         this.checkSVUID = checkSVUID;
     }
 
-    /**
-     * Flag, if #testEqualsLogicalAreTheSame expects only logical equality.
-     *
-     * @return TRUE = will check only logical equality, else FALSE = checks object equality
-     *
-     * @see #testEqualsLogicalAreTheSame()
-     */
-    protected boolean isCheckLogicalEqualsOnly() {
-        return checkLogicalEqualsOnly;
-    }
-
-    /**
-     * Sets the flag, if #testEqualsLogicalAreTheSame expects only logical equality.
-     *
-     * @param checkLogicalEqualsOnly TRUE = will be checked, else FALSE
-     *
-     * @see #testEqualsLogicalAreTheSame()
-     */
-    protected void setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
-        this.checkLogicalEqualsOnly = checkLogicalEqualsOnly;
-    }
 
     /**
      * Verify, that a {@code serialVersionUid} is correctly defined.

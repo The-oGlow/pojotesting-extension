@@ -7,12 +7,15 @@ import com.glowanet.tools.unit.entity.SimulationEntityTesterCommon;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterLogicalEquals;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
 import java.util.List;
 
+import static com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzNoSerializable;
+import static com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithSerialVersionUid;
+import static com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
+import static com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithWrongSerialVersionUid;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -32,14 +35,14 @@ public class ConcreteEntityUnitTesterGenericTest<
             @Override
             public T call() {
                 T newO2T = null;
-                if (DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid();
-                } else if (DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid();
-                } else if (DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid.class.equals(typeOfO2T)) {
-                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid();
-                } else if (DataEntityUnitTesterSerializable.ClazzNoSerializable.class.equals(typeOfO2T)) {
-                    newO2T = (T) new DataEntityUnitTesterSerializable.ClazzNoSerializable();
+                if (ClazzWithSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzWithSerialVersionUid();
+                } else if (ClazzWithWrongSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzWithWrongSerialVersionUid();
+                } else if (ClazzWithSerializableNoSerialVersionUid.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzWithSerializableNoSerialVersionUid();
+                } else if (ClazzNoSerializable.class.equals(typeOfO2T)) {
+                    newO2T = (T) new ClazzNoSerializable();
                 } else if (DataEntityUnitTesterLogicalEquals.class.equals(typeOfO2T)) {
                     newO2T = (T) new DataEntityUnitTesterLogicalEquals();
                 } else if (DataEntityUnitTesterGenericEquals.class.equals(typeOfO2T)) {
@@ -135,7 +138,7 @@ public class ConcreteEntityUnitTesterGenericTest<
 
     @Test
     public void testValidateSerialVersionUID_serialPojoWithoutId_raise_twoException() {
-        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class);
+        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(ClazzWithWrongSerialVersionUid.class);
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
@@ -143,7 +146,7 @@ public class ConcreteEntityUnitTesterGenericTest<
 
     @Test
     public void testValidateSerialVersionUID_serialPojoWrongId_raise_oneException() {
-        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid.class);
+        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(ClazzWithWrongSerialVersionUid.class);
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
@@ -151,7 +154,7 @@ public class ConcreteEntityUnitTesterGenericTest<
 
     @Test
     public void testValidateSerialVersionUID_serialPojo_raise_noException() {
-        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid.class);
+        SimulationEntityTester<?> entityUnitTester = prepareEntityTesterGenericForSerializable(ClazzWithSerialVersionUid.class);
         entityUnitTester._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);

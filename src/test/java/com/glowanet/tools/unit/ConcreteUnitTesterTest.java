@@ -1,6 +1,8 @@
 package com.glowanet.tools.unit;
 
 import com.glowanet.tools.unit.data.DataUnitTester;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzNoSerializable;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -90,13 +92,13 @@ public class ConcreteUnitTesterTest {
 
     @Test
     public void testHasSerializableIF_return_true() {
-        boolean actual = o2T._hasSerializableIF(DataUnitTester.class);
+        boolean actual = o2T.hasSerializableIF(ClazzWithSerializableNoSerialVersionUid.class);
         assertThat(actual, equalTo(true));
     }
 
     @Test
     public void testHasSerializableIF_return_false() {
-        boolean actual = o2T._hasSerializableIF(this.getClass());
+        boolean actual = o2T.hasSerializableIF(ClazzNoSerializable.class);
         assertThat(actual, equalTo(false));
     }
 

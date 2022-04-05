@@ -1,14 +1,11 @@
 package com.glowanet.tools.unit.entity;
 
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzNoSerializable;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerialVersionUid;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzWithWrongSerialVersionUid;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzNoSerializable;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithSerialVersionUid;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithSerializableNoSerialVersionUid;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithWrongSerialVersionUid;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 public class ConcreteEntityUnitTesterSerializableTest<
         T extends ClazzNoSerializable> extends SimulationEntityTesterCommon<T> {
@@ -35,22 +32,6 @@ public class ConcreteEntityUnitTesterSerializableTest<
                 return newO2T;
             }
         };
-    }
-
-    @Test
-    public void testHasSerializableIF_return_true() {
-        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
-
-        boolean actual = o2T.hasSerializableIF(ClazzWithSerializableNoSerialVersionUid.class);
-        assertThat(actual, equalTo(true));
-    }
-
-    @Test
-    public void testHasSerializableIF_return_false() {
-        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
-
-        boolean actual = o2T.hasSerializableIF(ClazzNoSerializable.class);
-        assertThat(actual, equalTo(false));
     }
 
     @Test

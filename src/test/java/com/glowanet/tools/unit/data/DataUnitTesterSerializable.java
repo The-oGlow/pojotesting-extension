@@ -1,10 +1,11 @@
-package com.glowanet.tools.unit.entity.data;
+package com.glowanet.tools.unit.data;
 
 import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 
 import java.io.Serializable;
 
-public class DataEntityUnitTesterSerializable {
+public class DataUnitTesterSerializable {
     public static class ClazzNoSerializable extends DataEntityUnitTester {
     }
 

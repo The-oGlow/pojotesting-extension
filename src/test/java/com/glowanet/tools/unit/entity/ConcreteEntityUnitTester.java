@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.entity;
 
-import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterSerializable.ClazzNoSerializable;
+import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzNoSerializable;
 import org.junit.Ignore;
 
 /**
