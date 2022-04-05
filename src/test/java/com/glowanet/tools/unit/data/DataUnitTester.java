@@ -23,31 +23,32 @@ public class DataUnitTester implements Serializable {
     private String  valS;
     private float   primJ;
 
-    public Integer getValI() {
-        return valI;
-    }
-
-    public void setValI(Integer valI) {
-        this.valI = valI;
-    }
-
-    public String getValS() {
-        return valS;
-    }
-
-    public void setValS(String valS) {
-        this.valS = valS;
+    /* methods */
+    public String calcVal(String sep, float comp) {
+        return valS + sep + comp;
     }
 
     public float getPrimJ() {
         return primJ;
     }
 
+    public Integer getValI() {
+        return valI;
+    }
+
+    public String getValS() {
+        return valS;
+    }
+
     public void setPrimJ(float primJ) {
         this.primJ = primJ;
     }
 
-    public String calcVal(String sep, float comp) {
-        return valS + sep + comp;
+    public void setValI(Integer valI) {
+        this.valI = valI;
+    }
+
+    public void setValS(String valS) {
+        this.valS = valS;
     }
 }

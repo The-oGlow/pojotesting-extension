@@ -7,25 +7,7 @@ import org.junit.Test;
 public class ConcreteEntityUnitTesterGetterSetterTest<
         T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
-    @Override
-    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
-        return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
-    }
-
-    @Override
-    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
-        return new CallTheCreator<>() {
-            @Override
-            public T call() {
-                T newO2T = null;
-                if (DataEntityUnitTester.class.equals(typeOfO2T)) {
-                    newO2T = (T) new DataEntityUnitTester();
-                }
-                return newO2T;
-            }
-        };
-    }
-
+    /* methods */
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {
         AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
@@ -34,7 +16,6 @@ public class ConcreteEntityUnitTesterGetterSetterTest<
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
     }
-
 
     @Test
     public void testTestAllSetterAccessible_raise_noException() {
@@ -52,5 +33,25 @@ public class ConcreteEntityUnitTesterGetterSetterTest<
         entityUnitTester.testGetterSetterCollaboration();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+    }
+
+    @Override
+    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
+        return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
+    }
+
+    @Override
+    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
+        return new CallTheCreator<>() {
+            /* methods */
+            @Override
+            public T call() {
+                T newO2T = null;
+                if (DataEntityUnitTester.class.equals(typeOfO2T)) {
+                    newO2T = (T) new DataEntityUnitTester();
+                }
+                return newO2T;
+            }
+        };
     }
 }

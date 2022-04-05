@@ -8,6 +8,23 @@ import org.junit.Test;
 public class ConcreteEntityUnitTesterToStringImplementedTest<
         T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
+    /* methods */
+    @Test
+    public void testTestToStringWithValues_withToString_raise_oneException() {
+        SimulationEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTesterToString.class);
+        entityUnitTester.testToStringWithValues();
+
+        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
+    }
+
+    @Test
+    public void testTestToString_withToString_raise_noException() {
+        SimulationEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTesterToString.class);
+        entityUnitTester.testToString();
+
+        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+    }
+
     @Override
     protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new ConcreteEntityUnitTesterToStringDefault<>(typeOfO2T, prepareTheCreator(typeOfO2T));
@@ -16,6 +33,7 @@ public class ConcreteEntityUnitTesterToStringImplementedTest<
     @Override
     protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            /* methods */
             @Override
             public T call() {
                 T newO2T = null;
@@ -27,21 +45,5 @@ public class ConcreteEntityUnitTesterToStringImplementedTest<
                 return newO2T;
             }
         };
-    }
-
-    @Test
-    public void testTestToString_withToString_raise_noException() {
-        SimulationEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTesterToString.class);
-        entityUnitTester.testToString();
-
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
-    }
-
-    @Test
-    public void testTestToStringWithValues_withToString_raise_oneException() {
-        SimulationEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTesterToString.class);
-        entityUnitTester.testToStringWithValues();
-
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
     }
 }

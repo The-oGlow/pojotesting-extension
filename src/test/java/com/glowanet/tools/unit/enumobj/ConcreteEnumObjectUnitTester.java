@@ -9,6 +9,7 @@ import java.util.List;
  */
 public class ConcreteEnumObjectUnitTester<T> extends AbstractEnumObjectUnitTester<T> {
 
+    /* constructors */
     public ConcreteEnumObjectUnitTester() {
         this((Class<T>) String.class);
     }

@@ -10,9 +10,11 @@ public class DataEntityUnitTester {
     private Integer simInt;
     private String  simString;
 
+    /* constructors */
     public DataEntityUnitTester() {
     }
 
+    /* methods */
     public Integer getSimInt() {
         return simInt;
     }

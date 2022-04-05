@@ -13,6 +13,7 @@ import org.junit.Ignore;
 class ConcreteEntityUnitTester<
         T extends ClazzNoSerializable> extends SimulationEntityTester<T> {
 
+    /* constructors */
     protected ConcreteEntityUnitTester(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
         super(typeOfo2T, callTheCreatorForT);
     }

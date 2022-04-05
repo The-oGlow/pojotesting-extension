@@ -15,6 +15,7 @@ import org.junit.Ignore;
 public class ConcreteEntityUnitTesterGeneric<
         T extends DataEntityUnitTesterGenericEquals> extends SimulationEntityTester<T> {
 
+    /* constructors */
     protected ConcreteEntityUnitTesterGeneric(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
         super(typeOfo2T, callTheCreatorForT);
     }

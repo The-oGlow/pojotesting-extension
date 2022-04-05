@@ -8,6 +8,7 @@ package com.glowanet.tools.unit.entity.data;
  * </ul>
  */
 public class DataEntityUnitTesterToString extends DataEntityUnitTester {
+    /* methods */
     @Override
     public String toString() {
         return "DataEntityUnitTesterGenericEqualsToString{" +

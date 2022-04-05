@@ -55,10 +55,12 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     private Collection<String> allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
     private Collection<String> allFieldsDeniedForToString   = new HashSet<>();
 
+    /* constructors */
     protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
 
+    /* methods */
     @Before
     public void setUp() {
         assertThat(getObject2Test(), notNullValue());
@@ -71,14 +73,127 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * The Fields in the current class, which should be ignored on testing @toString().
-     *
-     * @return list of field names
-     *
-     * @see #testToString()
+     * Tests, if using all getters is possible, what means it doesn't raise an exception.
      */
-    protected List<String> fieldsToIgnoreForToString() {
-        return List.of();
+    @Test
+    public void testAllGetterAccessible() {
+        List<PropertyDescriptor> getterList = findGetter();
+        LOGGER.info("Testing access on '{}' for {} getters", getTypeOfo2T(), getterList.size());
+        Object instance = getObject2Test();
+        for (PropertyDescriptor getter : getterList) {
+            try {
+                Object value = MethodUtils.invokeMethod(instance, getter.getReadMethod().getName());
+                collector.checkThat("'" + getter.getName() + "' doesn't have a proper value!", value, anyOf(nullValue(), notNullValue()));
+            } catch (IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                collector.addError(e);
+            }
+        }
+    }
+
+    /**
+     * Tests, if using all setters is possible, what means it doesn't raise an exception.
+     *
+     * @see #verifyAllGetterSetterCollaboration(boolean)
+     */
+    @Test
+    public void testAllSetterAccessible() {
+        verifyAllGetterSetterCollaboration(false);
+    }
+
+    /**
+     * Tests, if two objects from the same type are logical equal.
+     * <ul>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -> expecting logical equality</li>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -> expecting object equality</li>
+     * </ul>
+     *
+     * @see #isCheckLogicalEqualsOnly()
+     * @see #setCheckLogicalEqualsOnly(boolean)
+     */
+    @Test
+    public void testEqualsLogicalAreTheSame() {
+        T itSelf = getObject2Test();
+        T itSelf2 = getObject2Test();
+        boolean expected = isCheckLogicalEqualsOnly();
+        collector.checkThat(itSelf.equals(itSelf2), is(expected));
+    }
+
+    /**
+     * Tests, if the object compares to itSelf is always {@code TRUE}, regardless if object or logical equality.
+     */
+    @SuppressWarnings({"EqualsWithItself", "java:S1764"})
+    @Test
+    public void testEqualsWithItself() {
+        T itSelf = getObject2Test();
+        collector.checkThat(itSelf.equals(itSelf), is(true));
+    }
+
+    /**
+     * Tests, if the object compares to {@code NULL} is always {@code FALSE}.
+     */
+    @SuppressWarnings({"ConstantConditions", "ObjectEqualsCanBeEquality", "RedundantSuppression", "RedundantCast"})
+    @Test
+    public void testEqualsWithNull() {
+        T itSelf = getObject2Test();
+        collector.checkThat(itSelf.equals((T) null), is(false));
+    }
+
+    /**
+     * Tests, if using all setters is possible, what means it doesn't raise an exception, AND the same value could be retrieved from the getter.
+     *
+     * @see #verifyAllGetterSetterCollaboration(boolean)
+     */
+    @Test
+    public void testGetterSetterCollaboration() {
+        verifyAllGetterSetterCollaboration(true);
+    }
+
+    /**
+     * Tests, that the result of {@link #hashCode()} is not 0;
+     */
+    @Test
+    public void testHashcodeOtherThan0() {
+        collector.checkThat("Hashcode must differ from '0'!", getObject2Test().hashCode(), not(is(0)));
+    }
+
+    /**
+     * Tests, that a {@code serialVersionUid} is correctly defined.
+     *
+     * @see #isCheckSVUID()
+     * @see #setCheckSVUID(boolean)
+     */
+    @Test
+    public void testSerialVersionUIDIsCorrectInEntity() {
+        validateSerialVersionUID();
+    }
+
+    /**
+     * Tests, if all getter will be listed (except those, not needed) or not allowed to be listed.
+     *
+     * @see #fieldsToIgnoreForToString()
+     * @see #fieldsDeniedForToString()
+     */
+    @Test
+    public void testToString() {
+        CharSequence actual = getObject2Test().toString();
+
+        assertThat(actual, notNullValue());
+
+        List<PropertyDescriptor> getterList = findGetter();
+        for (PropertyDescriptor getter : getterList) {
+            if (!allFieldsToIgnoreForToString.contains(getter.getName().toLowerCase())) {
+                collector.checkThat("'" + getter.getName() + "' doesn't appear on toString()!", actual.toString(), containsString(getter.getName()));
+            }
+            if (allFieldsDeniedForToString.contains(getter.getName().toLowerCase())) {
+                collector.addError(new IllegalArgumentException("'" + getter.getName() + "' is not allowed to appear on toString()!"));
+            }
+        }
+    }
+
+    @Ignore("TBD")
+    @Test
+    public void testToStringWithValues() {
+        collector.addError(new NotImplementedException("TBD"));
     }
 
     /**
@@ -89,6 +204,17 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
      * @see #testToString()
      */
     protected List<String> fieldsDeniedForToString() {
+        return List.of();
+    }
+
+    /**
+     * The Fields in the current class, which should be ignored on testing @toString().
+     *
+     * @return list of field names
+     *
+     * @see #testToString()
+     */
+    protected List<String> fieldsToIgnoreForToString() {
         return List.of();
     }
 
@@ -104,17 +230,6 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Sets the flag, if #testEqualsLogicalAreTheSame expects only logical equality.
-     *
-     * @param checkLogicalEqualsOnly TRUE = will be checked, else FALSE
-     *
-     * @see #testEqualsLogicalAreTheSame()
-     */
-    protected void setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
-        this.checkLogicalEqualsOnly = checkLogicalEqualsOnly;
-    }
-
-    /**
      * The flag, if @SERIAL_VERSION_UID_NAME should be checked.
      *
      * @return TRUE = will be checked, else FALSE
@@ -123,6 +238,17 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
      */
     protected boolean isCheckSVUID() {
         return checkSVUID;
+    }
+
+    /**
+     * Sets the flag, if #testEqualsLogicalAreTheSame expects only logical equality.
+     *
+     * @param checkLogicalEqualsOnly TRUE = will be checked, else FALSE
+     *
+     * @see #testEqualsLogicalAreTheSame()
+     */
+    protected void setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
+        this.checkLogicalEqualsOnly = checkLogicalEqualsOnly;
     }
 
     /**
@@ -135,7 +261,6 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     protected void setCheckSVUID(boolean checkSVUID) {
         this.checkSVUID = checkSVUID;
     }
-
 
     /**
      * Verify, that a {@code serialVersionUid} is correctly defined.
@@ -171,44 +296,6 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
     }
 
     /**
-     * Tests, if using all getters is possible, what means it doesn't raise an exception.
-     */
-    @Test
-    public void testAllGetterAccessible() {
-        List<PropertyDescriptor> getterList = findGetter();
-        LOGGER.info("Testing access on '{}' for {} getters", getTypeOfo2T(), getterList.size());
-        Object instance = getObject2Test();
-        for (PropertyDescriptor getter : getterList) {
-            try {
-                Object value = MethodUtils.invokeMethod(instance, getter.getReadMethod().getName());
-                collector.checkThat("'" + getter.getName() + "' doesn't have a proper value!", value, anyOf(nullValue(), notNullValue()));
-            } catch (IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                collector.addError(e);
-            }
-        }
-    }
-
-    /**
-     * Tests, if using all setters is possible, what means it doesn't raise an exception.
-     *
-     * @see #verifyAllGetterSetterCollaboration(boolean)
-     */
-    @Test
-    public void testAllSetterAccessible() {
-        verifyAllGetterSetterCollaboration(false);
-    }
-
-    /**
-     * Tests, if using all setters is possible, what means it doesn't raise an exception, AND the same value could be retrieved from the getter.
-     *
-     * @see #verifyAllGetterSetterCollaboration(boolean)
-     */
-    @Test
-    public void testGetterSetterCollaboration() {
-        verifyAllGetterSetterCollaboration(true);
-    }
-
-    /**
      * Tests, if the getter and setter are working smoothly together, which means
      * what you put in the field by the setter is the same what you will retrieve from the getter.
      *
@@ -239,91 +326,5 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
                         + Arrays.toString(paramTypes) + "' -> '" + Arrays.toString(paramValues) + "'!", e, nullValue());
             }
         }
-    }
-
-    /**
-     * Tests, if all getter will be listed (except those, not needed) or not allowed to be listed.
-     *
-     * @see #fieldsToIgnoreForToString()
-     * @see #fieldsDeniedForToString()
-     */
-    @Test
-    public void testToString() {
-        CharSequence actual = getObject2Test().toString();
-
-        assertThat(actual, notNullValue());
-
-        List<PropertyDescriptor> getterList = findGetter();
-        for (PropertyDescriptor getter : getterList) {
-            if (!allFieldsToIgnoreForToString.contains(getter.getName().toLowerCase())) {
-                collector.checkThat("'" + getter.getName() + "' doesn't appear on toString()!", actual.toString(), containsString(getter.getName()));
-            }
-            if (allFieldsDeniedForToString.contains(getter.getName().toLowerCase())) {
-                collector.addError(new IllegalArgumentException("'" + getter.getName() + "' is not allowed to appear on toString()!"));
-            }
-        }
-    }
-
-    @Ignore("TBD")
-    @Test
-    public void testToStringWithValues() {
-        collector.addError(new NotImplementedException("TBD"));
-    }
-
-    /**
-     * Tests, that the result of {@link #hashCode()} is not 0;
-     */
-    @Test
-    public void testHashcodeOtherThan0() {
-        collector.checkThat("Hashcode must differ from '0'!", getObject2Test().hashCode(), not(is(0)));
-    }
-
-    /**
-     * Tests, if the object compares to itSelf is always {@code TRUE}, regardless if object or logical equality.
-     */
-    @SuppressWarnings({"EqualsWithItself", "java:S1764"})
-    @Test
-    public void testEqualsWithItself() {
-        T itSelf = getObject2Test();
-        collector.checkThat(itSelf.equals(itSelf), is(true));
-    }
-
-    /**
-     * Tests, if the object compares to {@code NULL} is always {@code FALSE}.
-     */
-    @SuppressWarnings({"ConstantConditions", "ObjectEqualsCanBeEquality", "RedundantSuppression", "RedundantCast"})
-    @Test
-    public void testEqualsWithNull() {
-        T itSelf = getObject2Test();
-        collector.checkThat(itSelf.equals((T) null), is(false));
-    }
-
-    /**
-     * Tests, if two objects from the same type are logical equal.
-     * <ul>
-     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -> expecting logical equality</li>
-     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -> expecting object equality</li>
-     * </ul>
-     *
-     * @see #isCheckLogicalEqualsOnly()
-     * @see #setCheckLogicalEqualsOnly(boolean)
-     */
-    @Test
-    public void testEqualsLogicalAreTheSame() {
-        T itSelf = getObject2Test();
-        T itSelf2 = getObject2Test();
-        boolean expected = isCheckLogicalEqualsOnly();
-        collector.checkThat(itSelf.equals(itSelf2), is(expected));
-    }
-
-    /**
-     * Tests, that a {@code serialVersionUid} is correctly defined.
-     *
-     * @see #isCheckSVUID()
-     * @see #setCheckSVUID(boolean)
-     */
-    @Test
-    public void testSerialVersionUIDIsCorrectInEntity() {
-        validateSerialVersionUID();
     }
 }

@@ -9,6 +9,7 @@ package com.glowanet.tools.unit.entity.data;
  */
 public class DataEntityUnitTesterLogicalEquals extends DataEntityUnitTesterGenericEquals {
 
+    /* methods */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

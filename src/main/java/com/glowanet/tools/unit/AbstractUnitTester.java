@@ -45,10 +45,6 @@ public abstract class AbstractUnitTester<T> {
 
     private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
 
-    @Rule
-    public final  ErrorCollectorExt collector = new ErrorCollectorExt();
-    private final Class<T>          typeOfo2T;
-
     static {
         try {
             randomValueFactory = com.glowanet.tools.random.RandomValueFactory.getInstance();
@@ -57,6 +53,12 @@ public abstract class AbstractUnitTester<T> {
         }
     }
 
+    @Rule
+    public final  ErrorCollectorExt collector = new ErrorCollectorExt();
+    private final Class<T>          typeOfo2T;
+
+    /* constructors */
+
     /**
      * @param typeOfo2T the class object of {@code T}
      */
@@ -64,6 +66,19 @@ public abstract class AbstractUnitTester<T> {
         this.typeOfo2T = typeOfo2T;
         init();
     }
+
+    /* abstract methods */
+
+    /**
+     * Create instance (with default constructor, if available).
+     *
+     * @return instance of the {@code T}
+     *
+     * @see #init()
+     */
+    protected abstract T createObject2Test();
+
+    /* static method */
 
     /**
      * Put a value into a static final field.
@@ -87,42 +102,35 @@ public abstract class AbstractUnitTester<T> {
 */
     }
 
-    /**
-     * Initialize the unit tester.
-     */
-    protected void init() {
-        validateObjectAndType();
-    }
+
+    /* methods */
 
     /**
-     * Create instance (with default constructor, if available).
-     *
-     * @return instance of the {@code T}
-     *
-     * @see #init()
+     * @return T
      */
-    protected abstract T createObject2Test();
-
-    protected Class<T> getTypeOfo2T() {
-        return this.typeOfo2T;
-    }
-
     public T getObject2Test() {
         validateObjectAndType();
         return createObject2Test();
     }
 
-    private void validateObjectAndType() {
-        assertThat(createObject2Test(), anyOf(nullValue(), isA(this.typeOfo2T)));
-    }
-
     /**
-     * @param o2T an instance of type {@code T} to inspect
+     * @param instance  an instance of {@code T}
+     * @param fieldName the name of the field
      *
-     * @return list of all property descriptors of {@code o2T}
+     * @return a field instance
      */
-    private List<PropertyDescriptor> getAllPropertyDescriptors(T o2T) {
-        return Arrays.stream(PropertyUtil.propertyDescriptorsFor(o2T, null)).collect(Collectors.toList());
+    @SuppressWarnings("java:S5960")
+    protected Field findField(T instance, String fieldName) {
+        Field idField = null;
+        try {
+            idField = instance.getClass().getDeclaredField(fieldName);
+            makeFieldAccessible(idField, instance);
+        } catch (NoSuchFieldException e) {
+            fail("No " + fieldName + " defined : " + e.getMessage());
+        } catch (SecurityException e) {
+            fail(fieldName + " not accessible : " + e.getMessage());
+        }
+        return idField;
     }
 
     /**
@@ -151,6 +159,10 @@ public abstract class AbstractUnitTester<T> {
         return setterList;
     }
 
+    protected Class<T> getTypeOfo2T() {
+        return this.typeOfo2T;
+    }
+
     /**
      * @param clazzA the type to inspect
      *
@@ -169,23 +181,10 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
-     * @param instance  an instance of {@code T}
-     * @param fieldName the name of the field
-     *
-     * @return a field instance
+     * Initialize the unit tester.
      */
-    @SuppressWarnings("java:S5960")
-    protected Field findField(T instance, String fieldName) {
-        Field idField = null;
-        try {
-            idField = instance.getClass().getDeclaredField(fieldName);
-            makeFieldAccessible(idField, instance);
-        } catch (NoSuchFieldException e) {
-            fail("No " + fieldName + " defined : " + e.getMessage());
-        } catch (SecurityException e) {
-            fail(fieldName + " not accessible : " + e.getMessage());
-        }
-        return idField;
+    protected void init() {
+        validateObjectAndType();
     }
 
     /**
@@ -199,54 +198,6 @@ public abstract class AbstractUnitTester<T> {
             }
         } catch (IllegalArgumentException e) {
             field.trySetAccessible();
-        }
-    }
-
-    /**
-     * Retrieves all public constants from a class.
-     *
-     * @param clazzA the type from which to retrieve the constants
-     *
-     * @return a list of constants as field objects or an empty list.
-     */
-    protected List<Field> retrievePublicConstantsfromClass(Class<?> clazzA) {
-        List<Field> publicConsts = new ArrayList<>();
-        for (Field field : clazzA.getDeclaredFields()) {
-            int modifiers = field.getModifiers();
-            if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
-                publicConsts.add(field);
-            }
-        }
-        return publicConsts;
-    }
-
-    /**
-     * In case we have a "special interpretation" on a number extraction, you can
-     * override this method.
-     *
-     * @param textWithNumber the text with the number
-     * @param numberAsText   the currently extracted numeric values from the text
-     *
-     * @return the extracted "special" number for this text
-     */
-    protected String retrieveNumberFromTextSpecialized(String textWithNumber, String numberAsText) {
-        return numberAsText;
-    }
-
-    /**
-     * Extracts a number from a string.
-     *
-     * @param textWithNumber the text with the number
-     *
-     * @return the extracted number or NULL
-     */
-    protected Number retrieveNumberFromText(String textWithNumber) {
-        String numberAsText = StringUtils.getDigits(textWithNumber);
-        if (NumberUtils.isParsable(numberAsText)) {
-            numberAsText = retrieveNumberFromTextSpecialized(textWithNumber, numberAsText);
-            return NumberUtils.createNumber(numberAsText);
-        } else {
-            return null;
         }
     }
 
@@ -275,6 +226,63 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
+     * Extracts a number from a string.
+     *
+     * @param textWithNumber the text with the number
+     *
+     * @return the extracted number or NULL
+     */
+    protected Number retrieveNumberFromText(String textWithNumber) {
+        String numberAsText = StringUtils.getDigits(textWithNumber);
+        if (NumberUtils.isParsable(numberAsText)) {
+            numberAsText = retrieveNumberFromTextSpecialized(textWithNumber, numberAsText);
+            return NumberUtils.createNumber(numberAsText);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * In case we have a "special interpretation" on a number extraction, you can
+     * override this method.
+     *
+     * @param textWithNumber the text with the number
+     * @param numberAsText   the currently extracted numeric values from the text
+     *
+     * @return the extracted "special" number for this text
+     */
+    protected String retrieveNumberFromTextSpecialized(String textWithNumber, String numberAsText) {
+        return numberAsText;
+    }
+
+    /**
+     * Retrieves all public constants from a class.
+     *
+     * @param clazzA the type from which to retrieve the constants
+     *
+     * @return a list of constants as field objects or an empty list.
+     */
+    protected List<Field> retrievePublicConstantsfromClass(Class<?> clazzA) {
+        List<Field> publicConsts = new ArrayList<>();
+        for (Field field : clazzA.getDeclaredFields()) {
+            int modifiers = field.getModifiers();
+            if (Modifier.isPublic(modifiers) && Modifier.isStatic(modifiers) && Modifier.isFinal(modifiers)) {
+                publicConsts.add(field);
+            }
+        }
+        return publicConsts;
+    }
+
+    /**
+     * @param o2T an instance of type {@code T} to inspect
+     *
+     * @return list of all property descriptors of {@code o2T}
+     */
+    private List<PropertyDescriptor> getAllPropertyDescriptors(T o2T) {
+        return Arrays.stream(PropertyUtil.propertyDescriptorsFor(o2T, null)).collect(Collectors.toList());
+    }
+
+    /**
      * Generating a value based on the class-clazzV.
      *
      * @param clazzV the class type of return value
@@ -296,5 +304,9 @@ public abstract class AbstractUnitTester<T> {
             }
         }
         return result;
+    }
+
+    private void validateObjectAndType() {
+        assertThat(createObject2Test(), anyOf(nullValue(), isA(this.typeOfo2T)));
     }
 }

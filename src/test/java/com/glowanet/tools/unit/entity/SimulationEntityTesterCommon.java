@@ -9,6 +9,7 @@ import static org.hamcrest.Matchers.is;
  */
 public abstract class SimulationEntityTesterCommon<T> {
 
+    /* abstract methods */
     protected abstract SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T);
 
     /**

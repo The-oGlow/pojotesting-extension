@@ -10,13 +10,10 @@ import org.junit.Test;
 public class ConcreteEntityUnitTesterSerializableTest<
         T extends ClazzNoSerializable> extends SimulationEntityTesterCommon<T> {
 
-    @Override
-    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
-        return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
-    }
-
+    /* methods */
     public CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            /* methods */
             @Override
             public T call() {
                 T newO2T = null;
@@ -32,15 +29,6 @@ public class ConcreteEntityUnitTesterSerializableTest<
                 return newO2T;
             }
         };
-    }
-
-    @Test
-    public void testValidateSerialVersionUID_valid_NotSerializable() {
-        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
-
-        o2T.validateSerialVersionUID();
-
-        TestResultHelper.verifyCollectorNoError(o2T);
     }
 
     @Test
@@ -70,6 +58,14 @@ public class ConcreteEntityUnitTesterSerializableTest<
         TestResultHelper.verifyCollectorNoError(o2T);
     }
 
+    @Test
+    public void testValidateSerialVersionUID_valid_NotSerializable() {
+        SimulationEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) ClazzNoSerializable.class);
+
+        o2T.validateSerialVersionUID();
+
+        TestResultHelper.verifyCollectorNoError(o2T);
+    }
 
     @Test
     public void test_testSerialVersionUIDIsCorrectInEntity() {
@@ -78,5 +74,10 @@ public class ConcreteEntityUnitTesterSerializableTest<
         o2T.testSerialVersionUIDIsCorrectInEntity();
 
         TestResultHelper.verifyCollectorNoError(o2T);
+    }
+
+    @Override
+    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
+        return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
     }
 }

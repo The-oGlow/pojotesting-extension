@@ -12,15 +12,7 @@ import static org.hamcrest.Matchers.is;
 public class ConcreteEntityUnitTesterLogicalTest<
         T extends DataEntityUnitTesterLogicalEquals> extends ConcreteEntityUnitTesterGenericTest<T> {
 
-    @Override
-    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
-        return new ConcreteEntityUnitTesterLogical<>(typeOfO2T, prepareTheCreator(typeOfO2T));
-    }
-
-    protected SimulationEntityTester<T> prepareEntityTesterGeneric() {
-        return prepareEntityUnitTester((Class<T>) DataEntityUnitTesterLogicalEquals.class);
-    }
-
+    /* methods */
     @Test
     public void testCreateObject2Test_return_newCreatedObject() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
@@ -46,12 +38,6 @@ public class ConcreteEntityUnitTesterLogicalTest<
     @Test
     @Override
     public void testTestEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
-        deactivateTest(this.getClass());
-    }
-
-    @Test
-    @Override
-    public void testTestHashcodeOtherThan0_raise_noException() {
         deactivateTest(this.getClass());
     }
 
@@ -85,6 +71,21 @@ public class ConcreteEntityUnitTesterLogicalTest<
         entityUnitTester.testHashcodeOtherThan0();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
+    }
+
+    @Test
+    @Override
+    public void testTestHashcodeOtherThan0_raise_noException() {
+        deactivateTest(this.getClass());
+    }
+
+    protected SimulationEntityTester<T> prepareEntityTesterGeneric() {
+        return prepareEntityUnitTester((Class<T>) DataEntityUnitTesterLogicalEquals.class);
+    }
+
+    @Override
+    protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
+        return new ConcreteEntityUnitTesterLogical<>(typeOfO2T, prepareTheCreator(typeOfO2T));
     }
 
 }

@@ -10,6 +10,7 @@ import java.util.Map;
 
 public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
 
+    /* constructors */
     public ConcreteUnitTester() {
         this(DataUnitTester.class);
     }
@@ -21,13 +22,18 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         super(typeOfo2T);
     }
 
-    @Override
-    protected DataUnitTester createObject2Test() {
-        return new DataUnitTester();
-    }
-
+    /* static method */
     public static void _setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws NoSuchFieldException, IllegalAccessException {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
+    }
+
+    /* methods */
+    public DataUnitTester _createObject2Test() {
+        return this.createObject2Test();
+    }
+
+    public Field _findField(DataUnitTester dataUnitTester, String fieldName) {
+        return super.findField(dataUnitTester, fieldName);
     }
 
     public List<PropertyDescriptor> _findGetter() {
@@ -38,10 +44,6 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         return super.findSetter();
     }
 
-    public DataUnitTester _createObject2Test() {
-        return this.createObject2Test();
-    }
-
     public DataUnitTester _getObject2Test() {
         return super.getObject2Test();
     }
@@ -50,12 +52,12 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         return super.getTypeOfo2T();
     }
 
-    public Field _findField(DataUnitTester dataUnitTester, String fieldName) {
-        return super.findField(dataUnitTester, fieldName);
-    }
-
     public void _makeFieldAccessible(Field field, DataUnitTester dataUnitTester) {
         super.makeFieldAccessible(field, dataUnitTester);
+    }
+
+    public Map<Class<?>, Object> _retrieveMethodParameters(Method method) {
+        return super.retrieveMethodParameters(method);
     }
 
     public Number _retrieveNumberFromText(String textWithNumber) {
@@ -66,11 +68,12 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         return super.retrieveNumberFromTextSpecialized(textWithNumber, numberAsText);
     }
 
-    public Map<Class<?>, Object> _retrieveMethodParameters(Method method) {
-        return super.retrieveMethodParameters(method);
-    }
-
     public List<Field> _retrievePublicConstantsfromClass(Class<DataUnitTester> unitTestDataClass) {
         return super.retrievePublicConstantsfromClass(unitTestDataClass);
+    }
+
+    @Override
+    protected DataUnitTester createObject2Test() {
+        return new DataUnitTester();
     }
 }

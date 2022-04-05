@@ -24,58 +24,20 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester<T> {
 
-    private static final String  ENUM_NAME_SRCH         = "_(.)";
-    private static final String  ENUM_NAME_REPL         = "$1";
-    private static final Pattern ENUM_NAME_SRCH_PATTERN = Pattern.compile(ENUM_NAME_SRCH);
+    private static final String             ENUM_NAME_SRCH           = "_(.)";
+    private static final String             ENUM_NAME_REPL           = "$1";
+    private static final Pattern            ENUM_NAME_SRCH_PATTERN   = Pattern.compile(ENUM_NAME_SRCH);
+    private static final Logger             LOGGER                   = LogManager.getLogger();
+    private              Collection<String> allFieldsToIgnoreForCode = new HashSet<>();
+    private              NAME_CHECK_ENUM    nameCheckType            = NAME_CHECK_ENUM.CF;
+    private              boolean            codeCheckEnabled         = true;
 
-    public enum NAME_CHECK_ENUM {
-        /**
-         * <strong>C</strong>ase sensitive, <strong>F</strong>ullname Check
-         */
-        CF, //
-        /**
-         * <strong>C</strong>ase <strong>I</strong>nsensitive, <strong>F</strong>ullname Check
-         */
-        CIF, //
-        /**
-         * <strong>C</strong>ase sensitive, <strong>S</strong>tarts <strong>W</strong>ith Check
-         */
-        CSW, //
-        /**
-         * <strong>C</strong>ase<strong>I</strong>nsensitive, <strong>S</strong>tarts <strong>W</strong>ith Check
-         */
-        CISW
-    }
-
-    private static final Logger LOGGER = LogManager.getLogger();
-
-    private Collection<String> allFieldsToIgnoreForCode = new HashSet<>();
-    private NAME_CHECK_ENUM    nameCheckType            = NAME_CHECK_ENUM.CF;
-    private boolean            codeCheckEnabled         = true;
-
+    /* constructors */
     protected AbstractEnumObjectUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
 
-    @Before
-    public void setUp() {
-        allFieldsToIgnoreForCode.addAll(enumObjectsToIgnoreForCode() == null ? List.of() : enumObjectsToIgnoreForCode());
-        allFieldsToIgnoreForCode = allFieldsToIgnoreForCode.stream().map(String::toLowerCase).collect(Collectors.toSet());
-    }
-
-    @Test
-    public void validateAllEnumObjects() {
-        List<Field> allEnumObjects = retrievePublicConstantsfromClass(getTypeOfo2T());
-
-        for (Field expectedEnumObject : allEnumObjects) {
-            collector.checkThat("checking '" + expectedEnumObject.getName() + "'", validateEnumObject(expectedEnumObject, getTypeOfo2T()), equalTo(true));
-        }
-    }
-
-    @Override
-    protected T createObject2Test() {
-        return null;
-    }
+    /* abstract methods */
 
     /**
      * Fields in the current class, which should be ignored on testing 'toCode()'.
@@ -86,60 +48,6 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
      * @see #validateAllEnumObjects()
      */
     protected abstract List<String> enumObjectsToIgnoreForCode();
-
-    /**
-     * Flag, so 'toName()' must match the given {@link NAME_CHECK_ENUM}-check.
-     *
-     * @return #NAME_CHECK_ENUM
-     *
-     * @see NAME_CHECK_ENUM
-     * @see #validateEnumObjectName(Field, Object)
-     * @see #validateAllEnumObjects()
-     */
-    protected NAME_CHECK_ENUM getNameCheckType() {
-        return nameCheckType;
-    }
-
-    /**
-     * Set the flag, so 'toName()' must match the given {@link NAME_CHECK_ENUM}-check.
-     *
-     * @param nameCheckType #NAME_CHECK_ENUM
-     *
-     * @see NAME_CHECK_ENUM
-     * @see #validateEnumObjectName(Field, Object)
-     * @see #validateAllEnumObjects()
-     */
-    protected void setNameCheckType(NAME_CHECK_ENUM nameCheckType) {
-        this.nameCheckType = nameCheckType;
-    }
-
-    /**
-     * Flag, if 'toCode()' should be checked.
-     *
-     * @return TRUE = will be checked, else FALSE
-     *
-     * @see #validateEnumObjectCode(Field, Object)
-     * @see #validateAllEnumObjects()
-     */
-    protected boolean isCodeCheckEnabled() {
-        return codeCheckEnabled;
-    }
-
-    /**
-     * Sets the flag, if 'toCode()' should be checked.
-     *
-     * @param codeCheckEnabled TRUE = will be checked, else FALSE
-     *
-     * @see #validateEnumObjectCode(Field, Object)
-     * @see #validateAllEnumObjects()
-     */
-    protected void setCodeCheckEnabled(boolean codeCheckEnabled) {
-        this.codeCheckEnabled = codeCheckEnabled;
-    }
-
-    protected boolean isInIgnoreListForCode(String concreteEnumObject) {
-        return (allFieldsToIgnoreForCode.contains(concreteEnumObject.toLowerCase()));
-    }
 
     /**
      * Verifies that an enumObject is correct defined.
@@ -172,17 +80,102 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
         return isValid;
     }
 
-    private boolean checkIgnoredFields(Field expectedField, Throwable e) {
+    /* methods */
+    @Before
+    public void setUp() {
+        allFieldsToIgnoreForCode.addAll(enumObjectsToIgnoreForCode() == null ? List.of() : enumObjectsToIgnoreForCode());
+        allFieldsToIgnoreForCode = allFieldsToIgnoreForCode.stream().map(String::toLowerCase).collect(Collectors.toSet());
+    }
+
+    @Test
+    public void validateAllEnumObjects() {
+        List<Field> allEnumObjects = retrievePublicConstantsfromClass(getTypeOfo2T());
+
+        for (Field expectedEnumObject : allEnumObjects) {
+            collector.checkThat("checking '" + expectedEnumObject.getName() + "'", validateEnumObject(expectedEnumObject, getTypeOfo2T()), equalTo(true));
+        }
+    }
+
+    @Override
+    protected T createObject2Test() {
+        return null;
+    }
+
+    /**
+     * Flag, so 'toName()' must match the given {@link NAME_CHECK_ENUM}-check.
+     *
+     * @return #NAME_CHECK_ENUM
+     *
+     * @see NAME_CHECK_ENUM
+     * @see #validateEnumObjectName(Field, Object)
+     * @see #validateAllEnumObjects()
+     */
+    protected NAME_CHECK_ENUM getNameCheckType() {
+        return nameCheckType;
+    }
+
+    /**
+     * Flag, if 'toCode()' should be checked.
+     *
+     * @return TRUE = will be checked, else FALSE
+     *
+     * @see #validateEnumObjectCode(Field, Object)
+     * @see #validateAllEnumObjects()
+     */
+    protected boolean isCodeCheckEnabled() {
+        return codeCheckEnabled;
+    }
+
+    protected boolean isInIgnoreListForCode(String concreteEnumObject) {
+        return (allFieldsToIgnoreForCode.contains(concreteEnumObject.toLowerCase()));
+    }
+
+    /**
+     * Sets the flag, if 'toCode()' should be checked.
+     *
+     * @param codeCheckEnabled TRUE = will be checked, else FALSE
+     *
+     * @see #validateEnumObjectCode(Field, Object)
+     * @see #validateAllEnumObjects()
+     */
+    protected void setCodeCheckEnabled(boolean codeCheckEnabled) {
+        this.codeCheckEnabled = codeCheckEnabled;
+    }
+
+    /**
+     * Set the flag, so 'toName()' must match the given {@link NAME_CHECK_ENUM}-check.
+     *
+     * @param nameCheckType #NAME_CHECK_ENUM
+     *
+     * @see NAME_CHECK_ENUM
+     * @see #validateEnumObjectName(Field, Object)
+     * @see #validateAllEnumObjects()
+     */
+    protected void setNameCheckType(NAME_CHECK_ENUM nameCheckType) {
+        this.nameCheckType = nameCheckType;
+    }
+
+    /**
+     * Verifies that the declared name of an enumObject matches with the getCode()-value.
+     *
+     * @param expectedField  the field-object, containing the expected enumObject
+     * @param actualInstance an instance of the enumObject to check
+     *
+     * @return TRUE = is correct declared, else FALSE
+     */
+    protected boolean validateEnumObjectCode(Field expectedField, T actualInstance) {
         boolean isValid = false;
-        if (isCodeCheckEnabled()) {
-            if (isInIgnoreListForCode(expectedField.getName())) {
-                isValid = true;
-                LOGGER.warn("'{}' is listed to be ignored!", expectedField.getName());
-            } else {
-                collector.addError(e);
-            }
+
+        int expectedCode = (int) retrieveNumberFromText(expectedField.getName());
+        Object objectCode = ReflectionTestUtils.getField(actualInstance, "code");
+        int actualCode = 0;
+        if (objectCode != null) {
+            actualCode = Integer.parseInt(objectCode.toString());
+        }
+        if (actualCode == expectedCode) {
+            isValid = true;
         } else {
-            collector.addError(e);
+            collector.checkThat("checking getCode() of '" + expectedField.getName() + "'", actualCode, equalTo(expectedCode));
         }
         return isValid;
     }
@@ -241,28 +234,37 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
         return isValid;
     }
 
-    /**
-     * Verifies that the declared name of an enumObject matches with the getCode()-value.
-     *
-     * @param expectedField  the field-object, containing the expected enumObject
-     * @param actualInstance an instance of the enumObject to check
-     *
-     * @return TRUE = is correct declared, else FALSE
-     */
-    protected boolean validateEnumObjectCode(Field expectedField, T actualInstance) {
+    private boolean checkIgnoredFields(Field expectedField, Throwable e) {
         boolean isValid = false;
-
-        int expectedCode = (int) retrieveNumberFromText(expectedField.getName());
-        Object objectCode = ReflectionTestUtils.getField(actualInstance, "code");
-        int actualCode = 0;
-        if (objectCode != null) {
-            actualCode = Integer.parseInt(objectCode.toString());
-        }
-        if (actualCode == expectedCode) {
-            isValid = true;
+        if (isCodeCheckEnabled()) {
+            if (isInIgnoreListForCode(expectedField.getName())) {
+                isValid = true;
+                LOGGER.warn("'{}' is listed to be ignored!", expectedField.getName());
+            } else {
+                collector.addError(e);
+            }
         } else {
-            collector.checkThat("checking getCode() of '" + expectedField.getName() + "'", actualCode, equalTo(expectedCode));
+            collector.addError(e);
         }
         return isValid;
+    }
+
+    public enum NAME_CHECK_ENUM {
+        /**
+         * <strong>C</strong>ase sensitive, <strong>F</strong>ullname Check
+         */
+        CF, //
+        /**
+         * <strong>C</strong>ase <strong>I</strong>nsensitive, <strong>F</strong>ullname Check
+         */
+        CIF, //
+        /**
+         * <strong>C</strong>ase sensitive, <strong>S</strong>tarts <strong>W</strong>ith Check
+         */
+        CSW, //
+        /**
+         * <strong>C</strong>ase<strong>I</strong>nsensitive, <strong>S</strong>tarts <strong>W</strong>ith Check
+         */
+        CISW
     }
 }
