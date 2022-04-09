@@ -9,6 +9,11 @@ import org.junit.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * An junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ *
+ * @param <T> the type of the entity which will be tested
+ */
 public class ConcreteEntityUnitTesterLogicalTest<
         T extends DataEntityUnitTesterLogicalEquals> extends ConcreteEntityUnitTesterGenericTest<T> {
 

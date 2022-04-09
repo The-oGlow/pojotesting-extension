@@ -4,13 +4,18 @@ import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
+/**
+ * An junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ *
+ * @param <T> the type of the entity which will be tested
+ */
 public class ConcreteEntityUnitTesterGetterSetterTest<
-        T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
+        T extends DataEntityUnitTester> extends SimulationEntityTesterTest<T> {
 
     // methods
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {
-        AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
+        EntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
 
         entityUnitTester.testAllGetterAccessible();
 
@@ -19,7 +24,7 @@ public class ConcreteEntityUnitTesterGetterSetterTest<
 
     @Test
     public void testTestAllSetterAccessible_raise_noException() {
-        AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
+        EntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
 
         entityUnitTester.testAllSetterAccessible();
 
@@ -28,7 +33,7 @@ public class ConcreteEntityUnitTesterGetterSetterTest<
 
     @Test
     public void testTestGetterSetterCollaboration_raise_noException() {
-        AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
+        EntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
 
         entityUnitTester.testGetterSetterCollaboration();
 

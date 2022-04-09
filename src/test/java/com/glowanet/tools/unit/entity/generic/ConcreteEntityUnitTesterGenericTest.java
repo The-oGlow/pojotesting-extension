@@ -1,9 +1,9 @@
 package com.glowanet.tools.unit.entity.generic;
 
-import com.glowanet.tools.unit.entity.AbstractEntityUnitTester;
 import com.glowanet.tools.unit.entity.CallTheCreator;
+import com.glowanet.tools.unit.entity.EntityUnitTester;
 import com.glowanet.tools.unit.entity.SimulationEntityTester;
-import com.glowanet.tools.unit.entity.SimulationEntityTesterCommon;
+import com.glowanet.tools.unit.entity.SimulationEntityTesterTest;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
 import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterLogicalEquals;
@@ -20,8 +20,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
+/**
+ * An junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ *
+ * @param <T> the type of the entity which will be tested
+ */
 public class ConcreteEntityUnitTesterGenericTest<
-        T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
+        T extends DataEntityUnitTester> extends SimulationEntityTesterTest<T> {
 
     // methods
     @Test
@@ -52,12 +57,12 @@ public class ConcreteEntityUnitTesterGenericTest<
     public void testIsCheckLogicalEqualsOnly_return_false() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         boolean actual = entityUnitTester._isCheckLogicalEqualsOnly();
-        assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
+        assertThat(actual, equalTo(EntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
 
-        entityUnitTester._setCheckLogicalEqualsOnly(!AbstractEntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY);
+        entityUnitTester._setCheckLogicalEqualsOnly(!EntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY);
         boolean actual2 = entityUnitTester._isCheckLogicalEqualsOnly();
 
-        assertThat(actual2, equalTo(!AbstractEntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
+        assertThat(actual2, equalTo(!EntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
     }
 
     @Test
@@ -65,7 +70,7 @@ public class ConcreteEntityUnitTesterGenericTest<
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         boolean actual = entityUnitTester._isCheckLogicalEqualsOnly();
 
-        assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
+        assertThat(actual, equalTo(EntityUnitTester.DEFAULT_CHECK_LOGICAL_EQUALS_ONLY));
     }
 
     @Test
@@ -73,7 +78,7 @@ public class ConcreteEntityUnitTesterGenericTest<
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         boolean actual = entityUnitTester._isCheckSVUID();
 
-        assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_SVUID));
+        assertThat(actual, equalTo(EntityUnitTester.DEFAULT_CHECK_SVUID));
     }
 
     @Test
@@ -81,12 +86,12 @@ public class ConcreteEntityUnitTesterGenericTest<
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
 
         boolean actual = entityUnitTester._isCheckSVUID();
-        assertThat(actual, equalTo(AbstractEntityUnitTester.DEFAULT_CHECK_SVUID));
+        assertThat(actual, equalTo(EntityUnitTester.DEFAULT_CHECK_SVUID));
 
-        entityUnitTester._setCheckSVUID(!AbstractEntityUnitTester.DEFAULT_CHECK_SVUID);
+        entityUnitTester._setCheckSVUID(!EntityUnitTester.DEFAULT_CHECK_SVUID);
         boolean actual2 = entityUnitTester._isCheckSVUID();
 
-        assertThat(actual2, equalTo(!AbstractEntityUnitTester.DEFAULT_CHECK_SVUID));
+        assertThat(actual2, equalTo(!EntityUnitTester.DEFAULT_CHECK_SVUID));
     }
 
     @Test

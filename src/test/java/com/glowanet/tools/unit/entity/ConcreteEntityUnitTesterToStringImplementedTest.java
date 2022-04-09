@@ -5,8 +5,13 @@ import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterToString;
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
+/**
+ * An junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ *
+ * @param <T> the type of the entity which will be tested
+ */
 public class ConcreteEntityUnitTesterToStringImplementedTest<
-        T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
+        T extends DataEntityUnitTester> extends SimulationEntityTesterTest<T> {
 
     // methods
     @Test

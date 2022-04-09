@@ -7,8 +7,13 @@ import com.glowanet.tools.unit.data.DataUnitTesterSerializable.ClazzWithWrongSer
 import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
+/**
+ * An junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ *
+ * @param <T> the type of the entity which will be tested
+ */
 public class ConcreteEntityUnitTesterSerializableTest<
-        T extends ClazzNoSerializable> extends SimulationEntityTesterCommon<T> {
+        T extends ClazzNoSerializable> extends SimulationEntityTesterTest<T> {
 
     // methods
     public CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {

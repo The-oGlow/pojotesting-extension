@@ -7,14 +7,14 @@ import java.util.List;
 /**
  * Concrete Implementation of {@code  com.glowanet.tools.unit.AbstractEntityUnitTester} for the unit tests.
  *
- * @see com.glowanet.tools.unit.AbstractEntityUnitTester
+ * @see AbstractEntityUnitTester
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEntityUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
-public class ConcreteEntityUnitTester extends AbstractEntityUnitTester<DataUnitTester> {
+public class ConcreteAbstractEntityUnitTester extends AbstractEntityUnitTester<DataUnitTester> {
 
     /* constructors */
-    public ConcreteEntityUnitTester() {
+    public ConcreteAbstractEntityUnitTester() {
         super(DataUnitTester.class);
         setCheckSVUID(false);
     }

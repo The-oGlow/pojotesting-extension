@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 /**
  * In case the simulating test class needs to construct different pojo classes, use this class.
  *
- * @param <T> the type of the pojo class/classes to test
+ * @param <T> the type of the pojo/entity/class which will be tested
  */
 public abstract class CallTheCreator<T> implements Callable<T> {
 

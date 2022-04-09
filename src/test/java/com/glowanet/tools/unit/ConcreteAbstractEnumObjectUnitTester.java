@@ -11,10 +11,10 @@ import java.util.List;
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEnumObjectUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
-public class ConcreteEnumObjectUnitTester extends AbstractEnumObjectUnitTester<DataUnitTester> {
+public class ConcreteAbstractEnumObjectUnitTester extends AbstractEnumObjectUnitTester<DataUnitTester> {
 
     /* constructors */
-    public ConcreteEnumObjectUnitTester() {
+    public ConcreteAbstractEnumObjectUnitTester() {
         super(DataUnitTester.class);
     }
     /* end - constructors */

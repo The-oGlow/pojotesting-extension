@@ -37,9 +37,9 @@ import static org.hamcrest.MatchersExtend.betweenWithBound;
  * Abstract class to use for unit-testing on entities, beans, pojos.
  * However, you name your classes with an amount of getter and setter.
  *
- * @param <T> the type of the class to test
+ * @param <T> the type of the entity which will be tested
  */
-public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> {
+public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
 
     // static fields
     /** Field names in the class, which should be generally ignored on testing {@link #toString()}. */
@@ -57,7 +57,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
 // end - fields
 
     // constructors
-    protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
+    protected EntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
 // end - constructors

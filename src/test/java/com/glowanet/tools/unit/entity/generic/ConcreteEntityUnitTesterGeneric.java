@@ -6,9 +6,9 @@ import com.glowanet.tools.unit.entity.data.DataEntityUnitTesterGenericEquals;
 import org.junit.Ignore;
 
 /**
- * Container class, which holds the class which will be tested.
+ * A concrete tester, which verifies the entity {@code T}.
  *
- * @param <T> the type of the class to test
+ * @param <T> the type of the entity which will be tested
  */
 @SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this as test class!!")

@@ -10,22 +10,22 @@ import static org.hamcrest.Matchers.isA;
 import static org.hamcrest.Matchers.not;
 
 /**
- * Unit Tests to verify {@code com.glowanet.tools.unit.ConcreteEntityUnitTester}.
+ * Unit Tests to verify {@code  com.glowanet.tools.unit.ConcreteEnumObjectUnitTester}.
  *
- * @see com.glowanet.tools.unit.ConcreteEntityUnitTester
- * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEntityUnitTester}
+ * @see ConcreteAbstractEnumObjectUnitTester
+ * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEnumObjectUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
-public class ConcreteEntityUnitTesterTest {
+public class ConcreteAbstractEnumObjectUnitTesterTest {
 
     /* fields */
-    private ConcreteEntityUnitTester o2T;
+    private ConcreteAbstractEntityUnitTester o2T;
     /* end - fields */
 
     /* methods */
     @Before
     public void setUp() {
-        o2T = new ConcreteEntityUnitTester();
+        o2T = new ConcreteAbstractEntityUnitTester();
     }
 
     @Test

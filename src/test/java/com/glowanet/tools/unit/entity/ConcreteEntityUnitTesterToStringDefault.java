@@ -4,9 +4,9 @@ import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import org.junit.Ignore;
 
 /**
- * This simulates a class which will act as an unit-test to check {@code T}.
+ * A concrete tester, which verifies the entity {@code T}.
  *
- * @param <T> the type of the pojo which will be tested
+ * @param <T> the type of the entity which will be tested
  */
 @SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this as test class!!")

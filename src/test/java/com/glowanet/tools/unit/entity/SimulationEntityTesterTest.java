@@ -5,9 +5,11 @@ import org.junit.Assume;
 import static org.hamcrest.Matchers.is;
 
 /**
- * @param <T> the type of the class to test
+ * An abstract class which operates as base class for the junit tests.
+ *
+ * @param <T> the type of the entity which will be tested
  */
-public abstract class SimulationEntityTesterCommon<T> {
+public abstract class SimulationEntityTesterTest<T> {
 
     // abstract methods
 

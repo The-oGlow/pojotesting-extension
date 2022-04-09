@@ -11,8 +11,13 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
+/**
+ * An junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ *
+ * @param <T> the type of the entity which will be tested
+ */
 public class ConcreteEntityUnitTesterToStringDefaultTest<
-        T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
+        T extends DataEntityUnitTester> extends SimulationEntityTesterTest<T> {
 
     // static fields
     protected static final String ALL_FIELDS_TO_IGNORE_FOR_TO_STRING = "allFieldsToIgnoreForToString";
