@@ -15,14 +15,16 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Abstract class to use for unit-testing on {@link Object}, beans, pojos.
  * However you name your classes with an amount of getter and setter.
  *
- * @param <T> the type of the class to test
+ * @param <E> the type of the entity which will be tested
  */
-public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester<T> {
+public abstract class EnumObjectUnitTester<E> extends AbstractUnitTester<E> {
 
     private static final String             ENUM_NAME_SRCH           = "_(.)";
     private static final String             ENUM_NAME_REPL           = "$1";
@@ -33,8 +35,8 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
     private              boolean            codeCheckEnabled         = true;
 
     /* constructors */
-    protected AbstractEnumObjectUnitTester(Class<T> typeOfo2T) {
-        super(typeOfo2T);
+    protected EnumObjectUnitTester(Class<E> typeOfo2E) {
+        super(typeOfo2E);
     }
 
     /* abstract methods */
@@ -58,12 +60,12 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
      * @return TRUE = is correct declared, else FALSE
      */
     @SuppressWarnings("unchecked")
-    protected final boolean validateEnumObject(Field expectedField, Class<T> actualClazz) {
+    protected final boolean validateEnumObject(Field expectedField, Class<E> actualClazz) {
         boolean isValid = false;
 
         if (expectedField.getType().isAssignableFrom(actualClazz)) {
             try {
-                T actualInstance = (T) ReflectionTestUtils.getField(actualClazz, expectedField.getName());
+                E actualInstance = (E) ReflectionTestUtils.getField(actualClazz, expectedField.getName());
                 boolean resultName = validateEnumObjectName(expectedField, actualInstance);
                 boolean resultCode = true;
                 if (isCodeCheckEnabled()) {
@@ -99,7 +101,7 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
     }
 
     @Override
-    protected T createObject2Test() {
+    protected E createObject2Test() {
         return null;
     }
 
@@ -165,21 +167,31 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
      *
      * @return TRUE = is correct declared, else FALSE
      */
-    protected boolean validateEnumObjectCode(Field expectedField, T actualInstance) {
+    protected boolean validateEnumObjectCode(Field expectedField, E actualInstance) {
         boolean isValid = false;
 
-        int expectedCode = (int) retrieveNumberFromText(expectedField.getName());
-        Object objectCode = ReflectionTestUtils.getField(actualInstance, "code");
-        int actualCode = 0;
+        Number expectedCode = retrieveNumberFromText(expectedField.getName());
+        Object objectCode = null;
+        try {
+            objectCode = ReflectionTestUtils.getField(actualInstance, "code");
+        } catch (IllegalArgumentException e) {
+            //nothing2do
+        }
+        Number actualCode = null;
         if (objectCode != null) {
             actualCode = Integer.parseInt(objectCode.toString());
         }
-        if (actualCode == expectedCode) {
-            isValid = true;
-        } else {
-            collector.checkThat(String.format("checking getCode() of '%s'", expectedField.getName()),
-                    actualCode, equalTo(expectedCode)
-            );
+
+        collector.checkThat(String.format("'%s' is null!", expectedField.getName()), expectedCode, not(nullValue()));
+        collector.checkThat(String.format("'%s#%s' is null!", expectedField.getName(), "code"), actualCode, not(nullValue()));
+        if (actualCode != null && expectedCode != null) {
+            if (actualCode.intValue() == expectedCode.intValue()) {
+                isValid = true;
+            } else {
+                collector.checkThat(String.format("checking getCode() of '%s'", expectedField.getName()),
+                        actualCode, equalTo(expectedCode)
+                );
+            }
         }
         return isValid;
     }
@@ -192,7 +204,7 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
      *
      * @return TRUE = is correct declared, else FALSE
      */
-    protected boolean validateEnumObjectName(Field expectedField, T actualInstance) {
+    protected boolean validateEnumObjectName(Field expectedField, E actualInstance) {
         boolean isValid = false;
 
         boolean nameCheck;
