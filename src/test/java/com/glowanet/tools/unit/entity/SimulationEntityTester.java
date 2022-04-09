@@ -2,17 +2,25 @@ package com.glowanet.tools.unit.entity;
 
 import java.util.List;
 
+/**
+ * An abstract class which opens all methods for public access and testing purpoase.
+ *
+ * @param <T> the type of the class to test
+ */
 public abstract class SimulationEntityTester<T> extends AbstractEntityUnitTester<T> {
 
+    // fields
     private final CallTheCreator<T> callTheCreatorForT;
+// end - fields
 
-    /* constructors */
+    // constructors
     protected SimulationEntityTester(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
         super(typeOfo2T);
         this.callTheCreatorForT = callTheCreatorForT;
     }
+// end - constructors
 
-    /* methods */
+    // methods
     public List<String> _fieldsDeniedForToString() {
         return super.fieldsDeniedForToString();
     }
@@ -54,5 +62,6 @@ public abstract class SimulationEntityTester<T> extends AbstractEntityUnitTester
     protected void init() {
         //nothing2do
     }
+// end - methods
 
 }

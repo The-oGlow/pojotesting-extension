@@ -13,10 +13,14 @@ public class DataUnitTesterSerializable {
     }
 
     public static class ClazzWithWrongSerialVersionUid extends ClazzWithSerializableNoSerialVersionUid {
+        // static fields
         private static final long serialVersionUID = AbstractEntityUnitTester.SERIAL_VERSION_UID_INVALID_RANGE.getLeft();
+// end - static fields
     }
 
     public static class ClazzWithSerialVersionUid extends ClazzWithSerializableNoSerialVersionUid {
+        // static fields
         private static final long serialVersionUID = AbstractEntityUnitTester.SERIAL_VERSION_UID_INVALID_RANGE.getRight() + 1;
+// end - static fields
     }
 }

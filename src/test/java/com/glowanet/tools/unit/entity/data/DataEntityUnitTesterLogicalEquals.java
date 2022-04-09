@@ -9,7 +9,7 @@ package com.glowanet.tools.unit.entity.data;
  */
 public class DataEntityUnitTesterLogicalEquals extends DataEntityUnitTesterGenericEquals {
 
-    /* methods */
+    // methods
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -27,4 +27,5 @@ public class DataEntityUnitTesterLogicalEquals extends DataEntityUnitTesterGener
         result = 31 * result + (getSimString() != null ? getSimString().hashCode() : 0);
         return result;
     }
+// end - methods
 }

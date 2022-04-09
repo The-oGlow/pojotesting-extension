@@ -8,7 +8,7 @@ import org.junit.Test;
 public class ConcreteEntityUnitTesterToStringImplementedTest<
         T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
-    /* methods */
+    // methods
     @Test
     public void testTestToStringWithValues_withToString_raise_oneException() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTesterToString.class);
@@ -33,6 +33,7 @@ public class ConcreteEntityUnitTesterToStringImplementedTest<
     @Override
     protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            // methods
             /* methods */
             @Override
             public T call() {
@@ -44,6 +45,8 @@ public class ConcreteEntityUnitTesterToStringImplementedTest<
                 }
                 return newO2T;
             }
+// end - methods
         };
     }
+// end - methods
 }

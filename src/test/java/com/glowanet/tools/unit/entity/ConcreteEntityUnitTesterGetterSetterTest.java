@@ -7,7 +7,7 @@ import org.junit.Test;
 public class ConcreteEntityUnitTesterGetterSetterTest<
         T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
-    /* methods */
+    // methods
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {
         AbstractEntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
@@ -43,6 +43,7 @@ public class ConcreteEntityUnitTesterGetterSetterTest<
     @Override
     protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            // methods
             /* methods */
             @Override
             public T call() {
@@ -52,6 +53,8 @@ public class ConcreteEntityUnitTesterGetterSetterTest<
                 }
                 return newO2T;
             }
+// end - methods
         };
     }
+// end - methods
 }

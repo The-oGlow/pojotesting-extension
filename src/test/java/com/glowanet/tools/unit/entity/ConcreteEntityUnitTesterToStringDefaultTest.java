@@ -14,10 +14,12 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class ConcreteEntityUnitTesterToStringDefaultTest<
         T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
+    // static fields
     protected static final String ALL_FIELDS_TO_IGNORE_FOR_TO_STRING = "allFieldsToIgnoreForToString";
     protected static final String ALL_FIELDS_DENIED_FOR_TO_STRING    = "allFieldsDeniedForToString";
+// end - static fields
 
-    /* methods */
+    // methods
     @Test
     public void testAllFieldsDeniedForToString_defaultToString_return_emptyList() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityUnitTester.class);
@@ -78,6 +80,7 @@ public class ConcreteEntityUnitTesterToStringDefaultTest<
     @Override
     protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            // methods
             /* methods */
             @Override
             public T call() {
@@ -89,6 +92,8 @@ public class ConcreteEntityUnitTesterToStringDefaultTest<
                 }
                 return newO2T;
             }
+// end - methods
         };
     }
+// end - methods
 }

@@ -41,26 +41,28 @@ import static org.hamcrest.MatchersExtend.betweenWithBound;
  */
 public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> {
 
-    /**
-     * Field names in the class, which should be generally ignored on testing {@link #toString()}.
-     */
+    // static fields
+    /** Field names in the class, which should be generally ignored on testing {@link #toString()}. */
     public static final  Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
     public static final  boolean            DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
     private static final Logger             LOGGER                            = LogManager.getLogger();
+// end - static fields
 
+    // fields
     private boolean checkLogicalEqualsOnly = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
     private boolean checkSVUID             = DEFAULT_CHECK_SVUID;
 
-
     private Collection<String> allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
     private Collection<String> allFieldsDeniedForToString   = new HashSet<>();
+// end - fields
 
-    /* constructors */
+    // constructors
     protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
+// end - constructors
 
-    /* methods */
+    // methods
     @Before
     public void setUp() {
         assertThat(getObject2Test(), notNullValue());
@@ -83,7 +85,7 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         for (PropertyDescriptor getter : getterList) {
             try {
                 Object value = MethodUtils.invokeMethod(instance, getter.getReadMethod().getName());
-                collector.checkThat("'" + getter.getName() + "' doesn't have a proper value!", value, anyOf(nullValue(), notNullValue()));
+                collector.checkThat(String.format("'%s' doesn't have a proper value!", getter.getName()), value, anyOf(nullValue(), notNullValue()));
             } catch (IllegalArgumentException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 collector.addError(e);
             }
@@ -182,10 +184,10 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
         List<PropertyDescriptor> getterList = findGetter();
         for (PropertyDescriptor getter : getterList) {
             if (!allFieldsToIgnoreForToString.contains(getter.getName().toLowerCase())) {
-                collector.checkThat("'" + getter.getName() + "' doesn't appear on toString()!", actual.toString(), containsString(getter.getName()));
+                collector.checkThat(String.format("'%s' doesn't appear on toString()!", getter.getName()), actual.toString(), containsString(getter.getName()));
             }
             if (allFieldsDeniedForToString.contains(getter.getName().toLowerCase())) {
-                collector.addError(new IllegalArgumentException("'" + getter.getName() + "' is not allowed to appear on toString()!"));
+                collector.addError(new IllegalArgumentException(String.format("'%s' is not allowed to appear on toString()!", getter.getName())));
             }
         }
     }
@@ -277,9 +279,11 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
             Matcher<Class<?>> typeMatcher = typeCompatibleWith(Number.class);
             Matcher<Long> numberRangeMatcher = not(betweenWithBound(SERIAL_VERSION_UID_INVALID_RANGE));
 
-            String reasonNull = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must not be null!";
-            String reasonType = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "' it must be valid: " + typeMatcher + "!";
-            String reasonRange = "For '" + (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName()) + "'it must be valid: " + numberRangeMatcher + "!";
+            String clazzName = instance.getClass().getName();
+            String fieldName = (idField == null ? SERIAL_VERSION_UID_NAME : idField.getName());
+            String reasonNull = String.format("For '%s#%s' it must not be null!", clazzName, fieldName);
+            String reasonType = String.format("For '%s#%s' it must be valid: %s!", clazzName, fieldName, typeMatcher);
+            String reasonRange = String.format("For '%s#%s' it must be valid: %s!", clazzName, fieldName, numberRangeMatcher);
 
             Object idValue = null;
             try {
@@ -317,14 +321,17 @@ public abstract class AbstractEntityUnitTester<T> extends AbstractUnitTester<T> 
                 if (verifyValue) {
                     Object expected = paramValues[0];
                     Object actual = MethodUtils.invokeMethod(instance, setter.getReadMethod().getName());
-                    collector.checkThat("'" + setter.getName() + "' doesn't have a proper value!", actual, equalTo(expected));
+                    collector.checkThat(String.format("'%s' doesn't have a proper value!", setter.getName()), actual, equalTo(expected));
                 }
             } catch (NoSuchMethodException | IllegalAccessException e) {
-                collector.checkThat("'" + setter.getName() + "' doesn't exists or is accessible!", e, nullValue());
+                collector.checkThat(String.format("'%s' doesn't exists or is accessible!", setter.getName()), e, nullValue());
             } catch (IllegalArgumentException | InvocationTargetException e) {
-                collector.checkThat("'" + setter.getName() + "' has the wrong arguments '" //
-                        + Arrays.toString(paramTypes) + "' -> '" + Arrays.toString(paramValues) + "'!", e, nullValue());
+                collector.checkThat(
+                        String.format("'%s' has the wrong arguments '%s' -> '%s'!", setter.getName(), Arrays.toString(paramTypes), Arrays.toString(paramValues)),
+                        e, nullValue()
+                );
             }
         }
     }
+// end - methods
 }

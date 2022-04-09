@@ -35,15 +35,14 @@ import static org.junit.Assert.fail;
  * @param <T> the type of {@code object2Test}
  */
 public abstract class AbstractUnitTester<T> {
-
+    // static fields
     public static final boolean               DEFAULT_CHECK_SVUID              = true;
     public static final String                SERIAL_VERSION_UID_NAME          = "serialVersionUID";
-    /**
-     * Range of IDs which are not allowed to use.
-     */
+    /** Range of IDs which are not allowed to use. */
     public static final IsBetween.Range<Long> SERIAL_VERSION_UID_INVALID_RANGE = new IsBetween.Range<>(-100L, 100L);
 
     private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
+// end - static fields
 
     static {
         try {
@@ -53,11 +52,13 @@ public abstract class AbstractUnitTester<T> {
         }
     }
 
+    // fields
     @Rule
     public final  ErrorCollectorExt collector = new ErrorCollectorExt();
     private final Class<T>          typeOfo2T;
+// end - fields
 
-    /* constructors */
+// constructors
 
     /**
      * @param typeOfo2T the class object of {@code T}
@@ -66,8 +67,9 @@ public abstract class AbstractUnitTester<T> {
         this.typeOfo2T = typeOfo2T;
         init();
     }
+// end - constructors
 
-    /* abstract methods */
+// abstract methods
 
     /**
      * Create instance (with default constructor, if available).
@@ -77,8 +79,9 @@ public abstract class AbstractUnitTester<T> {
      * @see #init()
      */
     protected abstract T createObject2Test();
+// end -  abstract methods
 
-    /* static method */
+// static method
 
     /**
      * Put a value into a static final field.
@@ -101,9 +104,9 @@ public abstract class AbstractUnitTester<T> {
         field.set(null, newValue);
 */
     }
+// end - static method
 
-
-    /* methods */
+// methods
 
     /**
      * @return T
@@ -126,9 +129,9 @@ public abstract class AbstractUnitTester<T> {
             idField = instance.getClass().getDeclaredField(fieldName);
             makeFieldAccessible(idField, instance);
         } catch (NoSuchFieldException e) {
-            fail("No " + fieldName + " defined : " + e.getMessage());
+            fail(String.format("No '%s' defined : %s", fieldName, e.getMessage()));
         } catch (SecurityException e) {
-            fail(fieldName + " not accessible : " + e.getMessage());
+            fail(String.format("'%s' not accessible : %s ", fieldName, e.getMessage()));
         }
         return idField;
     }
@@ -159,6 +162,9 @@ public abstract class AbstractUnitTester<T> {
         return setterList;
     }
 
+    /**
+     * @return the type of o2T
+     */
     protected Class<T> getTypeOfo2T() {
         return this.typeOfo2T;
     }
@@ -290,7 +296,7 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return the generated value or null
      */
-    @SuppressWarnings({"java:S2209"})
+    @SuppressWarnings({"java:S2209", "unchecked", "rawtypes"})
     private <V> Object retrieveDefaultValue(Class<V> clazzV) {
         Object result = null;
         if (randomValueFactory != null) {
@@ -306,7 +312,11 @@ public abstract class AbstractUnitTester<T> {
         return result;
     }
 
+    /**
+     * Verify that the instance of o2T has the correct type.
+     */
     private void validateObjectAndType() {
         assertThat(createObject2Test(), anyOf(nullValue(), isA(this.typeOfo2T)));
     }
+// end - methods
 }

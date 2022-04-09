@@ -8,12 +8,13 @@ package com.glowanet.tools.unit.entity.data;
  * </ul>
  */
 public class DataEntityUnitTesterToString extends DataEntityUnitTester {
-    /* methods */
+    // methods
     @Override
     public String toString() {
-        return "DataEntityUnitTesterGenericEqualsToString{" +
-                "simInt=" + getSimInt() +
-                ", simString='" + getSimString() + '\'' +
-                '}';
+        return String.format(
+                "DataEntityUnitTesterGenericEqualsToString{simInt=%s, simString='%s'}",
+                getSimInt(), getSimString()
+        );
     }
+// end - methods
 }

@@ -7,14 +7,17 @@ package com.glowanet.tools.unit.entity.data;
  * </ul>
  */
 public class DataEntityUnitTester {
+    // fields
     private Integer simInt;
     private String  simString;
+// end - fields
 
-    /* constructors */
+    // constructors
     public DataEntityUnitTester() {
     }
+// end - constructors
 
-    /* methods */
+    // methods
     public Integer getSimInt() {
         return simInt;
     }
@@ -30,4 +33,5 @@ public class DataEntityUnitTester {
     public void setSimString(String simString) {
         this.simString = simString;
     }
+// end - methods
 }

@@ -12,8 +12,9 @@ import org.junit.Ignore;
 @Ignore("Do not call this as test class!!")
 class ConcreteEntityUnitTesterToStringImplemented<
         T extends DataEntityUnitTesterToString> extends SimulationEntityTester<T> {
-    /* constructors */
+    // constructors
     protected ConcreteEntityUnitTesterToStringImplemented(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
         super(typeOfo2T, callTheCreatorForT);
     }
+// end - constructors
 }

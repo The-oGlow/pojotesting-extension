@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.is;
 public class ConcreteEntityUnitTesterGenericTest<
         T extends DataEntityUnitTester> extends SimulationEntityTesterCommon<T> {
 
-    /* methods */
+    // methods
     @Test
     public void testCreateObject2Test_return_newCreatedObject() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
@@ -185,6 +185,7 @@ public class ConcreteEntityUnitTesterGenericTest<
     @Override
     protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            // methods
             /* methods */
             @SuppressWarnings("unchecked")
             @Override
@@ -207,6 +208,8 @@ public class ConcreteEntityUnitTesterGenericTest<
                 }
                 return newO2T;
             }
+// end - methods
         };
     }
+// end - methods
 }

@@ -10,9 +10,10 @@ import org.junit.Test;
 public class ConcreteEntityUnitTesterSerializableTest<
         T extends ClazzNoSerializable> extends SimulationEntityTesterCommon<T> {
 
-    /* methods */
+    // methods
     public CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
         return new CallTheCreator<>() {
+            // methods
             /* methods */
             @Override
             public T call() {
@@ -28,6 +29,7 @@ public class ConcreteEntityUnitTesterSerializableTest<
                 }
                 return newO2T;
             }
+// end - methods
         };
     }
 
@@ -80,4 +82,5 @@ public class ConcreteEntityUnitTesterSerializableTest<
     protected SimulationEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new ConcreteEntityUnitTester(typeOfO2T, prepareTheCreator(typeOfO2T));
     }
+// end - methods
 }

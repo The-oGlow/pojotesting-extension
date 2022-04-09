@@ -92,7 +92,9 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
         List<Field> allEnumObjects = retrievePublicConstantsfromClass(getTypeOfo2T());
 
         for (Field expectedEnumObject : allEnumObjects) {
-            collector.checkThat("checking '" + expectedEnumObject.getName() + "'", validateEnumObject(expectedEnumObject, getTypeOfo2T()), equalTo(true));
+            collector.checkThat(String.format("Checking '%s'", expectedEnumObject.getName()),
+                    validateEnumObject(expectedEnumObject, getTypeOfo2T()), equalTo(true)
+            );
         }
     }
 
@@ -175,7 +177,9 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
         if (actualCode == expectedCode) {
             isValid = true;
         } else {
-            collector.checkThat("checking getCode() of '" + expectedField.getName() + "'", actualCode, equalTo(expectedCode));
+            collector.checkThat(String.format("checking getCode() of '%s'", expectedField.getName()),
+                    actualCode, equalTo(expectedCode)
+            );
         }
         return isValid;
     }
@@ -229,7 +233,9 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
         if (nameCheck) {
             isValid = true;
         } else {
-            collector.checkThat("checking name() of '" + expectedField.getName() + "'", actual, equalTo(expectedField.getName()));
+            collector.checkThat(String.format("checking name() of '%s'", expectedField.getName()),
+                    actual, equalTo(expectedField.getName())
+            );
         }
         return isValid;
     }
@@ -250,21 +256,13 @@ public abstract class AbstractEnumObjectUnitTester<T> extends AbstractUnitTester
     }
 
     public enum NAME_CHECK_ENUM {
-        /**
-         * <strong>C</strong>ase sensitive, <strong>F</strong>ullname Check
-         */
-        CF, //
-        /**
-         * <strong>C</strong>ase <strong>I</strong>nsensitive, <strong>F</strong>ullname Check
-         */
-        CIF, //
-        /**
-         * <strong>C</strong>ase sensitive, <strong>S</strong>tarts <strong>W</strong>ith Check
-         */
-        CSW, //
-        /**
-         * <strong>C</strong>ase<strong>I</strong>nsensitive, <strong>S</strong>tarts <strong>W</strong>ith Check
-         */
+        /** <strong>C</strong>ase sensitive, <strong>F</strong>ullname Check */
+        CF,
+        /** <strong>C</strong>ase <strong>I</strong>nsensitive, <strong>F</strong>ullname Check */
+        CIF,
+        /** <strong>C</strong>ase sensitive, <strong>S</strong>tarts <strong>W</strong>ith Check */
+        CSW,
+        /** <strong>C</strong>ase<strong>I</strong>nsensitive, <strong>S</strong>tarts <strong>W</strong>ith Check */
         CISW
     }
 }

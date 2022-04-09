@@ -13,8 +13,9 @@ import org.junit.Ignore;
 class ConcreteEntityUnitTesterToStringDefault<
         T extends DataEntityUnitTester> extends SimulationEntityTester<T> {
 
-    /* constructors */
+    // constructors
     protected ConcreteEntityUnitTesterToStringDefault(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
         super(typeOfo2T, callTheCreatorForT);
     }
+// end - constructors
 }

@@ -8,11 +8,13 @@ import java.util.concurrent.Callable;
  * @param <T> the type of the pojo class/classes to test
  */
 public abstract class CallTheCreator<T> implements Callable<T> {
-    /* abstract methods */
+
+    // abstract methods
 
     /**
      * @return a new instance of type {@code T}
      */
     @Override
     public abstract T call();
+// end -  abstract methods
 }
