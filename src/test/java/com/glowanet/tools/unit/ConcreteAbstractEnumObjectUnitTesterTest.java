@@ -1,13 +1,10 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.unit.data.DataUnitTester;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalToObject;
-import static org.hamcrest.Matchers.isA;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 
 /**
  * Unit Tests to verify {@code  com.glowanet.tools.unit.ConcreteEnumObjectUnitTester}.
@@ -19,22 +16,21 @@ import static org.hamcrest.Matchers.not;
 public class ConcreteAbstractEnumObjectUnitTesterTest {
 
     /* fields */
-    private ConcreteAbstractEntityUnitTester o2T;
+    private ConcreteAbstractEnumObjectUnitTester o2T;
     /* end - fields */
 
     /* methods */
     @Before
     public void setUp() {
-        o2T = new ConcreteAbstractEntityUnitTester();
+        o2T = new ConcreteAbstractEnumObjectUnitTester();
     }
 
     @Test
     public void testCreateObject2Test_return_newCreatedObject() {
         Object actual = o2T.createObject2Test();
         Object actual2 = o2T.createObject2Test();
-        assertThat(actual, isA(DataUnitTester.class));
-        assertThat(actual2, isA(DataUnitTester.class));
-        assertThat(actual, not(equalToObject(actual2)));
+        assertThat(actual, nullValue());
+        assertThat(actual2, nullValue());
     }
     /* end - methods */
 }

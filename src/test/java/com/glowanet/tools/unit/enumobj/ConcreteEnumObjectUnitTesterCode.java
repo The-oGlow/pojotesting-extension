@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit.enumobj;
 
-import com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester;
+import com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTesterCode;
 import org.junit.Ignore;
 
 import java.util.List;
@@ -10,14 +10,12 @@ import java.util.List;
  *
  * @param <E> the type of the enum which will be tested
  */
-@SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this as test class!!")
-public class ConcreteEnumObjectUnitTester<
-        E extends DataEnumObjectUnitTester> extends EnumObjectUnitTester<E> {
+public class ConcreteEnumObjectUnitTesterCode<
+        E extends DataEnumObjectUnitTesterCode> extends EnumObjectUnitTester<E> {
 
-    /* constructors */
-    protected ConcreteEnumObjectUnitTester() {
-        super((Class<E>) DataEnumObjectUnitTester.class);
+    public ConcreteEnumObjectUnitTesterCode() {
+        super((Class<E>) DataEnumObjectUnitTesterCode.class);
     }
 
     @Override

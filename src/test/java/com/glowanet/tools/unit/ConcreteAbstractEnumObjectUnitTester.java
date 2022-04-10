@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.unit.data.DataUnitTester;
+import com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester;
 
 import java.util.List;
 
@@ -11,18 +11,19 @@ import java.util.List;
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEnumObjectUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
-public class ConcreteAbstractEnumObjectUnitTester extends AbstractEnumObjectUnitTester<DataUnitTester> {
+public class ConcreteAbstractEnumObjectUnitTester extends AbstractEnumObjectUnitTester<DataEnumObjectUnitTester> {
 
     /* constructors */
     public ConcreteAbstractEnumObjectUnitTester() {
-        super(DataUnitTester.class);
+        super(DataEnumObjectUnitTester.class);
+        setCodeCheckEnabled(false);
     }
     /* end - constructors */
 
     /* methods */
     @Override
-    protected DataUnitTester createObject2Test() {
-        return new DataUnitTester();
+    protected DataEnumObjectUnitTester createObject2Test() {
+        return null;
     }
 
     @Override

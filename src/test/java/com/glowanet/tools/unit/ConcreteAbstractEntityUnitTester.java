@@ -1,6 +1,7 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.unit.data.DataUnitTester;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
+import org.junit.Ignore;
 
 import java.util.List;
 
@@ -11,19 +12,20 @@ import java.util.List;
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEntityUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
-public class ConcreteAbstractEntityUnitTester extends AbstractEntityUnitTester<DataUnitTester> {
+@Ignore
+public class ConcreteAbstractEntityUnitTester extends AbstractEntityUnitTester<DataEntityUnitTester> {
 
     /* constructors */
     public ConcreteAbstractEntityUnitTester() {
-        super(DataUnitTester.class);
+        super(DataEntityUnitTester.class);
         setCheckSVUID(false);
     }
     /* end - constructors */
 
     /* methods */
     @Override
-    protected DataUnitTester createObject2Test() {
-        return new DataUnitTester();
+    protected DataEntityUnitTester createObject2Test() {
+        return new DataEntityUnitTester();
     }
 
     @Override

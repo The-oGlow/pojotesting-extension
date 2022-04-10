@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.unit.data.DataUnitTester;
+import com.glowanet.tools.unit.entity.data.DataEntityUnitTester;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,8 +32,8 @@ public class ConcreteAbstractEntityUnitTesterTest {
     public void testCreateObject2Test_return_newCreatedObject() {
         Object actual = o2T.createObject2Test();
         Object actual2 = o2T.createObject2Test();
-        assertThat(actual, isA(DataUnitTester.class));
-        assertThat(actual2, isA(DataUnitTester.class));
+        assertThat(actual, isA(DataEntityUnitTester.class));
+        assertThat(actual2, isA(DataEntityUnitTester.class));
         assertThat(actual, not(equalToObject(actual2)));
     }
     /* end - methods */
