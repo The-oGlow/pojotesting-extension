@@ -4,7 +4,6 @@ import com.glowanet.tools.unit.AbstractUnitTester;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -38,14 +37,15 @@ public abstract class EnumObjectUnitTester<E> extends AbstractUnitTester<E> {
     // end - static fields
 
     // fields
-    private Collection<String> allFieldsToIgnoreForCode = new HashSet<>();
-    private NAME_CHECK_ENUM    nameCheckType            = DEFAULT_NAME_CHECK_TYPE;
-    private boolean            codeCheckEnabled         = DEFAULT_CODE_CHECK_ENABLED;
+    private Collection<String> allFieldsToIgnoreForCode;
+    private NAME_CHECK_ENUM    nameCheckType    = DEFAULT_NAME_CHECK_TYPE;
+    private boolean            codeCheckEnabled = DEFAULT_CODE_CHECK_ENABLED;
 // end - fields
 
     // constructors
     protected EnumObjectUnitTester(Class<E> typeOfo2E) {
         super(typeOfo2E);
+        localSetup();
     }
 // end - constructors
 
@@ -63,8 +63,8 @@ public abstract class EnumObjectUnitTester<E> extends AbstractUnitTester<E> {
 // end -  abstract methods
 
     // methods
-    @Before
-    public void setUp() {
+    protected void localSetup() {
+        allFieldsToIgnoreForCode = new HashSet<>();
         allFieldsToIgnoreForCode.addAll(enumObjectsToIgnoreForCode() == null ? List.of() : enumObjectsToIgnoreForCode());
         allFieldsToIgnoreForCode = allFieldsToIgnoreForCode.stream().map(String::toLowerCase).collect(Collectors.toSet());
     }
@@ -83,11 +83,13 @@ public abstract class EnumObjectUnitTester<E> extends AbstractUnitTester<E> {
         }
     }
 
+    protected boolean checkIgnoredFields(Field expectedField) {
+        Throwable e = new IllegalArgumentException(String.format("Field '%s' is not in ignore list!", expectedField));
+        return checkIgnoredFields(expectedField, e);
+    }
+
     protected boolean checkIgnoredFields(Field expectedField, Throwable e) {
         boolean isIgnored = false;
-        if (e == null) {
-            e = new IllegalArgumentException(String.format("Field '%s' is not in ignore list!", expectedField));
-        }
         if (isCodeCheckEnabled()) {
             if (expectedField != null) {
                 if (isInIgnoreListForCode(expectedField.getName())) {

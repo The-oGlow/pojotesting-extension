@@ -1,5 +1,7 @@
 package com.glowanet.tools.unit.entity;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assume;
 
 import static org.hamcrest.Matchers.is;
@@ -10,6 +12,10 @@ import static org.hamcrest.Matchers.is;
  * @param <T> the type of the entity which will be tested
  */
 public abstract class SimulationEntityTesterTest<T> {
+
+    // static fields
+    protected static final Logger LOGGER = LogManager.getLogger();
+// end - static fields
 
     // abstract methods
 

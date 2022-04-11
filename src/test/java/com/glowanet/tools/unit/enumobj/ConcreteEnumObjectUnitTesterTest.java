@@ -3,15 +3,13 @@ package com.glowanet.tools.unit.enumobj;
 import com.glowanet.tools.unit.enumobj.EnumObjectUnitTester.NAME_CHECK_ENUM;
 import com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester;
 import com.glowanet.util.junit.TestResultHelper;
-import com.glowanet.util.reflect.ReflectionHelper;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-import static com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester.ITEMNAME_WITHOUT_NUMBER;
-import static com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester.ITEMNAME_WITH_NUMBER;
+import static com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester.ITEMNAME_EXISTS;
 import static com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester.ITEM_WITHOUT_NUMBER;
 import static com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester.ITEM_WITH_NUMBER;
 import static com.glowanet.util.junit.TestResultHelper.TWO_ERROR;
@@ -22,21 +20,28 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
-public class ConcreteEnumObjectUnitTesterTest<E extends DataEnumObjectUnitTester> {
+public class ConcreteEnumObjectUnitTesterTest<
+        E extends DataEnumObjectUnitTester> extends SimulationEnumObjectTesterTest<E> {
 
-    // fields
-    private ConcreteEnumObjectUnitTester<E> o2T;
-// end - fields
+    private SimulationEnumObjectTester<E> o2T;
 
     // methods
     @Before
     public void setUp() {
-        o2T = new ConcreteEnumObjectUnitTester<>();
+        o2T = prepareEnumObjectTester((Class<E>) DataEnumObjectUnitTester.class);
     }
 
     @Test
-    public void testCheckIgnoredFields_null_null_return_false_raise_noException() {
-        boolean actual = o2T.checkIgnoredFields(null, null);
+    public void testCheckIgnoredFields_existingField_return_false_raise_noException() {
+        Field expectedField = prepareFieldExists();
+        assertThat(expectedField, notNullValue());
+        boolean actual = o2T.checkIgnoredFields(expectedField);
+        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
+    }
+
+    @Test
+    public void testCheckIgnoredFields_null_return_false_raise_noException() {
+        boolean actual = o2T.checkIgnoredFields(null);
         TestResultHelper.verifyCollectorNoError(o2T, false, actual);
     }
 
@@ -82,8 +87,8 @@ public class ConcreteEnumObjectUnitTesterTest<E extends DataEnumObjectUnitTester
     }
 
     @Test
-    public void testIsInIgnoreListForCode_value_return_false_raise_noException() {
-        boolean actual = o2T.isInIgnoreListForCode("value");
+    public void testIsInIgnoreListForCode_existingField_return_false_raise_noException() {
+        boolean actual = o2T.isInIgnoreListForCode(ITEMNAME_EXISTS);
         TestResultHelper.verifyCollectorNoError(o2T, false, actual);
     }
 
@@ -109,51 +114,75 @@ public class ConcreteEnumObjectUnitTesterTest<E extends DataEnumObjectUnitTester
     }
 
     @Test
-    public void testValidateEnumObjectCode_itemNameWithNumber_instance_return_true_raise_oneException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITH_NUMBER, DataEnumObjectUnitTester.class);
+    public void testValidateEnumObjectCode_itemNameWithNumber_instance_return_true_raise_oneException() {
+        Field expectedField = prepareFieldWithNo();
         E actualInstance = (E) ITEM_WITH_NUMBER;
         boolean actual = o2T.validateEnumObjectCode(expectedField, actualInstance);
         TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
     }
 
     @Test
-    public void testValidateEnumObjectCode_itemNameWithNumber_wrongInstance_return_true_raise_oneException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITH_NUMBER, DataEnumObjectUnitTester.class);
+    public void testValidateEnumObjectCode_itemNameWithNumber_wrongInstance_return_true_raise_oneException() {
+        Field expectedField = prepareFieldWithNo();
         E actualInstance = (E) ITEM_WITHOUT_NUMBER;
         boolean actual = o2T.validateEnumObjectCode(expectedField, actualInstance);
         TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
     }
 
     @Test
-    public void testValidateEnumObjectName_itemNameNoNumber_instance_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITHOUT_NUMBER, DataEnumObjectUnitTester.class);
+    public void testValidateEnumObjectName_itemNameNoNumber_instance_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithOutNo();
         E actualInstance = (E) ITEM_WITHOUT_NUMBER;
         boolean actual = o2T.validateEnumObjectName(expectedField, actualInstance);
         TestResultHelper.verifyCollectorNoError(o2T, true, actual);
     }
 
     @Test
-    public void testValidateEnumObjectName_itemNameWithNumber_instance_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITH_NUMBER, DataEnumObjectUnitTester.class);
+    public void testValidateEnumObjectName_itemNameWithNumber_instance_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithNo();
         E actualInstance = (E) ITEM_WITH_NUMBER;
         boolean actual = o2T.validateEnumObjectName(expectedField, actualInstance);
         TestResultHelper.verifyCollectorNoError(o2T, true, actual);
     }
 
     @Test
-    public void testValidateEnumObjectName_itemNameWithNumber_wrongInstance_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITH_NUMBER, DataEnumObjectUnitTester.class);
+    public void testValidateEnumObjectName_itemNameWithNumber_wrongInstance_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithNo();
         E actualInstance = (E) ITEM_WITHOUT_NUMBER;
         boolean actual = o2T.validateEnumObjectName(expectedField, actualInstance);
         TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
     }
 
     @Test
-    public void testValidateEnumObject_null_null_return_true_raise_noException() {
-        Field expectedField = null;
+    public void testValidateEnumObject_itemNameNoNumber_clazz_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithOutNo();
+        Class<E> actualClazz = (Class<E>) DataEnumObjectUnitTester.class;
+        boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
+        TestResultHelper.verifyCollector(o2T, TWO_ERROR, false, actual);
+    }
+
+    @Test
+    public void testValidateEnumObject_itemNameNoNumber_null_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithOutNo();
         Class<E> actualClazz = null;
         boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollectorNoError(o2T, true, actual);
+        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
+    }
+
+    @Test
+    public void testValidateEnumObject_itemNameWithNumber_clazz_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithNo();
+        Class<E> actualClazz = (Class<E>) DataEnumObjectUnitTester.class;
+        boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
+        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
+    }
+
+    @Test
+    public void testValidateEnumObject_itemNameWithNumber_null_return_true_raise_noException() {
+        Field expectedField = prepareFieldWithNo();
+        Class<E> actualClazz = null;
+        boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
+        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
     }
 
     @Test
@@ -165,37 +194,17 @@ public class ConcreteEnumObjectUnitTesterTest<E extends DataEnumObjectUnitTester
     }
 
     @Test
-    public void testValidateEnumObject_itemNameWithNumber_null_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITH_NUMBER, DataEnumObjectUnitTester.class);
+    public void testValidateEnumObject_null_null_return_true_raise_noException() {
+        Field expectedField = null;
         Class<E> actualClazz = null;
         boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
+        TestResultHelper.verifyCollectorNoError(o2T, true, actual);
     }
 
-    @Test
-    public void testValidateEnumObject_itemNameWithNumber_clazz_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITH_NUMBER, DataEnumObjectUnitTester.class);
-        Class<E> actualClazz = (Class<E>) DataEnumObjectUnitTester.class;
-        boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
+    @Override
+    protected SimulationEnumObjectTester<E> prepareEnumObjectTester(Class<E> typeOfO2E) {
+        return new ConcreteEnumObjectUnitTester<>(typeOfO2E);
     }
-
-    @Test
-    public void testValidateEnumObject_itemNameNoNumber_null_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITHOUT_NUMBER, DataEnumObjectUnitTester.class);
-        Class<E> actualClazz = null;
-        boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollector(o2T, WITH_ERROR, false, actual);
-    }
-
-    @Test
-    public void testValidateEnumObject_itemNameNoNumber_clazz_return_true_raise_noException() throws NoSuchFieldException {
-        Field expectedField = ReflectionHelper.findField(ITEMNAME_WITHOUT_NUMBER, DataEnumObjectUnitTester.class);
-        Class<E> actualClazz = (Class<E>) DataEnumObjectUnitTester.class;
-        boolean actual = o2T.validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollector(o2T, TWO_ERROR, false, actual);
-    }
-
 // end - methods
 
 }

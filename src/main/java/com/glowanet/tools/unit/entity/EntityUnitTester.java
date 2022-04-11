@@ -7,7 +7,6 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -52,24 +51,24 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     private boolean checkLogicalEqualsOnly = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
     private boolean checkSVUID             = DEFAULT_CHECK_SVUID;
 
-    private Collection<String> allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
-    private Collection<String> allFieldsDeniedForToString   = new HashSet<>();
+    private Collection<String> allFieldsToIgnoreForToString;
+    private Collection<String> allFieldsDeniedForToString;
 // end - fields
 
     // constructors
     protected EntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
+        localSetup();
     }
 // end - constructors
 
     // methods
-    @Before
-    public void setUp() {
-        assertThat(getObject2Test(), notNullValue());
-
+    protected void localSetup() {
+        allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
         allFieldsToIgnoreForToString.addAll(fieldsToIgnoreForToString() == null ? List.of() : fieldsToIgnoreForToString());
         allFieldsToIgnoreForToString = allFieldsToIgnoreForToString.stream().map(String::toLowerCase).collect(Collectors.toSet());
 
+        allFieldsDeniedForToString = new HashSet<>();
         allFieldsDeniedForToString.addAll(fieldsDeniedForToString() == null ? List.of() : fieldsDeniedForToString());
         allFieldsDeniedForToString = allFieldsDeniedForToString.stream().map(String::toLowerCase).collect(Collectors.toSet());
     }

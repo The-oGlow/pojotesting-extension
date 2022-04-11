@@ -5,23 +5,17 @@ import org.junit.Ignore;
 
 import java.util.List;
 
-/**
- * A concrete tester, which verifies the enum {@code E}.
- *
- * @param <E> the type of the enum which will be tested
- */
 @SuppressWarnings("UnconstructableJUnitTestCase")
 @Ignore("Do not call this as test class!!")
-public class ConcreteEnumObjectUnitTester<
+public class ConcreteEnumObjectUnitTesterIgnore<
         E extends DataEnumObjectUnitTester> extends SimulationEnumObjectTester<E> {
 
-    /* constructors */
-    protected ConcreteEnumObjectUnitTester(Class<E> typeOfo2E) {
+    protected ConcreteEnumObjectUnitTesterIgnore(Class<E> typeOfo2E) {
         super(typeOfo2E);
     }
 
     @Override
     protected List<String> enumObjectsToIgnoreForCode() {
-        return List.of();
+        return List.of(DataEnumObjectUnitTester.ITEMNAME_IGNORED);
     }
 }
