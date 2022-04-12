@@ -24,11 +24,6 @@ public class ConcreteAbstractEntityUnitTester extends AbstractEntityUnitTester<D
 
     /* methods */
     @Override
-    protected DataEntityUnitTester createObject2Test() {
-        return new DataEntityUnitTester();
-    }
-
-    @Override
     protected List<String> fieldsToIgnoreForToString() {
         return List.of("primJ", "valI", "valS");
     }

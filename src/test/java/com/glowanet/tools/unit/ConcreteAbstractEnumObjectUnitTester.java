@@ -22,14 +22,8 @@ public class ConcreteAbstractEnumObjectUnitTester extends AbstractEnumObjectUnit
 
     /* methods */
     @Override
-    protected DataEnumObjectUnitTester createObject2Test() {
-        return null;
-    }
-
-    @Override
     protected List<String> enumObjectsToIgnoreForCode() {
         return List.of();
     }
     /* end - methods */
-
 }

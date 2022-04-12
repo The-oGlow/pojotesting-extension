@@ -49,9 +49,9 @@ public class ConcreteUnitTesterTest {
     }
 
     @Test
-    public void testCreateObject2Test_return_newCreatedObject() {
-        Object actual = o2T.createObject2Test();
-        Object actual2 = o2T.createObject2Test();
+    public void testGetObject2Test_return_newCreatedObject() {
+        Object actual = o2T.getObject2Test();
+        Object actual2 = o2T.getObject2Test();
         assertThat(actual, isA(DataUnitTester.class));
         assertThat(actual2, isA(DataUnitTester.class));
         assertThat(actual, not(equalToObject(actual2)));

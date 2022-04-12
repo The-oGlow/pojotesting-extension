@@ -20,11 +20,4 @@ public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
     }
     /* end - static method */
-
-    /* methods */
-    @Override
-    protected DataUnitTester createObject2Test() {
-        return new DataUnitTester();
-    }
-    /* end - methods */
 }
