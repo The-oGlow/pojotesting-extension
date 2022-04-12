@@ -6,6 +6,8 @@ import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hamcrest.beans.PropertyUtil;
 import org.hamcrest.core.IsBetween;
 import org.junit.Rule;
@@ -13,6 +15,7 @@ import org.junit.Rule;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
@@ -40,6 +43,8 @@ public abstract class AbstractUnitTester<T> {
     public static final String                SERIAL_VERSION_UID_NAME          = "serialVersionUID";
     /** Range of IDs which are not allowed to use. */
     public static final IsBetween.Range<Long> SERIAL_VERSION_UID_INVALID_RANGE = new IsBetween.Range<>(-100L, 100L);
+
+    private static final Logger LOGGER = LogManager.getLogger();
 
     private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
 // end - static fields
@@ -71,14 +76,7 @@ public abstract class AbstractUnitTester<T> {
 
 // abstract methods
 
-    /**
-     * Create instance (with default constructor, if available).
-     *
-     * @return instance of the {@code T}
-     *
-     * @see #init()
-     */
-    protected abstract T createObject2Test();
+    //protected abstract T createObject2Test();
 // end -  abstract methods
 
 // static method
@@ -107,6 +105,30 @@ public abstract class AbstractUnitTester<T> {
 // end - static method
 
 // methods
+
+    /**
+     * Create instance (with default constructor).
+     *
+     * @return instance of the {@code T}
+     *
+     * @see #init()
+     */
+    private T createObject2Test() {
+        Class<T> type = getTypeOfo2T();
+        T newObject = null;
+        if (type != null) {
+            try {
+                newObject = type.getDeclaredConstructor((Class<?>[]) null).newInstance((Object[]) null);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                LOGGER.error("Cannot create from type '{}' : {}", type, e.getMessage());
+                fail(e.getMessage());
+            }
+        } else {
+            LOGGER.warn("Cannot create from type 'null'!");
+            fail("Cannot create from type 'null'!");
+        }
+        return newObject;
+    }
 
     /**
      * @return T
