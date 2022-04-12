@@ -104,7 +104,7 @@ public abstract class EnumObjectUnitTester<E> extends AbstractUnitTester<E> {
     }
 
     @Override
-    protected E createObject2Test() {
+    protected final Class<E> getTypeOfo2T() {
         //nothing will be created
         return null;
     }

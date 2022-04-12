@@ -46,14 +46,6 @@ public class ConcreteEnumObjectUnitTesterTest<
     }
 
     @Test
-    public void testCreateObject2Test_return_null() {
-        Object actual = o2T.createObject2Test();
-        Object actual2 = o2T.createObject2Test();
-        assertThat(actual, nullValue());
-        assertThat(actual2, nullValue());
-    }
-
-    @Test
     public void testEnumObjectsToIgnoreForCode_return_emptyList() {
         List<String> actual = o2T.enumObjectsToIgnoreForCode();
         assertThat(actual, notNullValue());
@@ -67,7 +59,7 @@ public class ConcreteEnumObjectUnitTesterTest<
     }
 
     @Test
-    public void testGetObject2Test_return_newObject() {
+    public void testGetObject2Test_return_null() {
         Object actual = o2T.getObject2Test();
         Object actual2 = o2T.getObject2Test();
         assertThat(actual, nullValue());
