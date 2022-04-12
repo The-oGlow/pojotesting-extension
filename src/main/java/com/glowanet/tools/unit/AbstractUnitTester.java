@@ -113,14 +113,15 @@ public abstract class AbstractUnitTester<T> {
      *
      * @see #init()
      */
-    private T createObject2Test() {
+    protected T createObject2Test() {
         Class<T> type = getTypeOfo2T();
         T newObject = null;
         if (type != null) {
             try {
                 newObject = type.getDeclaredConstructor((Class<?>[]) null).newInstance((Object[]) null);
+                //LOGGER.info("Created from type '{}'!", type);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                LOGGER.error("Cannot create from type '{}' : {}", type, e.getMessage());
+                LOGGER.error("Cannot create from type '{}' : {}!", type, e.getMessage());
                 fail(e.getMessage());
             }
         } else {

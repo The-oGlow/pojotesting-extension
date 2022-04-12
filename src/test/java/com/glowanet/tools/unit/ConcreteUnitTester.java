@@ -1,12 +1,14 @@
 package com.glowanet.tools.unit;
 
 import com.glowanet.tools.unit.data.DataUnitTester;
+import org.junit.Ignore;
 
 /**
  * Concrete Implementation of {@code  com.glowanet.tools.unit.AbstractUnitTester} for the unit tests.
  *
  * @see com.glowanet.tools.unit.AbstractUnitTester
  */
+@Ignore("Do not call this as test class!!")
 public class ConcreteUnitTester extends AbstractUnitTester<DataUnitTester> {
 
     /* constructors */

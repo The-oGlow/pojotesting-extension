@@ -1,6 +1,7 @@
 package com.glowanet.tools.unit;
 
 import com.glowanet.tools.unit.enumobj.data.DataEnumObjectUnitTester;
+import org.junit.Ignore;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEnumObjectUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
+@Ignore("Do not call this as test class!!")
 public class ConcreteAbstractEnumObjectUnitTester extends AbstractEnumObjectUnitTester<DataEnumObjectUnitTester> {
 
     /* constructors */

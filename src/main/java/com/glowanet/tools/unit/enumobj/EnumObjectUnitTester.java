@@ -103,9 +103,12 @@ public abstract class EnumObjectUnitTester<E> extends AbstractUnitTester<E> {
         return isIgnored;
     }
 
+    /**
+     * @return always null
+     */
     @Override
-    protected final Class<E> getTypeOfo2T() {
-        //nothing will be created
+    protected E createObject2Test() {
+        // Cannot instantiate an enum.
         return null;
     }
 
