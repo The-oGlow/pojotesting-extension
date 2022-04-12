@@ -19,15 +19,7 @@ public class ConcreteEntityUnitTesterLogicalTest<
 
     // methods
     @Test
-    public void testCreateObject2Test_return_newCreatedObject() {
-        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
-        Object actual = entityUnitTester.createObject2Test();
-
-        TestResultHelper.verifyInstance(actual, DataEntityUnitTesterLogicalEquals.class);
-    }
-
-    @Test
-    public void testGetObject2Test_return_currentUsedObject() {
+    public void testGetObject2Test_return_newCreatedObject() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         Object actual = entityUnitTester.getObject2Test();
 

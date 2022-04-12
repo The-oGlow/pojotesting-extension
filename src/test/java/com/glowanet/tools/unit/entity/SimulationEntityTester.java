@@ -54,7 +54,7 @@ public abstract class SimulationEntityTester<T> extends EntityUnitTester<T> {
     }
 
     @Override
-    public T createObject2Test() {
+    public T getObject2Test() {
         return callTheCreatorForT == null ? null : callTheCreatorForT.call();
     }
 

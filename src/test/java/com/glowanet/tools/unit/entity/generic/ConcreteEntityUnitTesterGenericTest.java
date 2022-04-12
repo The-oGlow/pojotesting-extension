@@ -30,14 +30,6 @@ public class ConcreteEntityUnitTesterGenericTest<
 
     // methods
     @Test
-    public void testCreateObject2Test_return_newCreatedObject() {
-        SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
-        Object actual = entityUnitTester.createObject2Test();
-
-        TestResultHelper.verifyInstance(actual, DataEntityUnitTesterGenericEquals.class);
-    }
-
-    @Test
     public void testFieldsDeniedForToString_return_emptyList() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         List<String> actual = entityUnitTester._fieldsDeniedForToString();
@@ -46,7 +38,7 @@ public class ConcreteEntityUnitTesterGenericTest<
     }
 
     @Test
-    public void testGetObject2Test_return_currentUsedObject() {
+    public void testGetObject2Test_return_newCreatedObject() {
         SimulationEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         Object actual = entityUnitTester.getObject2Test();
 
