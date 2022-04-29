@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.unit.enumobj.EnumObjectUnitTester;
+import com.glowanet.tools.unit.enums.EnumUnitTester;
 
 /**
  * @param <T> the type of the entity which will be tested
@@ -9,7 +9,7 @@ import com.glowanet.tools.unit.enumobj.EnumObjectUnitTester;
  */
 @Deprecated(forRemoval = true, since = "1.0")
 @SuppressWarnings("java:S2176")
-public abstract class AbstractEnumObjectUnitTester<T> extends EnumObjectUnitTester<T> {
+public abstract class AbstractEnumObjectUnitTester<T> extends EnumUnitTester<T> {
 
     // constructors
     protected AbstractEnumObjectUnitTester(Class<T> typeOfo2T) {
