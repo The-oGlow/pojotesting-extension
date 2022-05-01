@@ -16,11 +16,11 @@ public abstract class BaseEnumTester<E> extends EnumUnitTester<E> {
     }
 
     public boolean _checkIgnoredFields(Field expectedField) {
-        return super.checkIgnoredFields(expectedField);
+        return super.checkIgnoredField(expectedField);
     }
 
     public boolean _checkIgnoredFields(Field expectedField, Throwable e) {
-        return super.checkIgnoredFields(expectedField, e);
+        return super.checkIgnoredField(expectedField, e);
     }
 
     public List<String> _enumObjectsToIgnoreForCode() {

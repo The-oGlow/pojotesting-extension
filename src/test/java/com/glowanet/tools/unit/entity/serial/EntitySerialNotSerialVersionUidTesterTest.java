@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import static com.glowanet.util.junit.TestResultHelper.WITH_ERROR;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 @RunWith(Parameterized.class)
 public class EntitySerialNotSerialVersionUidTesterTest<T extends DataEntityNotSerialVersionUid> extends BaseEntityTesterTest<T> {
@@ -27,10 +29,21 @@ public class EntitySerialNotSerialVersionUidTesterTest<T extends DataEntityNotSe
 
     @Test
     public void testValidateSerialVersionUID_notSerialVersionUid_raise_exception() {
+        assumeTrue(parameterCheckSVUID);
         BaseEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) DataEntityNotSerialVersionUid.class);
 
         o2T._validateSerialVersionUID();
 
         TestResultHelper.verifyCollector(o2T, WITH_ERROR);
+    }
+
+    @Test
+    public void testValidateSerialVersionUID_notSerialVersionUid_raise_noException() {
+        assumeFalse(parameterCheckSVUID);
+        BaseEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) DataEntityNotSerialVersionUid.class);
+
+        o2T._validateSerialVersionUID();
+
+        TestResultHelper.verifyCollectorNoError(o2T);
     }
 }

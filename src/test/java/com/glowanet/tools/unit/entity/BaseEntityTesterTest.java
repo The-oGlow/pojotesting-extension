@@ -1,9 +1,12 @@
 package com.glowanet.tools.unit.entity;
 
 import com.glowanet.data.entity.BaseDataEntity;
+import com.glowanet.tools.unit.TestFailedWatcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assume;
+import org.junit.Rule;
+import org.junit.rules.TestWatcher;
 import org.junit.runners.Parameterized;
 
 import static org.hamcrest.Matchers.is;
@@ -21,7 +24,9 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
 
     // fields
     @Parameterized.Parameter
-    public boolean parameterCheckSVUID;
+    public boolean     parameterCheckSVUID;
+    @Rule
+    public TestWatcher watcher = new TestFailedWatcher("checkSVUID", parameterCheckSVUID);
 // end - fields
 
     // abstract methods

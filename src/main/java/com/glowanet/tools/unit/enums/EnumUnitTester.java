@@ -71,34 +71,37 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
 
     @Test
     public void testValidateAllEnumObjects() {
-        List<Field> allEnumObjects = retrievePublicConstantsfromClass(getTypeOfo2T());
-
-        for (Field expectedEnumObject : allEnumObjects) //noinspection SpellCheckingInspection
-        {
-            //FIXME: das rausnehmen als "retrieveEnumsfromClass()"
-            if (isEnum(expectedEnumObject)) {
-                collector.checkThat(String.format("Checking '%s'", expectedEnumObject.getName()),
-                        validateEnumObject(expectedEnumObject, getTypeOfo2T()), equalTo(true)
-                );
-            }
+        List<Field> listEnumFields = retrieveEnumFromList(getTypeOfo2T());
+        for (Field enumField : listEnumFields) {
+            collector.checkThat(String.format("Checking '%s'", enumField.getName()),
+                    validateEnumObject(enumField, getTypeOfo2T()), equalTo(true)
+            );
         }
     }
 
-    protected boolean checkIgnoredFields(Field expectedField) {
+    /**
+     * @param expectedField the field to check, if it's in the ignore list
+     *
+     * @return TRUE=is in the ignore list, else FALSE
+     */
+    protected boolean checkIgnoredField(Field expectedField) {
         Throwable e = new IllegalArgumentException(String.format("Field '%s' is not in ignore list!", expectedField));
-        return checkIgnoredFields(expectedField, e);
+        return checkIgnoredField(expectedField, e);
     }
 
-    protected boolean checkIgnoredFields(Field expectedField, Throwable e) {
+    /**
+     * @param expectedField the field to check, if it's in the ignore list
+     * @param throwable     specific exception to add to the collector
+     *
+     * @return TRUE=is in the ignore list, else FALSE
+     */
+    protected boolean checkIgnoredField(Field expectedField, Throwable throwable) {
         boolean isIgnored = false;
-        if (isCodeCheckEnabled()) {
-            if (expectedField != null) {
-                if (isInIgnoreListForCode(expectedField.getName())) {
-                    isIgnored = true;
-                    LOGGER.warn("'{}' is listed to be ignored!", expectedField.getName());
-                } else {
-                    collector.addError(e);
-                }
+        if (expectedField != null) {
+            if (isInIgnoreListForCode(expectedField.getName())) {
+                isIgnored = true;
+            } else {
+                collector.addError(throwable);
             }
         }
         return isIgnored;
@@ -139,23 +142,6 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     }
 
     /**
-     * @param object the type to check
-     *
-     * @return TRUE=the type is an enum, else FALSE
-     */
-    protected boolean isEnum(Object object) {
-        boolean isAnEnum = false;
-        if (object != null) {
-            if (Field.class.isAssignableFrom(object.getClass())) {
-                isAnEnum = ((Field) object).isEnumConstant();
-            } else if (Class.class.isAssignableFrom(object.getClass())) {
-                isAnEnum = ((Class<?>) object).isEnum();
-            }
-        }
-        return isAnEnum;
-    }
-
-    /**
      * @param fieldName the fieldName to check
      *
      * @return TRUE=fieldName is in ignore list, else FALSE
@@ -164,6 +150,9 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
         boolean isInList = false;
         if (fieldName != null) {
             isInList = (allFieldsToIgnoreForCode.contains(fieldName.toLowerCase()));
+        }
+        if (isInList) {
+            LOGGER.info("'{}' is an ignored field!", fieldName);
         }
         return isInList;
     }
@@ -216,12 +205,12 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 if (isCodeCheckEnabled()) {
                     resultCode = validateEnumObjectCode(expectedField, actualInstance);
                 } else {
-                    LOGGER.warn("Checking getCode() is disabled for '{}' !", expectedField.getName());
+                    LOGGER.info("Checking getCode() is disabled for '{}' !", expectedField.getName());
                 }
                 isValid = resultName && resultCode;
 
             } catch (Exception e) {
-                isValid = checkIgnoredFields(expectedField, e);
+                isValid = checkIgnoredField(expectedField, e);
             }
         }
         return isValid;

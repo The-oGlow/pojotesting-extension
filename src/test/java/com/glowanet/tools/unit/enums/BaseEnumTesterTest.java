@@ -19,6 +19,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assume.assumeFalse;
+import static org.junit.Assume.assumeTrue;
 
 /**
  * An abstract class which operates as base class for the junit tests.
@@ -74,6 +76,7 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testIsCodeCheckEnabled_return_true() {
+        assumeTrue(parameterCodeCheckEnabled);
         BaseEnumTester<E> o2T = prepareEnumTester();
         boolean actual = o2T._isCodeCheckEnabled();
         assertThat(actual, equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
@@ -95,6 +98,7 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testSetCodeCheckEnabled_return_false() {
+        assumeTrue(parameterCodeCheckEnabled);
         BaseEnumTester<E> o2T = prepareEnumTester();
         assertThat(o2T._isCodeCheckEnabled(), equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
         o2T._setCodeCheckEnabled(false);
@@ -112,9 +116,18 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testValidateAllEnumObjects_raise_noException() {
+        assumeTrue(parameterCodeCheckEnabled);
         BaseEnumTester<E> o2T = prepareEnumTester();
         o2T.testValidateAllEnumObjects();
         TestResultHelper.verifyCollector(o2T, DataEnums.EXCEPTION_SUM);
+    }
+
+    @Test
+    public void testValidateAllEnumObjects_raise_exception() {
+        assumeFalse(parameterCodeCheckEnabled);
+        BaseEnumTester<E> o2T = prepareEnumTester();
+        o2T.testValidateAllEnumObjects();
+        TestResultHelper.verifyCollectorNoError(o2T);
     }
 
     @Test

@@ -74,11 +74,6 @@ public abstract class AbstractUnitTester<T> {
     }
 // end - constructors
 
-// abstract methods
-
-    //protected abstract T createObject2Test();
-// end -  abstract methods
-
 // static method
 
     /**
@@ -113,13 +108,13 @@ public abstract class AbstractUnitTester<T> {
      *
      * @see #init()
      */
+    @SuppressWarnings("java:S5960")
     protected T createObject2Test() {
         Class<T> type = getTypeOfo2T();
         T newObject = null;
         if (type != null) {
             try {
                 newObject = type.getDeclaredConstructor((Class<?>[]) null).newInstance((Object[]) null);
-                //LOGGER.info("Created from type '{}'!", type);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 LOGGER.error("Cannot create from type '{}' : {}!", type, e.getMessage());
                 fail(e.getMessage());
@@ -217,6 +212,23 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
+     * @param object the type to check
+     *
+     * @return TRUE=the type is an enum, else FALSE
+     */
+    protected boolean isEnum(Object object) {
+        boolean isAnEnum = false;
+        if (object != null) {
+            if (Field.class.isAssignableFrom(object.getClass())) {
+                isAnEnum = ((Field) object).isEnumConstant();
+            } else if (Class.class.isAssignableFrom(object.getClass())) {
+                isAnEnum = ((Class<?>) object).isEnum();
+            }
+        }
+        return isAnEnum;
+    }
+
+    /**
      * @param field    a field instance
      * @param instance the current instance where to make the {@code field} accessible
      */
@@ -228,6 +240,22 @@ public abstract class AbstractUnitTester<T> {
         } catch (IllegalArgumentException e) {
             field.trySetAccessible();
         }
+    }
+
+    /**
+     * @param clazzA the type from which to retrieve the enums
+     *
+     * @return a list of enums as field objects or an empty list.
+     */
+    protected List<Field> retrieveEnumFromList(Class<?> clazzA) {
+        List<Field> enumFieldList = new ArrayList<>();
+        List<Field> fieldList = retrievePublicConstantsfromClass(clazzA);
+        for (Field expectedEnumObject : fieldList) {
+            if (isEnum(expectedEnumObject)) {
+                enumFieldList.add(expectedEnumObject);
+            }
+        }
+        return enumFieldList;
     }
 
     /**
