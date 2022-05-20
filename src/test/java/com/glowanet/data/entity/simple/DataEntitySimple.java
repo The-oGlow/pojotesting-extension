@@ -1,0 +1,13 @@
+package com.glowanet.data.entity.simple;
+
+import com.glowanet.data.entity.BaseDataEntity;
+
+/**
+ * Test Object with
+ * <ul>
+ *     <li>a default {@code #equals()}- & {@code #hashCode()}-method</li>
+ *     <li>a default {@code #toString()}-method.</li>
+ * </ul>
+ */
+public class DataEntitySimple extends BaseDataEntity {
+}

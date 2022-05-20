@@ -1,15 +1,17 @@
 package com.glowanet.tools.unit;
 
 /**
- * @param <T> the type of the class to test
+ * @param <T> the type of the entity which will be tested
  *
- * @deprecated Use @{@code com.glowanet.tools.unit.entity.AbstractEntityUnitTester}
+ * @deprecated Use @{@code com.glowanet.tools.unit.entity.EntityUnitTester}
  */
 @Deprecated(forRemoval = true, since = "1.0")
-@SuppressWarnings({"java:S2176", "java:S1133"})
-public abstract class AbstractEntityUnitTester<T> extends com.glowanet.tools.unit.entity.AbstractEntityUnitTester<T> {
+@SuppressWarnings("java:S2176")
+public abstract class AbstractEntityUnitTester<T> extends com.glowanet.tools.unit.entity.EntityUnitTester<T> {
 
+    // constructors
     protected AbstractEntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
+    // end - constructors
 }
