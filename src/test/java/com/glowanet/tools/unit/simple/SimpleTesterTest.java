@@ -161,8 +161,8 @@ public class SimpleTesterTest {
         assertThat(actual, hasSize(DataSimple.CONST_COUNT));
     }
 
-    @Test(expected = IllegalAccessException.class)
-    public void testSetFinalStatic_throw_IAException() throws IllegalAccessException {
+    @Test
+    public void testSetFinalStatic_method_throw_IAException() throws IllegalAccessException {
         DataSimple actual = new DataSimple();
         Class<?> clazzActual = actual.getClass();
         String fieldName = DataSimple.PRIV_CONST_NAME;
@@ -172,10 +172,11 @@ public class SimpleTesterTest {
         assertThat(DataSimple.VAL_PREV, not(equalTo(DataSimple.VAL_NEW)));
         assertThat(DataSimple.PRIV_CONST, equalTo(DataSimple.VAL_PREV));
 
-        SimpleTester._setFinalStatic(clazzActual, fieldName, newValue);
-
+        assertThrows(IllegalAccessException.class, () ->
+                SimpleTester._setFinalStatic(clazzActual, fieldName, newValue)
+        );
         assertThat(DataSimple.VAL_PREV, not(equalTo(DataSimple.VAL_NEW)));
-        assertThat(DataSimple.PRIV_CONST, equalTo(DataSimple.VAL_NEW));
+        assertThat(DataSimple.PRIV_CONST, not(equalTo(DataSimple.VAL_NEW)));
     }
     /* end - methods */
 }
