@@ -1,7 +1,7 @@
 // project settings (from pom-file)
 // user data
 :proj_user: ollily
-:proj_user_org: ollily
+:proj_user_org: the-oglow
 :proj_author: Oliver Glowa
 :proj_user_email: coding at glowa-net dot com
 :proj_vcs_url: https://gitlab.com
@@ -19,3 +19,7 @@
 :proj_module: pojotesting-extension
 :proj_version: [latest release]
 :proj_description: Dynamically unit-testing for pojos.
+:proj_id_codacy: 8305d44d36af45858a51bf64dbeaad28
+:proj_id_coverity: -1
+:proj_id_openssf: -1
+
