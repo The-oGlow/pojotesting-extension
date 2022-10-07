@@ -19,7 +19,7 @@
 :proj_module: pojotesting-extension
 :proj_version: [latest release]
 :proj_description: Dynamically unit-testing for pojos.
-:proj_id_codacy: 8305d44d36af45858a51bf64dbeaad28
+:proj_id_codacy: d07bb499775f422db92eb8778362b0b9
 :proj_id_coverity: -1
-:proj_id_openssf: -1
+:proj_id_openssf: 6559
 

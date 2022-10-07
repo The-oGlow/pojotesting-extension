@@ -22,10 +22,9 @@
     <inceptionYear>2020</inceptionYear>
 
     <scm>
-        <!-- scm-connections are defined as constant -->
-        <connection>scm:git:https://gitlab.com/the-oglow/pojotesting-extension.git</connection>
-        <developerConnection>scm:git:https://gitlab.com/the-oglow/pojotesting-extension.git</developerConnection>
-        <url>${project.env.CI_PROJECT_URL}</url>
+        <connection>scm:git:https://github.com/The-oGlow/pojotesting-extension.git</connection>
+        <developerConnection>scm:git:https://github.com/The-oGlow/pojotesting-extension.git</developerConnection>
+        <url>${project.env.GH_PROJECT_URL}</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -114,26 +113,6 @@
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
         </repository>
-        <repository>
-            <id>coding.github-ss</id>
-            <name>ASS-Awesome Snap Shots</name>
-            <url>https://maven.pkg.github.com/The-oGlow/Awesome-Snap-Shots</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>interval:10</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>coding.github</id>
-            <name>CAI-Central Awesome Index</name>
-            <url>https://maven.pkg.github.com/The-oGlow/Central-Awesome-Index</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-        </repository>
     </repositories>
 
     <pluginRepositories>
@@ -151,25 +130,6 @@
                 <checksumPolicy>warn</checksumPolicy>
             </releases>
         </pluginRepository>
-        <pluginRepository>
-            <id>coding.github-ss</id>
-            <name>ASS-Awesome Snap Shots</name>
-            <url>https://maven.pkg.github.com/The-oGlow/Awesome-Snap-Shots</url>
-            <snapshots>
-                <enabled>false</enabled>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>coding.github</id>
-            <name>CAI-Central Awesome Index</name>
-            <url>https://maven.pkg.github.com/The-oGlow/Central-Awesome-Index</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>daily</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </releases>
-        </pluginRepository>
     </pluginRepositories>
 
     <!-- Section Profiles -->
@@ -177,13 +137,95 @@
     <profiles>
         <profile>
             <!--
+                Description     :   Define settings for Github
+             -->
+            <id>settings-github</id>
+            <activation>
+                <property>
+                    <name>env.GITHUB_ACTOR</name>
+                </property>
+            </activation>
+
+            <!--            <scm>-->
+            <!--                <connection>scm:git:https://github.com/The-oGlow/pojotesting-extension.git</connection>-->
+            <!--                <developerConnection>scm:git:https://github.com/The-oGlow/pojotesting-extension.git</developerConnection>-->
+            <!--                <url>${project.env.GH_PROJECT_URL}</url>-->
+            <!--                <tag>HEAD</tag>-->
+            <!--            </scm>-->
+
+            <!-- Section Repositories -->
+            <!-- ============================================== -->
+            <repositories>
+                <repository>
+                    <id>coding.github.ss</id>
+                    <name>ASS-Awesome Snap Shots</name>
+                    <url>https://maven.pkg.github.com/The-oGlow/Awesome-Snap-Shots</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>interval:10</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                </repository>
+                <repository>
+                    <id>coding.github</id>
+                    <name>CAI-Central Awesome Index</name>
+                    <url>https://maven.pkg.github.com/The-oGlow/Central-Awesome-Index</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </releases>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>coding.github.ss</id>
+                    <name>ASS-Awesome Snap Shots</name>
+                    <url>https://maven.pkg.github.com/The-oGlow/Awesome-Snap-Shots</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>false</enabled>
+                    </releases>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>coding.github</id>
+                    <name>CAI-Central Awesome Index</name>
+                    <url>https://maven.pkg.github.com/The-oGlow/Central-Awesome-Index</url>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </releases>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+        <profile>
+            <!--
                 Description     :   Define settings for Gitlab
              -->
             <id>settings-gitlab</id>
+            <activation>
+                <property>
+                    <name>env.GITLAB_USER_LOGIN</name>
+                </property>
+            </activation>
+
             <!--            <scm>-->
-            <!--                &lt;!&ndash;&ndash; scm-connections are defined as constant &ndash;&ndash;&gt;-->
-            <!--            <connection>scm:git:https://gitlab.com/the-oglow/pojotesting-extension.git</connection>-->
-            <!--            <developerConnection>scm:git:https://gitlab.com/the-oglow/pojotesting-extension.git</developerConnection>-->
+            <!--                <connection>scm:git:https://gitlab.com/The-oGlow/pojotesting-extension.git</connection>-->
+            <!--                <developerConnection>scm:git:https://gitlab.com/The-oGlow/pojotesting-extension.git</developerConnection>-->
             <!--                <url>${project.env.CI_PROJECT_URL}</url>-->
             <!--                <tag>HEAD</tag>-->
             <!--            </scm>-->
@@ -191,9 +233,47 @@
             <properties>
                 <!-- Gitlab Properties -->
                 <!-- ============================================== -->
-                <!-- This gitlab repository -->
+                <!-- The ID of this gitlab repository -->
                 <project.env.CI_PROJECT_ID>23292172</project.env.CI_PROJECT_ID>
             </properties>
+
+            <!-- Section Repositories -->
+            <!-- ============================================== -->
+            <repositories>
+                <repository>
+                    <id>coding.gitlab</id>
+                    <name>CASSI-Central Awesome Snap Shot Index</name>
+                    <url>https://gitlab.com/api/v4/groups/10107405/-/packages/maven</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </releases>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>coding.gitlab</id>
+                    <name>CASSI-Central Awesome Snap Shot Index</name>
+                    <url>https://gitlab.com/api/v4/groups/10107405/-/packages/maven</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>interval:10</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>warn</checksumPolicy>
+                    </releases>
+                </pluginRepository>
+            </pluginRepositories>
         </profile>
     </profiles>
 </project>
