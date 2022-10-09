@@ -52,7 +52,7 @@ public abstract class AbstractUnitTester<T> {
     static {
         try {
             randomValueFactory = com.glowanet.tools.random.RandomValueFactory.getInstance();
-        } catch (RuntimeException ignored) {
+        } catch (RuntimeException ignored) { //NOSONAR java:S1166
             //ignore
         }
     }
@@ -70,7 +70,8 @@ public abstract class AbstractUnitTester<T> {
      */
     protected AbstractUnitTester(Class<T> typeOfo2T) {
         this.typeOfo2T = typeOfo2T;
-        init();
+        init(); //NOSONAR java:S1699
+
     }
 // end - constructors
 
@@ -87,7 +88,7 @@ public abstract class AbstractUnitTester<T> {
      */
     @SuppressWarnings({"java:S3011"})
     protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws IllegalAccessException {
-        throw new IllegalAccessException("Function currently not supported");
+        throw new IllegalAccessException("Function currently not supported"); //NOSONAR java:S1162
 /*
         Field field = clazzA.getDeclaredField(fieldName);
         field.setAccessible(true);
@@ -146,9 +147,9 @@ public abstract class AbstractUnitTester<T> {
         try {
             idField = instance.getClass().getDeclaredField(fieldName);
             makeFieldAccessible(idField, instance);
-        } catch (NoSuchFieldException e) {
+        } catch (NoSuchFieldException e) { //NOSONAR java:S1166
             fail(String.format("No '%s' defined : %s", fieldName, e.getMessage()));
-        } catch (SecurityException e) {
+        } catch (SecurityException e) { //NOSONAR java:S1166
             fail(String.format("'%s' not accessible : %s ", fieldName, e.getMessage()));
         }
         return idField;
@@ -223,6 +224,8 @@ public abstract class AbstractUnitTester<T> {
                 isAnEnum = ((Field) object).isEnumConstant();
             } else if (Class.class.isAssignableFrom(object.getClass())) {
                 isAnEnum = ((Class<?>) object).isEnum();
+            } else {
+                //nothing2do
             }
         }
         return isAnEnum;
@@ -237,7 +240,7 @@ public abstract class AbstractUnitTester<T> {
             if (!field.canAccess(instance)) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) { //NOSONAR java:S1166
             field.trySetAccessible();
         }
     }
@@ -348,7 +351,7 @@ public abstract class AbstractUnitTester<T> {
      * @return the generated value or null
      */
     @SuppressWarnings({"java:S2209", "unchecked", "rawtypes"})
-    private <V> Object retrieveDefaultValue(Class<V> clazzV) {
+    protected <V> Object retrieveDefaultValue(Class<V> clazzV) {
         Object result = null;
         if (randomValueFactory != null) {
             IRandomStrategy<?> randomValueCreator = randomValueFactory.getProvider(clazzV);

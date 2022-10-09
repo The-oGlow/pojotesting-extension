@@ -58,7 +58,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     // constructors
     protected EntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
-        localSetup();
+        localSetup(); //NOSONAR java:S1699
     }
 // end - constructors
 
@@ -287,7 +287,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
             Object idValue = null;
             try {
                 idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, instance.getClass());
-            } catch (AssertionError error) {
+            } catch (AssertionError error) { //NOSONAR java:S1166
                 //can be ignored
             }
             collector.checkThat(reasonNull, idValue, notNullMatcher);
@@ -326,8 +326,8 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
                 collector.checkThat(String.format("'%s' doesn't exists or is accessible!", setter.getName()), e, nullValue());
             } catch (IllegalArgumentException | InvocationTargetException e) {
                 collector.checkThat(
-                        String.format("'%s' has the wrong arguments '%s' -> '%s'!", setter.getName(), Arrays.toString(paramTypes), Arrays.toString(paramValues)),
-                        e, nullValue()
+                        String.format("'%s' has the wrong arguments '%s' -> '%s'!",
+                                setter.getName(), Arrays.toString(paramTypes), Arrays.toString(paramValues)), e, nullValue()
                 );
             }
         }

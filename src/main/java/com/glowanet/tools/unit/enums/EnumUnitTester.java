@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     // constructors
     protected EnumUnitTester(Class<E> typeOfo2E) {
         super(typeOfo2E);
-        localSetup();
+        localSetup(); //NOSONAR java:S1699
     }
 // end - constructors
 
@@ -149,7 +150,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     protected boolean isInIgnoreListForCode(String fieldName) {
         boolean isInList = false;
         if (fieldName != null) {
-            isInList = (allFieldsToIgnoreForCode.contains(fieldName.toLowerCase()));
+            isInList = (allFieldsToIgnoreForCode.contains(fieldName.toLowerCase(Locale.getDefault())));
         }
         if (isInList) {
             LOGGER.info("'{}' is an ignored field!", fieldName);
@@ -212,6 +213,8 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
             } catch (Exception e) {
                 isValid = checkIgnoredField(expectedField, e);
             }
+        } else {
+            // nothing2do
         }
         return isValid;
     }
@@ -231,7 +234,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
         Object objectCode = null;
         try {
             objectCode = ReflectionHelper.readField(FIELD_NAME_CODE, actualInstance);
-        } catch (IllegalArgumentException | AssertionError e) {
+        } catch (IllegalArgumentException | AssertionError e) { //NOSONAR java:S1166
             //nothing2do
         }
         Number actualCode = null;
@@ -284,11 +287,11 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 nameCheck = expected.startsWith(actual);
                 break;
 
-            case CISW:
+            case CISW: //NOSONAR java:S1151
                 if (expected.contains(UNDERLINE_CHAR)) {
                     expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
                 }
-                expected = expected.toLowerCase();
+                expected = expected.toLowerCase(Locale.getDefault());
                 nameCheck = expected.equalsIgnoreCase(actual);
                 break;
 

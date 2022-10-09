@@ -69,7 +69,8 @@ public class SimpleTesterTest {
     @Test
     public void testFindField_throws_fieldNotFoundException() {
         DataSimple instance = o2T.getObject2Test();
-        Throwable actual = assertThrows(Throwable.class, () -> o2T._findField(instance, DataSimple.FIELD_NOT_EXISTS));
+        Throwable actual = assertThrows("Expected exception : " + Throwable.class,
+                Throwable.class, () -> o2T._findField(instance, DataSimple.FIELD_NOT_EXISTS));
         assertThat(actual, notNullValue());
         assertThat(actual, instanceOf(AssertionError.class));
         assertThat(actual.getMessage(), matchesRegex(String.format("^No '%s' defined : .+$", DataSimple.FIELD_NOT_EXISTS)));
@@ -172,8 +173,8 @@ public class SimpleTesterTest {
         assertThat(DataSimple.VAL_PREV, not(equalTo(DataSimple.VAL_NEW)));
         assertThat(DataSimple.PRIV_CONST, equalTo(DataSimple.VAL_PREV));
 
-        assertThrows(IllegalAccessException.class, () ->
-                SimpleTester._setFinalStatic(clazzActual, fieldName, newValue)
+        assertThrows("Expected exception : " + IllegalAccessException.class,
+                IllegalAccessException.class, () -> SimpleTester._setFinalStatic(clazzActual, fieldName, newValue)
         );
         assertThat(DataSimple.VAL_PREV, not(equalTo(DataSimple.VAL_NEW)));
         assertThat(DataSimple.PRIV_CONST, not(equalTo(DataSimple.VAL_NEW)));
