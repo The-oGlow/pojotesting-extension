@@ -65,6 +65,15 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
     protected void deactivateTest(String clazzName) {
         Assume.assumeThat(String.format("Ignore with test '%s'", clazzName), false, is(true));
     }
+
+    protected void assumeParameterCheckSVUIDIsTrue() {
+        Assume.assumeTrue(String.format("parameterCheckSVUID: '%s'", parameterCheckSVUID), parameterCheckSVUID);
+    }
+
+    protected void assumeParameterCheckSVUIDIsFalse() {
+        Assume.assumeFalse(String.format("parameterCheckSVUID: '%s'", parameterCheckSVUID), parameterCheckSVUID);
+    }
+
 // end - methods
 
 }

@@ -13,8 +13,6 @@ import static com.glowanet.data.enums.DataEnumsCode.ITEMNAME_WITH_NUMBER;
 import static com.glowanet.util.junit.TestResultHelper.NO_ERROR;
 import static com.glowanet.util.junit.TestResultHelper.TWO_ERROR;
 import static com.glowanet.util.junit.TestResultHelper.WITH_ERROR;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * An abstract class which operates as base class for the junit tests.
@@ -32,7 +30,7 @@ public abstract class BaseEnumCodeTesterTest<E extends DataEnumsCode> extends Co
     // methods
     @Test
     public void testValidateEnumObject_itemNameNoNumber_clazz_return_false_raise_twoException() {
-        assumeTrue(parameterCodeCheckEnabled);
+        assumeParameterCodeCheckEnabledIsTrue();
 
         BaseEnumTester<E> o2T = prepareEnumTester();
         Field expectedField = prepareFieldWithOutNoInName();
@@ -43,8 +41,7 @@ public abstract class BaseEnumCodeTesterTest<E extends DataEnumsCode> extends Co
 
     @Test
     public void testValidateEnumObject_itemNameNoNumber_clazz_return_true_raise_noException() {
-        assumeFalse(parameterCodeCheckEnabled);
-
+        assumeParameterCodeCheckEnabledIsFalse();
         BaseEnumTester<E> o2T = prepareEnumTester();
         Field expectedField = prepareFieldWithOutNoInName();
         Class<E> actualClazz = (Class<E>) DataEnumsCode.class;

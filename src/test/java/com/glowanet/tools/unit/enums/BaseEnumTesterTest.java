@@ -2,6 +2,7 @@ package com.glowanet.tools.unit.enums;
 
 import com.glowanet.data.enums.DataEnums;
 import com.glowanet.util.junit.TestResultHelper;
+import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
@@ -17,10 +18,9 @@ import static com.glowanet.util.junit.TestResultHelper.WITH_ERROR;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.Assume.assumeFalse;
-import static org.junit.Assume.assumeTrue;
 
 /**
  * An abstract class which operates as base class for the junit tests.
@@ -62,7 +62,10 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
     public void testGetNameCheckType_return_CF() {
         BaseEnumTester<E> o2T = prepareEnumTester();
         NameCheckTypeEnum actual = o2T._getNameCheckType();
-        assertThat(actual, equalTo(EnumUnitTester.DEFAULT_NAME_CHECK_TYPE));
+
+        ErrorCollectorExt verifyCollector = new ErrorCollectorExt();
+        verifyCollector.checkThat(actual, equalTo(EnumUnitTester.DEFAULT_NAME_CHECK_TYPE));
+        TestResultHelper.verifyCollector(verifyCollector, lessThanOrEqualTo(1));
     }
 
     @Test
@@ -76,7 +79,7 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testIsCodeCheckEnabled_return_true() {
-        assumeTrue(parameterCodeCheckEnabled);
+        assumeParameterCodeCheckEnabledIsTrue();
         BaseEnumTester<E> o2T = prepareEnumTester();
         boolean actual = o2T._isCodeCheckEnabled();
         assertThat(actual, equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
@@ -98,7 +101,7 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testSetCodeCheckEnabled_return_false() {
-        assumeTrue(parameterCodeCheckEnabled);
+        assumeParameterCodeCheckEnabledIsTrue();
         BaseEnumTester<E> o2T = prepareEnumTester();
         assertThat(o2T._isCodeCheckEnabled(), equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
         o2T._setCodeCheckEnabled(false);
@@ -109,14 +112,18 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
     public void testSetNameCheckType_return_CIF() {
         BaseEnumTester<E> o2T = prepareEnumTester();
         NameCheckTypeEnum expected = NameCheckTypeEnum.CIF;
-        assertThat(o2T._getNameCheckType(), equalTo(EnumUnitTester.DEFAULT_NAME_CHECK_TYPE));
+
+        ErrorCollectorExt verifyCollector = new ErrorCollectorExt();
+        verifyCollector.checkThat(o2T._getNameCheckType(), equalTo(EnumUnitTester.DEFAULT_NAME_CHECK_TYPE));
+
         o2T._setNameCheckType(expected);
         assertThat(o2T._getNameCheckType(), equalTo(expected));
+        TestResultHelper.verifyCollector(verifyCollector, lessThanOrEqualTo(1));
     }
 
     @Test
     public void testValidateAllEnumObjects_raise_noException() {
-        assumeTrue(parameterCodeCheckEnabled);
+        assumeParameterCodeCheckEnabledIsTrue();
         BaseEnumTester<E> o2T = prepareEnumTester();
         o2T.testValidateAllEnumObjects();
         TestResultHelper.verifyCollector(o2T, DataEnums.EXCEPTION_SUM);
@@ -124,7 +131,7 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testValidateAllEnumObjects_raise_exception() {
-        assumeFalse(parameterCodeCheckEnabled);
+        assumeParameterCodeCheckEnabledIsFalse();
         BaseEnumTester<E> o2T = prepareEnumTester();
         o2T.testValidateAllEnumObjects();
         TestResultHelper.verifyCollectorNoError(o2T);

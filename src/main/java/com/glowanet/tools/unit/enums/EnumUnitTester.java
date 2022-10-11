@@ -277,9 +277,9 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 break;
 
             case CIF:
-                if (expected.contains(UNDERLINE_CHAR)) {
-                    expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
-                }
+//                if (expected.contains(UNDERLINE_CHAR)) {
+//                    expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
+//                }
                 nameCheck = expected.equalsIgnoreCase(actual);
                 break;
 
@@ -288,9 +288,9 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 break;
 
             case CISW: //NOSONAR java:S1151
-                if (expected.contains(UNDERLINE_CHAR)) {
-                    expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
-                }
+//                if (expected.contains(UNDERLINE_CHAR)) {
+//                    expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
+//                }
                 expected = expected.toLowerCase(Locale.getDefault());
                 nameCheck = expected.equalsIgnoreCase(actual);
                 break;

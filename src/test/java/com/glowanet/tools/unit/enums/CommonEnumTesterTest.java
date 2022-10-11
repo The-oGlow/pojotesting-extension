@@ -4,6 +4,7 @@ import com.glowanet.tools.unit.TestFailedWatcher;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runners.Parameterized;
@@ -73,6 +74,14 @@ public abstract class CommonEnumTesterTest<E> {
 
     protected Field prepareField(String fieldName) {
         return ReflectionHelper.findField(fieldName, getTypeOfE());
+    }
+
+    protected void assumeParameterCodeCheckEnabledIsTrue() {
+        Assume.assumeTrue(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
+    }
+
+    protected void assumeParameterCodeCheckEnabledIsFalse() {
+        Assume.assumeFalse(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
     }
 // end - methods
 
