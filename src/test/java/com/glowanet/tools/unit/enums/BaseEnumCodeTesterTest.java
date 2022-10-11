@@ -30,23 +30,24 @@ public abstract class BaseEnumCodeTesterTest<E extends DataEnumsCode> extends Co
     // methods
     @Test
     public void testValidateEnumObject_itemNameNoNumber_clazz_return_false_raise_twoException() {
-        assumeParameterCodeCheckEnabledIsTrue();
-
-        BaseEnumTester<E> o2T = prepareEnumTester();
-        Field expectedField = prepareFieldWithOutNoInName();
-        Class<E> actualClazz = (Class<E>) DataEnumsCode.class;
-        boolean actual = o2T._validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollector(o2T, TWO_ERROR, false, actual);
+        if (assumeParameterCodeCheckEnabledIsTrue()) {
+            BaseEnumTester<E> o2T = prepareEnumTester();
+            Field expectedField = prepareFieldWithOutNoInName();
+            Class<E> actualClazz = (Class<E>) DataEnumsCode.class;
+            boolean actual = o2T._validateEnumObject(expectedField, actualClazz);
+            TestResultHelper.verifyCollector(o2T, TWO_ERROR, false, actual);
+        }
     }
 
     @Test
     public void testValidateEnumObject_itemNameNoNumber_clazz_return_true_raise_noException() {
-        assumeParameterCodeCheckEnabledIsFalse();
-        BaseEnumTester<E> o2T = prepareEnumTester();
-        Field expectedField = prepareFieldWithOutNoInName();
-        Class<E> actualClazz = (Class<E>) DataEnumsCode.class;
-        boolean actual = o2T._validateEnumObject(expectedField, actualClazz);
-        TestResultHelper.verifyCollectorNoError(o2T, true, actual);
+        if (assumeParameterCodeCheckEnabledIsFalse()) {
+            BaseEnumTester<E> o2T = prepareEnumTester();
+            Field expectedField = prepareFieldWithOutNoInName();
+            Class<E> actualClazz = (Class<E>) DataEnumsCode.class;
+            boolean actual = o2T._validateEnumObject(expectedField, actualClazz);
+            TestResultHelper.verifyCollectorNoError(o2T, true, actual);
+        }
     }
 
     @Test

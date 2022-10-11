@@ -79,10 +79,11 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testIsCodeCheckEnabled_return_true() {
-        assumeParameterCodeCheckEnabledIsTrue();
-        BaseEnumTester<E> o2T = prepareEnumTester();
-        boolean actual = o2T._isCodeCheckEnabled();
-        assertThat(actual, equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
+        if (assumeParameterCodeCheckEnabledIsTrue()) {
+            BaseEnumTester<E> o2T = prepareEnumTester();
+            boolean actual = o2T._isCodeCheckEnabled();
+            assertThat(actual, equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
+        }
     }
 
     @Test
@@ -101,11 +102,12 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testSetCodeCheckEnabled_return_false() {
-        assumeParameterCodeCheckEnabledIsTrue();
-        BaseEnumTester<E> o2T = prepareEnumTester();
-        assertThat(o2T._isCodeCheckEnabled(), equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
-        o2T._setCodeCheckEnabled(false);
-        assertThat(o2T._isCodeCheckEnabled(), equalTo(false));
+        if (assumeParameterCodeCheckEnabledIsTrue()) {
+            BaseEnumTester<E> o2T = prepareEnumTester();
+            assertThat(o2T._isCodeCheckEnabled(), equalTo(EnumUnitTester.DEFAULT_CODE_CHECK_ENABLED));
+            o2T._setCodeCheckEnabled(false);
+            assertThat(o2T._isCodeCheckEnabled(), equalTo(false));
+        }
     }
 
     @Test
@@ -123,18 +125,20 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
 
     @Test
     public void testValidateAllEnumObjects_raise_noException() {
-        assumeParameterCodeCheckEnabledIsTrue();
-        BaseEnumTester<E> o2T = prepareEnumTester();
-        o2T.testValidateAllEnumObjects();
-        TestResultHelper.verifyCollector(o2T, DataEnums.EXCEPTION_SUM);
+        if (assumeParameterCodeCheckEnabledIsTrue()) {
+            BaseEnumTester<E> o2T = prepareEnumTester();
+            o2T.testValidateAllEnumObjects();
+            TestResultHelper.verifyCollector(o2T, DataEnums.EXCEPTION_SUM);
+        }
     }
 
     @Test
     public void testValidateAllEnumObjects_raise_exception() {
-        assumeParameterCodeCheckEnabledIsFalse();
-        BaseEnumTester<E> o2T = prepareEnumTester();
-        o2T.testValidateAllEnumObjects();
-        TestResultHelper.verifyCollectorNoError(o2T);
+        if (assumeParameterCodeCheckEnabledIsFalse()) {
+            BaseEnumTester<E> o2T = prepareEnumTester();
+            o2T.testValidateAllEnumObjects();
+            TestResultHelper.verifyCollectorNoError(o2T);
+        }
     }
 
     @Test

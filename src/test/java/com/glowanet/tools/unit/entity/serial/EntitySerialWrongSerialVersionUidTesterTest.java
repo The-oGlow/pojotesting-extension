@@ -27,21 +27,23 @@ public class EntitySerialWrongSerialVersionUidTesterTest<T extends DataEntityWro
 
     @Test
     public void testValidateSerialVersionUID_wrongSerialVersionUid_raise_exception() {
-        assumeParameterCheckSVUIDIsTrue();
-        BaseEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) DataEntityWrongSerialVersionUid.class);
+        if (assumeParameterCheckSVUIDIsTrue()) {
+            BaseEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) DataEntityWrongSerialVersionUid.class);
 
-        o2T._validateSerialVersionUID();
+            o2T._validateSerialVersionUID();
 
-        TestResultHelper.verifyCollector(o2T, WITH_ERROR);
+            TestResultHelper.verifyCollector(o2T, WITH_ERROR);
+        }
     }
 
     @Test
     public void testValidateSerialVersionUID_wrongSerialVersionUid_raise_noException() {
-        assumeParameterCheckSVUIDIsFalse();
-        BaseEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) DataEntityWrongSerialVersionUid.class);
+        if (assumeParameterCheckSVUIDIsFalse()) {
+            BaseEntityTester<?> o2T = prepareEntityUnitTester((Class<T>) DataEntityWrongSerialVersionUid.class);
 
-        o2T._validateSerialVersionUID();
+            o2T._validateSerialVersionUID();
 
-        TestResultHelper.verifyCollectorNoError(o2T);
+            TestResultHelper.verifyCollectorNoError(o2T);
+        }
     }
 }

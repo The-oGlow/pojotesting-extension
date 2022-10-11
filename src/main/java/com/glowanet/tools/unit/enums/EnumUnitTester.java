@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -30,10 +29,10 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     public static final  boolean           DEFAULT_CODE_CHECK_ENABLED = true;
     private static final String            FIELD_NAME_CODE            = "code";
     private static final String            FIELD_NAME_NAME            = "name";
-    private static final String            UNDERLINE_CHAR             = "_";
+    //private static final String            UNDERLINE_CHAR             = "_";
     private static final String            ENUM_NAME_SRCH             = "_(.)";
-    private static final String            ENUM_NAME_REPL             = "$1";
-    private static final Pattern           ENUM_NAME_SRCH_PATTERN     = Pattern.compile(ENUM_NAME_SRCH);
+    //private static final String            ENUM_NAME_REPL             = "$1";
+    //private static final Pattern           ENUM_NAME_SRCH_PATTERN     = Pattern.compile(ENUM_NAME_SRCH);
     private static final Logger            LOGGER                     = LogManager.getLogger();
     // end - static fields
 

@@ -4,7 +4,6 @@ import com.glowanet.tools.unit.TestFailedWatcher;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runners.Parameterized;
@@ -76,12 +75,24 @@ public abstract class CommonEnumTesterTest<E> {
         return ReflectionHelper.findField(fieldName, getTypeOfE());
     }
 
-    protected void assumeParameterCodeCheckEnabledIsTrue() {
-        Assume.assumeTrue(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
+    protected boolean assumeParameterCodeCheckEnabledIsTrue() {
+        boolean proceedNextStep = true;
+        if (!parameterCodeCheckEnabled) {
+            proceedNextStep = false;
+            LOGGER.debug(String.format("assumeTrue() not met: parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled));
+        }
+        //Assume.assumeTrue(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
+        return proceedNextStep;
     }
 
-    protected void assumeParameterCodeCheckEnabledIsFalse() {
-        Assume.assumeFalse(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
+    protected boolean assumeParameterCodeCheckEnabledIsFalse() {
+        boolean proceedNextStep = true;
+        if (parameterCodeCheckEnabled) {
+            proceedNextStep = false;
+            LOGGER.debug(String.format("assumeFalse() not met: parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled));
+        }
+        //Assume.assumeFalse(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
+        return proceedNextStep;
     }
 // end - methods
 
