@@ -4,14 +4,12 @@ import com.glowanet.data.entity.BaseDataEntity;
 import com.glowanet.tools.unit.TestFailedWatcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.rules.TestWatcher;
 import org.junit.runners.Parameterized;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 
 /**
  * An abstract class which operates as base class for the junit tests.
@@ -52,20 +50,6 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
 // end - static method
 
     // methods
-
-    /**
-     * @param clazz the type having the test which should be deactivated
-     */
-    protected void deactivateTest(Class<?> clazz) {
-        deactivateTest(clazz == null ? "" : clazz.getName());
-    }
-
-    /**
-     * @param clazzName the classname having the test which should be deactivated
-     */
-    protected void deactivateTest(String clazzName) {
-        Assume.assumeThat("Deactivate test in type", clazzName, nullValue());
-    }
 
     protected boolean assumeParameterCheckSVUIDIsTrue() {
         boolean proceedNextStep = true;

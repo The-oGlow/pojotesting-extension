@@ -1,12 +1,16 @@
 package com.glowanet.tools.unit.entity.equal;
 
+import com.glowanet.annotation.ExcludeFromTesting;
 import com.glowanet.data.entity.equal.DataEntityLogicalEquals;
 import com.glowanet.tools.unit.entity.BaseEntityTester;
 import com.glowanet.util.junit.TestResultHelper;
+import com.glowanet.util.junit.rules.ExcludeFromTestingRule;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
 
 /**
  * A junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
@@ -14,6 +18,9 @@ import static org.hamcrest.Matchers.is;
  * @param <T> the type of the entity which will be tested
  */
 public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> extends EntityGenericEqualsTesterTest<T> {
+
+    @Rule
+    public ExcludeFromTestingRule rule = new ExcludeFromTestingRule();
 
     // methods
     @Test
@@ -24,16 +31,18 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
         TestResultHelper.verifyInstance(actual, DataEntityLogicalEquals.class);
     }
 
+    @ExcludeFromTesting
     @Test
     @Override
     public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
-        deactivateTest(this.getClass());
+        assertTrue("not needed for this class", true);
     }
 
+    @ExcludeFromTesting
     @Test
     @Override
     public void testTestEqualsLogicalAreTheSame_with_defaultEquals_logicalCompare_raise_exception() {
-        deactivateTest(this.getClass());
+        assertTrue("not needed for this class", true);
     }
 
     @Test
@@ -68,10 +77,11 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
     }
 
+    @ExcludeFromTesting
     @Test
     @Override
     public void testTestHashcodeOtherThan0_raise_noException() {
-        deactivateTest(this.getClass());
+        assertTrue("not needed for this class", true);
     }
 
     protected BaseEntityTester<T> prepareEntityTesterGeneric() {
