@@ -30,7 +30,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     private static final String            FIELD_NAME_CODE            = "code";
     private static final String            FIELD_NAME_NAME            = "name";
     //private static final String            UNDERLINE_CHAR             = "_";
-    private static final String            ENUM_NAME_SRCH             = "_(.)";
+    //private static final String            ENUM_NAME_SRCH             = "_(.)";
     //private static final String            ENUM_NAME_REPL             = "$1";
     //private static final Pattern           ENUM_NAME_SRCH_PATTERN     = Pattern.compile(ENUM_NAME_SRCH);
     private static final Logger            LOGGER                     = LogManager.getLogger();

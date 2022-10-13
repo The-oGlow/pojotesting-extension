@@ -1,13 +1,15 @@
 package com.glowanet.tools.unit.entity;
 
+import com.glowanet.annotation.ExcludeFromTesting;
 import com.glowanet.tools.unit.AbstractUnitTester;
+import com.glowanet.util.junit.rules.ExcludeFromTestingRule;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hamcrest.Matcher;
-import org.junit.Ignore;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.beans.PropertyDescriptor;
@@ -48,8 +50,10 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
 // end - static fields
 
     // fields
-    private boolean checkLogicalEqualsOnly = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
-    private boolean checkSVUID             = DEFAULT_CHECK_SVUID;
+    @Rule
+    public  ExcludeFromTestingRule excludeFromTestingRule = new ExcludeFromTestingRule();
+    private boolean                checkLogicalEqualsOnly = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
+    private boolean                checkSVUID             = DEFAULT_CHECK_SVUID;
 
     private Collection<String> allFieldsToIgnoreForToString;
     private Collection<String> allFieldsDeniedForToString;
@@ -104,8 +108,8 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     /**
      * Tests, if two objects from the same type are logical equal.
      * <ul>
-     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -> expecting logical equality</li>
-     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -> expecting object equality</li>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==TRUE    -&gt; expecting logical equality</li>
+     *     <li>{@link #isCheckLogicalEqualsOnly()}==FALSE   -&gt; expecting object equality</li>
      * </ul>
      *
      * @see #isCheckLogicalEqualsOnly()
@@ -191,7 +195,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
         }
     }
 
-    @Ignore("TBD")
+    @ExcludeFromTesting
     @Test
     public void testToStringWithValues() {
         collector.addError(new NotImplementedException("TBD"));

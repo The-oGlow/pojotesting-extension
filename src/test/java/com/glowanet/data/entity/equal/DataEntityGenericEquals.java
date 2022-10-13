@@ -5,7 +5,7 @@ import com.glowanet.data.entity.BaseDataEntity;
 /**
  * Test Object with
  * <ul>
- *     <li>a default {@code #equals()}- & {@code #hashCode()}-method</li>
+ *     <li>a default {@code #equals()} &amp; {@code #hashCode()}-method</li>
  *     <li>an implemented {@code #toString()}-method.</li>
  * </ul>
  */
