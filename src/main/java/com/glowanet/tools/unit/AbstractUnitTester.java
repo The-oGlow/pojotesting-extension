@@ -33,7 +33,7 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 /**
- * Abstract class as base for testing a specialized type of classes, like entities, enums, etc.
+ * Abstract clazz as base for testing a specialized type of clazzes, like entities, enums, etc.
  *
  * @param <T> the type of {@code object2Test}
  */
@@ -66,7 +66,7 @@ public abstract class AbstractUnitTester<T> {
 // constructors
 
     /**
-     * @param typeOfo2T the class object of {@code T}
+     * @param typeOfo2T the clazz object of {@code T}
      */
     protected AbstractUnitTester(Class<T> typeOfo2T) {
         this.typeOfo2T = typeOfo2T;
@@ -84,7 +84,7 @@ public abstract class AbstractUnitTester<T> {
      * @param fieldName the exact name of the field
      * @param newValue  the new value to put in the field
      *
-     * @throws IllegalAccessException it is not allowed to modify this field in this class
+     * @throws IllegalAccessException it is not allowed to modify this field in this clazz
      */
     @SuppressWarnings({"java:S3011"})
     protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws IllegalAccessException {
@@ -316,7 +316,7 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
-     * Retrieves all public constants from a class.
+     * Retrieves all public constants from a clazz.
      *
      * @param clazzA the type from which to retrieve the constants
      *
@@ -343,9 +343,9 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
-     * Generating a value based on the class-clazzV.
+     * Generating a value based on the clazz-clazzV.
      *
-     * @param clazzV the class type of return value
+     * @param clazzV the clazz type of return value
      * @param <V>    the type of the return value
      *
      * @return the generated value or null

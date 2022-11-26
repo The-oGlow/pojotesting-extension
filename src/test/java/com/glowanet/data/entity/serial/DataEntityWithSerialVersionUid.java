@@ -3,7 +3,7 @@ package com.glowanet.data.entity.serial;
 import com.glowanet.tools.unit.entity.EntityUnitTester;
 
 /**
- * A serializable class with a correct unique id.
+ * A serializable clazz with a correct unique id.
  */
 public class DataEntityWithSerialVersionUid extends DataEntityNotSerialVersionUid {
     // static fields

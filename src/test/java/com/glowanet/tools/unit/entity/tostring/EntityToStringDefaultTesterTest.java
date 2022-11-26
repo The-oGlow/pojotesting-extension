@@ -13,7 +13,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * A junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ * A junit test clazz, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
  *
  * @param <T> the type of the entity which will be tested
  */

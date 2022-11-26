@@ -3,7 +3,7 @@ package com.glowanet.tools;
 import java.util.concurrent.Callable;
 
 /**
- * In case the simulating test class needs to construct different pojo classes, use this class.
+ * In case the simulating test clazz needs to construct different pojo clazzes, use this clazz.
  *
  * @param <T> the type of the pojo/entity/class which will be tested
  */

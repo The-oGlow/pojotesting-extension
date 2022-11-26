@@ -1,7 +1,7 @@
 package com.glowanet.data.entity;
 
 /**
- * The base class for all implementation of an entity to use in tests.
+ * The base clazz for all implementation of an entity to use in tests.
  */
 public abstract class BaseDataEntity {
     // fields

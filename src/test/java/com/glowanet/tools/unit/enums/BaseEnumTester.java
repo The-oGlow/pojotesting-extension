@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 /**
- * Abstract class to use for unit-testing on {@link Object}, beans, pojos.
- * However, you name your classes with an amount of getter and setter.
+ * Abstract clazz to use for unit-testing on {@link Object}, beans, pojos.
+ * However, you name your clazzes with an amount of getter and setter.
  *
  * @param <E> the type of the enum which will be tested
  */

@@ -35,15 +35,15 @@ import static org.hamcrest.Matchers.typeCompatibleWith;
 import static org.hamcrest.MatchersExtend.betweenWithBound;
 
 /**
- * Abstract class to use for unit-testing on entities, beans, pojos.
- * However, you name your classes with an amount of getter and setter.
+ * Abstract clazz to use for unit-testing on entities, beans, pojos.
+ * However, you name your clazzes with an amount of getter and setter.
  *
  * @param <T> the type of the entity which will be tested
  */
 public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
 
     // static fields
-    /** Field names in the class, which should be generally ignored on testing {@link #toString()}. */
+    /** Field names in the clazz, which should be generally ignored on testing {@link #toString()}. */
     public static final  Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
     public static final  boolean            DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
     private static final Logger             LOGGER                            = LogManager.getLogger();
@@ -202,7 +202,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     }
 
     /**
-     * The Fields in the current class, which are denied to appear on testing @toString().
+     * The Fields in the current clazz, which are denied to appear on testing @toString().
      *
      * @return list of field names
      *
@@ -213,7 +213,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     }
 
     /**
-     * The Fields in the current class, which should be ignored on testing @toString().
+     * The Fields in the current clazz, which should be ignored on testing @toString().
      *
      * @return list of field names
      *

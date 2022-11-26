@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
- * A junit test class, which verifies, that incomplete enums will be recognized.
+ * A junit test clazz, which verifies, that incomplete enums will be recognized.
  *
  * @param <E> the type of the enum which will be tested
  */

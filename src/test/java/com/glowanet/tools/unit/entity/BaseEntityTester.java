@@ -5,7 +5,7 @@ import com.glowanet.data.entity.BaseDataEntity;
 import java.util.List;
 
 /**
- * An abstract class which opens all methods from the tester for public access and testing purpose.
+ * An abstract clazz which opens all methods from the tester for public access and testing purpose.
  *
  * @param <T> the type of the entity which will be tested
  */

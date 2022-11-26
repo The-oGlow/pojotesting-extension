@@ -15,7 +15,7 @@ import static com.glowanet.util.junit.TestResultHelper.TWO_ERROR;
 import static com.glowanet.util.junit.TestResultHelper.WITH_ERROR;
 
 /**
- * An abstract class which operates as base class for the junit tests.
+ * An abstract clazz which operates as base clazz for the junit tests.
  *
  * @param <E> the type of the enum which will be tested
  */

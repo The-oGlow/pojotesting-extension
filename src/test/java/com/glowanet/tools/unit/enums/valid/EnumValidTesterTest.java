@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
- * A junit test class, which verifies, that complete enums are identified as valid.
+ * A junit test clazz, which verifies, that complete enums are identified as valid.
  *
  * @param <E> the type of the enum which will be tested
  */

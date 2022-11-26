@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 /**
- * A junit test class, which verifies, that ignoring specific enums is working correctly.
+ * A junit test clazz, which verifies, that ignoring specific enums is working correctly.
  *
  * @param <E> the type of the enum which will be tested
  */

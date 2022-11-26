@@ -7,7 +7,7 @@ import com.glowanet.util.junit.TestResultHelper;
 import org.junit.Test;
 
 /**
- * A junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ * A junit test clazz, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
  *
  * @param <T> the type of the entity which will be tested
  */

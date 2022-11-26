@@ -17,8 +17,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 /**
- * Abstract class to use for unit-testing on {@link Object}, beans, pojos.
- * However, you name your classes with an amount of getter and setter.
+ * Abstract clazz to use for unit-testing on {@link Object}, beans, pojos.
+ * However, you name your clazzes with an amount of getter and setter.
  *
  * @param <E> the type of the enum which will be tested
  */
@@ -52,7 +52,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     // abstract methods
 
     /**
-     * Specific enums in the current class, which should be ignored on testing 'toCode()'.
+     * Specific enums in the current clazz, which should be ignored on testing 'toCode()'.
      *
      * @return list of specific enums
      *

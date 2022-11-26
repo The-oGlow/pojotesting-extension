@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 
 /**
- * An abstract class which operates as base class for the junit tests.
+ * An abstract clazz which operates as base clazz for the junit tests.
  *
  * @param <E> the type of the enum which will be tested
  */

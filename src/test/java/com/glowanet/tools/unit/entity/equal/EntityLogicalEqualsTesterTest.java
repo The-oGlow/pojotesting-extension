@@ -13,7 +13,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 
 /**
- * A junit test class, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
+ * A junit test clazz, which verifies, that the {@code AbstractEntityUnitTester} is working correctly.
  *
  * @param <T> the type of the entity which will be tested
  */

@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 /**
- * An abstract class which operates as base class for the junit tests.
+ * An abstract clazz which operates as base clazz for the junit tests.
  *
  * @param <T> the type of the entity which will be tested
  */
@@ -32,9 +32,9 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
     // abstract methods
 
     /**
-     * Prepare the testerClass, which creates the entity which will test the pojo.
+     * Prepare the testerclazz, which creates the entity which will test the pojo.
      *
-     * @param typeOfO2T class of {@code T}
+     * @param typeOfO2T clazz of {@code T}
      *
      * @return new instance of {@code BaseEntityTester}
      */
