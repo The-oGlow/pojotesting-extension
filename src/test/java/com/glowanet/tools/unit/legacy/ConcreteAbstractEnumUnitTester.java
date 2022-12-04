@@ -12,7 +12,7 @@ import java.util.List;
  * @see com.glowanet.tools.unit.AbstractEnumObjectUnitTester
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEnumObjectUnitTester}
  */
-@Deprecated(forRemoval = true, since = "1.0")
+@Deprecated(forRemoval = true, since = "0.1.0")
 @Ignore("Do not call this as test class!!")
 class ConcreteAbstractEnumUnitTester extends AbstractEnumObjectUnitTester<DataEnums> {
 

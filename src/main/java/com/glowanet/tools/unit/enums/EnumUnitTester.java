@@ -29,10 +29,6 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     public static final  boolean           DEFAULT_CODE_CHECK_ENABLED = true;
     private static final String            FIELD_NAME_CODE            = "code";
     private static final String            FIELD_NAME_NAME            = "name";
-    //private static final String            UNDERLINE_CHAR             = "_";
-    //private static final String            ENUM_NAME_SRCH             = "_(.)";
-    //private static final String            ENUM_NAME_REPL             = "$1";
-    //private static final Pattern           ENUM_NAME_SRCH_PATTERN     = Pattern.compile(ENUM_NAME_SRCH);
     private static final Logger            LOGGER                     = LogManager.getLogger();
     // end - static fields
 
@@ -43,9 +39,10 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
 // end - fields
 
     // constructors
+    @SuppressWarnings("java:S1699")
     protected EnumUnitTester(Class<E> typeOfo2E) {
         super(typeOfo2E);
-        localSetup(); //NOSONAR java:S1699
+        localSetup();
     }
 // end - constructors
 
@@ -209,7 +206,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 }
                 isValid = resultName && resultCode;
 
-            } catch (Exception e) {
+            } catch (Exception e) { //NOSONAR java:S2221
                 isValid = checkIgnoredField(expectedField, e);
             }
         } else {
@@ -233,8 +230,9 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
         Object objectCode = null;
         try {
             objectCode = ReflectionHelper.readField(FIELD_NAME_CODE, actualInstance);
-        } catch (IllegalArgumentException | AssertionError e) { //NOSONAR java:S1166
+        } catch (IllegalArgumentException | AssertionError e) {
             //nothing2do
+            LOGGER.debug(e);
         }
         Number actualCode = null;
         if (objectCode != null) {
@@ -276,9 +274,6 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 break;
 
             case CIF:
-//                if (expected.contains(UNDERLINE_CHAR)) {
-//                    expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
-//                }
                 nameCheck = expected.equalsIgnoreCase(actual);
                 break;
 
@@ -286,10 +281,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
                 nameCheck = expected.startsWith(actual);
                 break;
 
-            case CISW: //NOSONAR java:S1151
-//                if (expected.contains(UNDERLINE_CHAR)) {
-//                    expected = ENUM_NAME_SRCH_PATTERN.matcher(expected).replaceAll(ENUM_NAME_REPL);
-//                }
+            case CISW:
                 expected = expected.toLowerCase(Locale.getDefault());
                 nameCheck = expected.equalsIgnoreCase(actual);
                 break;

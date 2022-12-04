@@ -88,7 +88,6 @@ public abstract class OrderExample {
         A, B
     }
 
-    @SuppressWarnings("EmptyMethod")
     abstract class innerAbsClazz {
         /* abstract methods */
         abstract void myM();

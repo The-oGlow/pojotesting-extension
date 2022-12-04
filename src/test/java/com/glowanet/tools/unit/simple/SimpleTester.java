@@ -2,6 +2,7 @@ package com.glowanet.tools.unit.simple;
 
 import com.glowanet.data.simple.DataSimple;
 import com.glowanet.tools.unit.AbstractUnitTester;
+import com.glowanet.tools.unit.ClazzAdapter;
 import org.junit.Ignore;
 
 import java.beans.PropertyDescriptor;
@@ -25,7 +26,7 @@ class SimpleTester extends AbstractUnitTester<DataSimple> {
     /* end - constructors */
 
     /* static method */
-    public static void _setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws IllegalAccessException {
+    public static void _setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws UnsupportedOperationException {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
     }
     /* end - static method */
@@ -58,7 +59,7 @@ class SimpleTester extends AbstractUnitTester<DataSimple> {
         return super.retrievePublicConstantsfromClass(clazzA);
     }
 
-    protected Map<Class<?>, Object> _retrieveMethodParameters(Method method) {
+    protected Map<ClazzAdapter, Object> _retrieveMethodParameters(Method method) {
         return super.retrieveMethodParameters(method);
     }
 

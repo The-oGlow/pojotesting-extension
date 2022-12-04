@@ -7,8 +7,7 @@ import com.glowanet.tools.unit.enums.EnumUnitTester;
  *
  * @deprecated Use @{@code com.glowanet.tools.unit.entity.AbstractEnumObjectUnitTester}
  */
-@Deprecated(forRemoval = true, since = "1.0")
-@SuppressWarnings("java:S2176")
+@Deprecated(forRemoval = true, since = "0.1.0")
 public abstract class AbstractEnumObjectUnitTester<T> extends EnumUnitTester<T> {
 
     // constructors

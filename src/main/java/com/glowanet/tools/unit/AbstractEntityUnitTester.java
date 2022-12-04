@@ -5,8 +5,7 @@ package com.glowanet.tools.unit;
  *
  * @deprecated Use @{@code com.glowanet.tools.unit.entity.EntityUnitTester}
  */
-@Deprecated(forRemoval = true, since = "1.0")
-@SuppressWarnings("java:S2176")
+@Deprecated(forRemoval = true, since = "0.1.0")
 public abstract class AbstractEntityUnitTester<T> extends com.glowanet.tools.unit.entity.EntityUnitTester<T> {
 
     // constructors

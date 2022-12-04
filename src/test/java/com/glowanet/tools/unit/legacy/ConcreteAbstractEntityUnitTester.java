@@ -12,7 +12,7 @@ import java.util.List;
  * @see AbstractEntityUnitTester
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEntityUnitTester}
  */
-@Deprecated(forRemoval = true, since = "1.0")
+@Deprecated(forRemoval = true, since = "0.1.0")
 @Ignore("Do not call this as test class!!")
 class ConcreteAbstractEntityUnitTester extends AbstractEntityUnitTester<DataEntitySimple> {
 

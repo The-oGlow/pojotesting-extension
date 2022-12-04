@@ -25,9 +25,9 @@ public class ObjectNameValidTesterTest<E extends DataEnums> extends BaseEnumTest
 
     // fields
     @Parameterized.Parameter(1)
-    public NameCheckTypeEnum parameterNameCheckType;
+    public       NameCheckTypeEnum parameterNameCheckType;
     @Rule
-    public TestFailedWatcher watcher = new TestFailedWatcher(
+    public final TestFailedWatcher watcher = new TestFailedWatcher(
             "codeCheckEnabled/nameCheckType",
             "" + parameterCodeCheckEnabled + "/" + parameterNameCheckType);
 

@@ -2,6 +2,7 @@ package com.glowanet.tools.unit.entity;
 
 import com.glowanet.annotation.ExcludeFromTesting;
 import com.glowanet.tools.unit.AbstractUnitTester;
+import com.glowanet.tools.unit.ClazzAdapter;
 import com.glowanet.util.junit.rules.ExcludeFromTestingRule;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.commons.lang3.NotImplementedException;
@@ -60,9 +61,10 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
 // end - fields
 
     // constructors
+    @SuppressWarnings("java:S1699")
     protected EntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
-        localSetup(); //NOSONAR java:S1699
+        localSetup();
     }
 // end - constructors
 
@@ -291,7 +293,8 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
             Object idValue = null;
             try {
                 idValue = ReflectionHelper.readStaticValue(SERIAL_VERSION_UID_NAME, instance.getClass());
-            } catch (AssertionError error) { //NOSONAR java:S1166
+            } catch (AssertionError assertionError) {
+                LOGGER.trace(assertionError);
                 //can be ignored
             }
             collector.checkThat(reasonNull, idValue, notNullMatcher);
@@ -317,8 +320,8 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
             Class<?>[] paramTypes = new Class[0];
             Object[] paramValues = new Object[0];
             try {
-                Map<Class<?>, Object> setterParams = retrieveMethodParameters(setter.getWriteMethod());
-                paramTypes = setterParams.keySet().toArray(new Class[]{});
+                Map<ClazzAdapter, Object> setterParams = retrieveMethodParameters(setter.getWriteMethod());
+                paramTypes = setterParams.keySet().stream().map(ClazzAdapter::getClazz).toArray(Class[]::new);
                 paramValues = setterParams.values().toArray();
                 MethodUtils.invokeMethod(instance, setter.getWriteMethod().getName(), paramValues, paramTypes);
                 if (verifyValue) {

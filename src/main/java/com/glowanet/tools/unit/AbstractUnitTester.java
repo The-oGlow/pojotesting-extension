@@ -52,7 +52,8 @@ public abstract class AbstractUnitTester<T> {
     static {
         try {
             randomValueFactory = com.glowanet.tools.random.RandomValueFactory.getInstance();
-        } catch (RuntimeException ignored) { //NOSONAR java:S1166
+        } catch (RuntimeException exception) {
+            LOGGER.trace(exception);
             //ignore
         }
     }
@@ -68,9 +69,10 @@ public abstract class AbstractUnitTester<T> {
     /**
      * @param typeOfo2T the clazz object of {@code T}
      */
+    @SuppressWarnings("java:S1699")
     protected AbstractUnitTester(Class<T> typeOfo2T) {
         this.typeOfo2T = typeOfo2T;
-        init(); //NOSONAR java:S1699
+        init();
 
     }
 // end - constructors
@@ -84,12 +86,12 @@ public abstract class AbstractUnitTester<T> {
      * @param fieldName the exact name of the field
      * @param newValue  the new value to put in the field
      *
-     * @throws IllegalAccessException it is not allowed to modify this field in this clazz
+     * @throws UnsupportedOperationException it is not allowed to modify this field in this clazz
      */
-    @SuppressWarnings({"java:S3011"})
-    protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws IllegalAccessException {
-        throw new IllegalAccessException("Function currently not supported"); //NOSONAR java:S1162
+    protected static void setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Function currently not supported");
 /*
+        FIXME: Check, why this doesn't work
         Field field = clazzA.getDeclaredField(fieldName);
         field.setAccessible(true);
         Field modifiersField = Field.class.getDeclaredField("modifiers");
@@ -147,10 +149,10 @@ public abstract class AbstractUnitTester<T> {
         try {
             idField = instance.getClass().getDeclaredField(fieldName);
             makeFieldAccessible(idField, instance);
-        } catch (NoSuchFieldException e) { //NOSONAR java:S1166
-            fail(String.format("No '%s' defined : %s", fieldName, e.getMessage()));
-        } catch (SecurityException e) { //NOSONAR java:S1166
-            fail(String.format("'%s' not accessible : %s ", fieldName, e.getMessage()));
+        } catch (NoSuchFieldException e) {
+            fail(String.format("No '%s' defined : %s", fieldName, e));
+        } catch (SecurityException e) {
+            fail(String.format("'%s' not accessible : %s ", fieldName, e));
         }
         return idField;
     }
@@ -240,7 +242,8 @@ public abstract class AbstractUnitTester<T> {
             if (!field.canAccess(instance)) {
                 throw new IllegalArgumentException();
             }
-        } catch (IllegalArgumentException e) { //NOSONAR java:S1166
+        } catch (IllegalArgumentException e) {
+            LOGGER.trace(e);
             field.trySetAccessible();
         }
     }
@@ -268,17 +271,17 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return map of types and values for a method
      */
-    protected Map<Class<?>, Object> retrieveMethodParameters(Method method) {
-        Map<Class<?>, Object> setterParams = new LinkedHashMap<>();
+    protected Map<ClazzAdapter, Object> retrieveMethodParameters(Method method) {
+        Map<ClazzAdapter, Object> setterParams = new LinkedHashMap<>();
         if (method != null) {
             for (Parameter param : method.getParameters()) {
                 Object paramValue = retrieveDefaultValue(param.getType());
                 if (Object.class.isAssignableFrom(param.getType())) {
-                    setterParams.put(param.getType(), paramValue);
+                    setterParams.put(ClazzAdapter.newI(param.getType()), paramValue);
                 } else if (param.getType().isPrimitive()) {
-                    setterParams.put(param.getType(), paramValue);
+                    setterParams.put(ClazzAdapter.newI(param.getType()), paramValue);
                 } else {
-                    setterParams.put(param.getType(), null);
+                    setterParams.put(ClazzAdapter.newI(param.getType()), null);
                 }
             }
         }
@@ -350,7 +353,6 @@ public abstract class AbstractUnitTester<T> {
      *
      * @return the generated value or null
      */
-    @SuppressWarnings({"java:S2209", "unchecked", "rawtypes"})
     protected <V> Object retrieveDefaultValue(Class<V> clazzV) {
         Object result = null;
         if (randomValueFactory != null) {

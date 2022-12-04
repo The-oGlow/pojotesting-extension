@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.nullValue;
  * @see ConcreteAbstractEnumUnitTester
  * @deprecated Will be removed with {@code com.glowanet.tools.unit.AbstractEnumObjectUnitTester}
  */
-@Deprecated(forRemoval = true, since = "1.0")
+@Deprecated(forRemoval = true, since = "0.1.0")
 public class ConcreteAbstractEnumObjectUnitTesterTest {
 
     /* fields */
