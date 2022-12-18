@@ -70,7 +70,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
     public void testValidateAllEnumObjects() {
         List<Field> listEnumFields = retrieveEnumFromList(getTypeOfo2T());
         for (Field enumField : listEnumFields) {
-            collector.checkThat(String.format("Checking '%s'", enumField.getName()),
+            collector.checkThat(String.format("Enum '%s' is invalid!", enumField.getName()),
                     validateEnumObject(enumField, getTypeOfo2T()), equalTo(true)
             );
         }

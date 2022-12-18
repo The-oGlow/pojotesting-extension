@@ -8,8 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
-import static com.glowanet.util.junit.TestResultHelper.NO_ERROR;
-
 @RunWith(Parameterized.class)
 public class EntitySerialWithSerialVersionUidTesterTest<T extends DataEntityWithSerialVersionUid> extends BaseEntityTesterTest<T> {
 
@@ -31,6 +29,6 @@ public class EntitySerialWithSerialVersionUidTesterTest<T extends DataEntityWith
 
         o2T._validateSerialVersionUID();
 
-        TestResultHelper.verifyCollector(o2T, NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(o2T);
     }
 }

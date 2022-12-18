@@ -79,15 +79,15 @@ public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> ex
     }
 
     @Test
-    public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
+    public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_exception() {
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
 
         entityUnitTester._setCheckLogicalEqualsOnly(false);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(false));
 
-        entityUnitTester.testEqualsLogicalAreTheSame();
+        entityUnitTester.testEqualsLogicalAreEqual();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> ex
         entityUnitTester._setCheckLogicalEqualsOnly(true);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(true));
 
-        entityUnitTester.testEqualsLogicalAreTheSame();
+        entityUnitTester.testEqualsLogicalAreEqual();
 
         TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
     }
@@ -107,7 +107,15 @@ public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> ex
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester.testEqualsWithItself();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
+    }
+
+    @Test
+    public void test() {
+        BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
+        entityUnitTester.testEqualsNotTheSame();
+
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Test
@@ -115,7 +123,7 @@ public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> ex
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester.testEqualsWithNull();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Test
@@ -123,7 +131,7 @@ public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> ex
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
         entityUnitTester.testHashcodeOtherThan0();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     protected BaseEntityTester<T> prepareEntityTesterGeneric() {

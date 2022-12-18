@@ -34,7 +34,7 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
     @ExcludeFromTesting
     @Test
     @Override
-    public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_noException() {
+    public void testTestEqualsLogicalAreTheSame_with_defaultEquals_defaultCompare_raise_exception() {
         assertTrue("not needed for this class", true);
     }
 
@@ -46,15 +46,15 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
     }
 
     @Test
-    public void testTestEqualsLogicalAreTheSame_with_logicalEquals_defaultCompare_raise_exception() {
+    public void testTestEqualsLogicalAreTheSame_with_logicalEquals_defaultCompare_raise_noException() {
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
 
         entityUnitTester._setCheckLogicalEqualsOnly(false);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(false));
 
-        entityUnitTester.testEqualsLogicalAreTheSame();
+        entityUnitTester.testEqualsLogicalAreEqual();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.WITH_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Test
@@ -64,9 +64,9 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
         entityUnitTester._setCheckLogicalEqualsOnly(true);
         assertThat(entityUnitTester._isCheckLogicalEqualsOnly(), is(true));
 
-        entityUnitTester.testEqualsLogicalAreTheSame();
+        entityUnitTester.testEqualsLogicalAreEqual();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Test

@@ -27,7 +27,7 @@ public class EntityToStringImplementedTesterTest<T extends DataEntityToStringImp
         BaseEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityToStringImplemented.class);
         entityUnitTester.testToString();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Override

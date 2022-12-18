@@ -118,11 +118,11 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
      * @see #setCheckLogicalEqualsOnly(boolean)
      */
     @Test
-    public void testEqualsLogicalAreTheSame() {
+    public void testEqualsLogicalAreEqual() {
         T itSelf = getObject2Test();
         T itSelf2 = getObject2Test();
-        boolean expected = isCheckLogicalEqualsOnly();
-        collector.checkThat(itSelf.equals(itSelf2), is(expected));
+        collector.checkThat(String.format("'%s' and '%s' must be %s equal!", itSelf, itSelf2, isCheckLogicalEqualsOnly() ? "logical" : "object"),
+                itSelf.equals(itSelf2), is(true));
     }
 
     /**
@@ -132,7 +132,19 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     @Test
     public void testEqualsWithItself() {
         T itSelf = getObject2Test();
-        collector.checkThat(itSelf.equals(itSelf), is(true));
+        collector.checkThat(String.format("'%s' compared with itself must be true", itSelf),
+                itSelf.equals(itSelf), is(true));
+    }
+
+    /**
+     * Tests, that two times created instance are not the same instance.
+     */
+    @Test
+    public void testEqualsNotTheSame() {
+        T itSelf = getObject2Test();
+        T itSelf2 = getObject2Test();
+        collector.checkThat(String.format("'%s' and '%s' must not be the same instance!", itSelf, itSelf2),
+                itSelf != itSelf2, is(true));
     }
 
     /**
@@ -142,7 +154,8 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
     @Test
     public void testEqualsWithNull() {
         T itSelf = getObject2Test();
-        collector.checkThat(itSelf.equals((T) null), is(false));
+        collector.checkThat(String.format("'%s' must not be null!", itSelf),
+                itSelf.equals((T) null), is(false));
     }
 
     /**
@@ -230,7 +243,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
      *
      * @return TRUE = will check only logical equality, else FALSE = checks object equality
      *
-     * @see #testEqualsLogicalAreTheSame()
+     * @see #testEqualsLogicalAreEqual()
      */
     protected boolean isCheckLogicalEqualsOnly() {
         return checkLogicalEqualsOnly;
@@ -252,7 +265,7 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
      *
      * @param checkLogicalEqualsOnly TRUE = will be checked, else FALSE
      *
-     * @see #testEqualsLogicalAreTheSame()
+     * @see #testEqualsLogicalAreEqual()
      */
     protected void setCheckLogicalEqualsOnly(boolean checkLogicalEqualsOnly) {
         this.checkLogicalEqualsOnly = checkLogicalEqualsOnly;

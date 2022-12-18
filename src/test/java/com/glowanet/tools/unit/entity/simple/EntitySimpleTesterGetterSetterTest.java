@@ -21,7 +21,7 @@ public class EntitySimpleTesterGetterSetterTest<T extends DataEntitySimple> exte
 
         entityUnitTester.testAllGetterAccessible();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Test
@@ -30,7 +30,7 @@ public class EntitySimpleTesterGetterSetterTest<T extends DataEntitySimple> exte
 
         entityUnitTester.testAllSetterAccessible();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class EntitySimpleTesterGetterSetterTest<T extends DataEntitySimple> exte
 
         entityUnitTester.testGetterSetterCollaboration();
 
-        TestResultHelper.verifyCollector(entityUnitTester, TestResultHelper.NO_ERROR);
+        TestResultHelper.verifyCollectorNoError(entityUnitTester);
     }
 
     @Override
