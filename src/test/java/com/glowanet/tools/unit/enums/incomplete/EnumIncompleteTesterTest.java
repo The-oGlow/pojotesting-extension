@@ -14,26 +14,19 @@ import org.junit.runners.Parameterized;
 @RunWith(Parameterized.class)
 public class EnumIncompleteTesterTest<E extends DataEnums> extends BaseEnumTesterTest<E> {
 
-    // constructors
     public EnumIncompleteTesterTest() {
         super((Class<E>) DataEnums.class);
     }
-// end - constructors
 
-    // static method
     @Parameterized.Parameters
     public static Object[] data() {
         return prepareParameterCodeCheckEnabled();
     }
-// end - static method
 
-    // methods
     @Override
     protected BaseEnumTester<E> prepareEnumTester() {
         EnumIncompleteTester<E> o2T = new EnumIncompleteTester<>();
         o2T._setCodeCheckEnabled(parameterCodeCheckEnabled);
         return o2T;
     }
-// end - methods
-
 }

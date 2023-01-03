@@ -34,17 +34,12 @@ import static org.hamcrest.Matchers.nullValue;
  */
 public class SimpleTesterTest {
 
-    /* static fields */
     private static final String VAL_HELLO = "HELLO";
     private static final Number VAL_99    = 99;
     private static final String VAL_1     = "1";
-    /* end - static fields */
 
-    /* fields */
     private SimpleTester o2T;
-    /* end - fields */
 
-    /* methods */
     @Before
     public void setUp() {
         o2T = new SimpleTester();
@@ -181,5 +176,4 @@ public class SimpleTesterTest {
         assertThat(DataSimple.VAL_PREV, not(equalTo(DataSimple.VAL_NEW)));
         assertThat(DataSimple.PRIV_CONST, not(equalTo(DataSimple.VAL_NEW)));
     }
-    /* end - methods */
 }

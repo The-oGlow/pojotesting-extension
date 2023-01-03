@@ -13,7 +13,6 @@ import org.junit.Test;
  */
 public class EntityToStringImplementedTesterTest<T extends DataEntityToStringImplemented> extends BaseEntityTesterTest<T> {
 
-    // methods
     @Test
     public void testTestToStringWithValues_withToString_raise_oneException() {
         BaseEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityToStringImplemented.class);
@@ -34,29 +33,4 @@ public class EntityToStringImplementedTesterTest<T extends DataEntityToStringImp
     protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new EntityToStringImplementedTester<>();
     }
-
-    //    @Override
-//    protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
-//        return new EntityToStringDefaultTester<>(typeOfO2T, prepareTheCreator(typeOfO2T));
-//    }
-
-//    @Override
-//    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
-//        return new CallTheCreator<>() {
-//            // methods
-//            /* methods */
-//            @Override
-//            public T call() {
-//                T newO2T = null;
-//                if (DataEntitySimple.class.equals(typeOfO2T)) {
-//                    newO2T = (T) new DataEntitySimple();
-//                } else if (DataEntityToStringImplemented.class.equals(typeOfO2T)) {
-//                    newO2T = (T) new DataEntityToStringImplemented();
-//                }
-//                return newO2T;
-//            }
-//// end - methods
-//        };
-//    }
-// end - methods
 }

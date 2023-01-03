@@ -18,18 +18,12 @@ import static org.hamcrest.Matchers.is;
  */
 public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
 
-    // static fields
     protected static final Logger LOGGER = LogManager.getLogger();
-    // end - static fields
 
-    // fields
     @Parameterized.Parameter
     public boolean     parameterCheckSVUID;
     @Rule
     public TestWatcher watcher = new TestFailedWatcher("checkSVUID", parameterCheckSVUID);
-// end - fields
-
-    // abstract methods
 
     /**
      * Prepare the testerclazz, which creates the entity which will test the pojo.
@@ -39,17 +33,12 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
      * @return new instance of {@code BaseEntityTester}
      */
     protected abstract BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T);
-// end -  abstract methods
 
-    // static method
     protected static Object[] prepareParameterCheckSVUID() {
         return new Object[]{
                 Boolean.TRUE, Boolean.FALSE
         };
     }
-// end - static method
-
-    // methods
 
     protected boolean assumeParameterCheckSVUIDIsTrue() {
         boolean proceedNextStep = true;
@@ -58,7 +47,6 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
             LOGGER.debug(String.format("Ignore test, assumeTrue(parameterCheckSVUID) not met: '%s'", parameterCheckSVUID));
             assertThat(true, is(true));
         }
-        //Assume.assumeTrue(String.format("parameterCheckSVUID: '%s'", parameterCheckSVUID), parameterCheckSVUID);
         return proceedNextStep;
     }
 
@@ -69,10 +57,6 @@ public abstract class BaseEntityTesterTest<T extends BaseDataEntity> {
             LOGGER.debug(String.format("Ignore test, assumeFalse(parameterCheckSVUID) not met: '%s'", parameterCheckSVUID));
             assertThat(false, is(false));
         }
-        //Assume.assumeFalse(String.format("parameterCheckSVUID: '%s'", parameterCheckSVUID), parameterCheckSVUID);
         return proceedNextStep;
     }
-
-// end - methods
-
 }

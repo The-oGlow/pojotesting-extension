@@ -24,29 +24,21 @@ import static org.hamcrest.Matchers.notNullValue;
  */
 public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
 
-    // static fields
     public static final  NameCheckTypeEnum DEFAULT_NAME_CHECK_TYPE    = NameCheckTypeEnum.CF;
     public static final  boolean           DEFAULT_CODE_CHECK_ENABLED = true;
     private static final String            FIELD_NAME_CODE            = "code";
     private static final String            FIELD_NAME_NAME            = "name";
     private static final Logger            LOGGER                     = LogManager.getLogger();
-    // end - static fields
 
-    // fields
     private Collection<String> allFieldsToIgnoreForCode;
     private NameCheckTypeEnum  nameCheckType    = DEFAULT_NAME_CHECK_TYPE;
     private boolean            codeCheckEnabled = DEFAULT_CODE_CHECK_ENABLED;
-// end - fields
 
-    // constructors
     @SuppressWarnings("java:S1699")
     protected EnumUnitTester(Class<E> typeOfo2E) {
         super(typeOfo2E);
         localSetup();
     }
-// end - constructors
-
-    // abstract methods
 
     /**
      * Specific enums in the current clazz, which should be ignored on testing 'toCode()'.
@@ -57,9 +49,7 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
      * @see #testValidateAllEnumObjects()
      */
     protected abstract List<String> enumObjectsToIgnoreForCode();
-// end -  abstract methods
 
-    // methods
     protected void localSetup() {
         allFieldsToIgnoreForCode = new HashSet<>();
         allFieldsToIgnoreForCode.addAll(enumObjectsToIgnoreForCode() == null ? List.of() : enumObjectsToIgnoreForCode());
@@ -300,6 +290,4 @@ public abstract class EnumUnitTester<E> extends AbstractUnitTester<E> {
         }
         return isValid;
     }
-// end - methods
-
 }

@@ -16,17 +16,13 @@ import java.util.List;
 @Ignore("Do not call this as test class!!")
 class ConcreteAbstractEnumUnitTester extends AbstractEnumObjectUnitTester<DataEnums> {
 
-    /* constructors */
     public ConcreteAbstractEnumUnitTester() {
         super(DataEnums.class);
         setCodeCheckEnabled(false);
     }
-    /* end - constructors */
 
-    /* methods */
     @Override
     protected List<String> enumObjectsToIgnoreForCode() {
         return List.of();
     }
-    /* end - methods */
 }

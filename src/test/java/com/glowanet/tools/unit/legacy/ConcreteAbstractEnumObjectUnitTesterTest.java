@@ -15,11 +15,8 @@ import static org.hamcrest.Matchers.nullValue;
 @Deprecated(forRemoval = true, since = "0.1.0")
 public class ConcreteAbstractEnumObjectUnitTesterTest {
 
-    /* fields */
     private ConcreteAbstractEnumUnitTester o2T;
-    /* end - fields */
 
-    /* methods */
     @Before
     public void setUp() {
         o2T = new ConcreteAbstractEnumUnitTester();
@@ -32,5 +29,4 @@ public class ConcreteAbstractEnumObjectUnitTesterTest {
         assertThat(actual, nullValue());
         assertThat(actual2, nullValue());
     }
-    /* end - methods */
 }

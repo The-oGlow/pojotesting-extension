@@ -16,17 +16,13 @@ import java.util.List;
 @Ignore("Do not call this as test class!!")
 class ConcreteAbstractEntityUnitTester extends AbstractEntityUnitTester<DataEntitySimple> {
 
-    /* constructors */
     public ConcreteAbstractEntityUnitTester() {
         super(DataEntitySimple.class);
         setCheckSVUID(false);
     }
-    /* end - constructors */
 
-    /* methods */
     @Override
     protected List<String> fieldsToIgnoreForToString() {
         return List.of("primJ", "valI", "valS");
     }
-    /* end - methods */
 }

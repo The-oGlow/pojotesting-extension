@@ -8,6 +8,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class EntityUnitTesterTest {
+
     private static class EntityUnitTesterTestClazz extends EntityUnitTester<DataSimple> {
 
         public EntityUnitTesterTestClazz() {
@@ -21,5 +22,4 @@ public class EntityUnitTesterTest {
         assertThat(o2T, notNullValue());
         assertThat(o2T.getClass(), equalTo(EntityUnitTesterTest.EntityUnitTesterTestClazz.class));
     }
-
 }

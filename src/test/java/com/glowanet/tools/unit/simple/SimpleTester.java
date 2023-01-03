@@ -19,17 +19,13 @@ import java.util.Map;
 @Ignore("Do not call this as test class!!")
 class SimpleTester extends AbstractUnitTester<DataSimple> {
 
-    /* constructors */
     public SimpleTester() {
         super(DataSimple.class);
     }
-    /* end - constructors */
 
-    /* static method */
     public static void _setFinalStatic(Class<?> clazzA, String fieldName, Object newValue) throws UnsupportedOperationException {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
     }
-    /* end - static method */
 
     public Field _findField(DataSimple instance, String fieldName) {
         return super.findField(instance, fieldName);

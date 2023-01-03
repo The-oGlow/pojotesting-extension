@@ -15,5 +15,4 @@ class EntityLogicalEqualsTester<T extends DataEntityLogicalEquals> extends BaseE
     public EntityLogicalEqualsTester() {
         super((Class<T>) DataEntityLogicalEquals.class);
     }
-
 }

@@ -19,12 +19,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
  */
 public class EntityToStringDefaultTesterTest<T extends DataEntityToString> extends BaseEntityTesterTest<T> {
 
-    // static fields
     protected static final String ALL_FIELDS_TO_IGNORE_FOR_TO_STRING = "allFieldsToIgnoreForToString";
     protected static final String ALL_FIELDS_DENIED_FOR_TO_STRING    = "allFieldsDeniedForToString";
-// end - static fields
 
-    // methods
     @Test
     public void testAllFieldsDeniedForToString_defaultToString_return_emptyList() {
         BaseEntityTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntityToString.class);
@@ -81,29 +78,4 @@ public class EntityToStringDefaultTesterTest<T extends DataEntityToString> exten
     protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new EntityToStringDefaultTester<>();
     }
-
-    //    @Override
-//    protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
-//        return new EntityToStringDefaultTester<>(typeOfO2T, prepareTheCreator(typeOfO2T));
-//    }
-
-//    @Override
-//    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
-//        return new CallTheCreator<>() {
-//            // methods
-//            /* methods */
-//            @Override
-//            public T call() {
-//                T newO2T = null;
-//                if (DataEntityToString.class.equals(typeOfO2T)) {
-//                    newO2T = (T) new DataEntitySimple();
-//                } else if (DataEntityToStringImplemented.class.equals(typeOfO2T)) {
-//                    newO2T = (T) new DataEntityToStringImplemented();
-//                }
-//                return newO2T;
-//            }
-//// end - methods
-//        };
-//    }
-// end - methods
 }

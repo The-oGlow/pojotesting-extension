@@ -38,7 +38,7 @@ import static org.junit.Assert.fail;
  * @param <T> the type of {@code object2Test}
  */
 public abstract class AbstractUnitTester<T> {
-    // static fields
+
     public static final boolean               DEFAULT_CHECK_SVUID              = true;
     public static final String                SERIAL_VERSION_UID_NAME          = "serialVersionUID";
     /** Range of IDs which are not allowed to use. */
@@ -47,7 +47,6 @@ public abstract class AbstractUnitTester<T> {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static com.glowanet.tools.random.RandomValueFactory randomValueFactory;
-// end - static fields
 
     static {
         try {
@@ -58,13 +57,9 @@ public abstract class AbstractUnitTester<T> {
         }
     }
 
-    // fields
     @Rule
     public final  ErrorCollectorExt collector = new ErrorCollectorExt();
     private final Class<T>          typeOfo2T;
-// end - fields
-
-// constructors
 
     /**
      * @param typeOfo2T the clazz object of {@code T}
@@ -75,9 +70,6 @@ public abstract class AbstractUnitTester<T> {
         init();
 
     }
-// end - constructors
-
-// static method
 
     /**
      * Put a value into a static final field.
@@ -100,9 +92,6 @@ public abstract class AbstractUnitTester<T> {
         field.set(null, newValue);
 */
     }
-// end - static method
-
-// methods
 
     /**
      * Create instance (with default constructor).
@@ -374,5 +363,4 @@ public abstract class AbstractUnitTester<T> {
     private void validateObjectAndType() {
         assertThat(createObject2Test(), anyOf(nullValue(), isA(this.typeOfo2T)));
     }
-// end - methods
 }

@@ -12,7 +12,6 @@ public enum DataEnumsCode implements IDataEnums {
     // no number in text
     XX(null);
 
-    // static fields
     public static final String        ITEMNAME_WITH_NUMBER    = "A0";
     public static final String        ITEMNAME_WITHOUT_NUMBER = "XX";
     public static final String        ITEMNAME_EXISTS         = "B1";
@@ -31,7 +30,6 @@ public enum DataEnumsCode implements IDataEnums {
     public static final int           COUNT_ITEM_W_NO         = DataEnumsCode.values().length - COUNT_ITEM_WO_NO;
     public static final int           COUNT_PSF               = FIELDS_TO_IGNORE.size();
     public static final int           EXCEPTION_SUM           = (COUNT_ITEM_W_NO) * 2 + (COUNT_ITEM_WO_NO) * 3;
-    // end - static fields
 
     private final Number code;
 

@@ -14,27 +14,21 @@ import java.util.Collection;
 import java.util.List;
 
 public abstract class CommonEnumTesterTest<E> {
-    // static fields
+
     public static final  List<NameCheckTypeEnum> LIST_NC_TYPES = List.of(NameCheckTypeEnum.CF, NameCheckTypeEnum.CIF, NameCheckTypeEnum.CISW, NameCheckTypeEnum.CSW);
     private static final Logger                  LOGGER        = LogManager.getLogger();
-// end - static fields
 
-    // fields
     @Parameterized.Parameter
     public boolean     parameterCodeCheckEnabled;
     @Rule
     public TestWatcher watcher = new TestFailedWatcher("codeCheckEnabled", parameterCodeCheckEnabled);
 
     private final Class<E> typeOfE;
-// end - fields
 
-    // constructors
     protected CommonEnumTesterTest(Class<E> typeOfE) {
         this.typeOfE = typeOfE;
     }
-// end - constructors
 
-    // abstract methods
     protected abstract BaseEnumTester<E> prepareEnumTester();
 
     protected abstract Field prepareFieldExistsInClazz();
@@ -45,9 +39,6 @@ public abstract class CommonEnumTesterTest<E> {
 
     protected abstract Field prepareFieldWithOutNoInName();
 
-// end -  abstract methods
-
-    // static method
     protected static Object[] prepareParameterCodeCheckEnabled() {
         return new Object[]{
                 Boolean.TRUE, Boolean.FALSE
@@ -64,9 +55,7 @@ public abstract class CommonEnumTesterTest<E> {
         }
         return allParms;
     }
-// end - static method
 
-    // methods
     protected Class<E> getTypeOfE() {
         return typeOfE;
     }
@@ -81,7 +70,6 @@ public abstract class CommonEnumTesterTest<E> {
             proceedNextStep = false;
             LOGGER.debug(String.format("assumeTrue() not met: parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled));
         }
-        //Assume.assumeTrue(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
         return proceedNextStep;
     }
 
@@ -91,9 +79,6 @@ public abstract class CommonEnumTesterTest<E> {
             proceedNextStep = false;
             LOGGER.debug(String.format("assumeFalse() not met: parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled));
         }
-        //Assume.assumeFalse(String.format("parameterCodeCheckEnabled: '%s'", parameterCodeCheckEnabled), parameterCodeCheckEnabled);
         return proceedNextStep;
     }
-// end - methods
-
 }

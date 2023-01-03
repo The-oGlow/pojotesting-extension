@@ -11,22 +11,10 @@ import java.util.List;
  */
 public abstract class BaseEntityTester<T extends BaseDataEntity> extends EntityUnitTester<T> {
 
-    // fields
-//    private CallTheCreator<T> callTheCreatorForT;
-// end - fields
-
-    // constructors
     protected BaseEntityTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
 
-//    protected BaseEntityTester(Class<T> typeOfo2T, CallTheCreator<T> callTheCreatorForT) {
-//        super(typeOfo2T);
-//        this.callTheCreatorForT = callTheCreatorForT;
-//    }
-// end - constructors
-
-    // methods
     public List<String> _fieldsDeniedForToString() {
         return super.fieldsDeniedForToString();
     }
@@ -63,6 +51,4 @@ public abstract class BaseEntityTester<T extends BaseDataEntity> extends EntityU
     protected void init() {
         //nothing2do
     }
-// end - methods
-
 }

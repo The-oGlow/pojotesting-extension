@@ -14,7 +14,6 @@ import java.util.List;
 @Ignore("Do not call this as test class!!")
 class EnumIncompleteTester<E extends DataEnums> extends BaseEnumTester<E> {
 
-    /* constructors */
     public EnumIncompleteTester() {
         super((Class<E>) DataEnums.class);
     }

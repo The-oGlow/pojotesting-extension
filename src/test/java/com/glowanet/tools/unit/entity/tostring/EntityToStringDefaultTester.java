@@ -12,10 +12,7 @@ import org.junit.Ignore;
 @Ignore("Do not call this as test class!!")
 class EntityToStringDefaultTester<T extends DataEntityToString> extends BaseEntityTester<T> {
 
-    // constructors
-
     public EntityToStringDefaultTester() {
         super((Class<T>) DataEntityToString.class);
     }
-// end - constructors
 }

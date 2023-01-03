@@ -11,10 +11,8 @@ import com.glowanet.data.entity.BaseDataEntity;
  */
 public class DataEntityToStringImplemented extends BaseDataEntity {
 
-    // methods
     @Override
     public String toString() {
         return _toString();
     }
-// end - methods
 }

@@ -10,9 +10,7 @@ import com.glowanet.tools.unit.enums.EnumUnitTester;
 @Deprecated(forRemoval = true, since = "0.1.0")
 public abstract class AbstractEnumObjectUnitTester<T> extends EnumUnitTester<T> {
 
-    // constructors
     protected AbstractEnumObjectUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
     }
-    // end - constructors
 }

@@ -18,11 +18,8 @@ import static org.hamcrest.Matchers.not;
 @Deprecated(forRemoval = true, since = "0.1.0")
 public class ConcreteAbstractEntityUnitTesterTest {
 
-    /* fields */
     private ConcreteAbstractEntityUnitTester o2T;
-    /* end - fields */
 
-    /* methods */
     @Before
     public void setUp() {
         o2T = new ConcreteAbstractEntityUnitTester();
@@ -36,5 +33,4 @@ public class ConcreteAbstractEntityUnitTesterTest {
         assertThat(actual2, isA(DataEntitySimple.class));
         assertThat(actual, not(equalToObject(actual2)));
     }
-    /* end - methods */
 }

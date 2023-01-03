@@ -19,11 +19,8 @@ import java.util.Collection;
 @RunWith(Parameterized.class)
 public class ObjectNameValidTesterTest<E extends DataEnums> extends BaseEnumTesterTest<E> {
 
-    // static fields
     private static final Logger LOGGER = LogManager.getLogger();
-// end - static fields
 
-    // fields
     @Parameterized.Parameter(1)
     public       NameCheckTypeEnum parameterNameCheckType;
     @Rule
@@ -31,22 +28,15 @@ public class ObjectNameValidTesterTest<E extends DataEnums> extends BaseEnumTest
             "codeCheckEnabled/nameCheckType",
             "" + parameterCodeCheckEnabled + "/" + parameterNameCheckType);
 
-// end - fields
-
-    // constructors
     public ObjectNameValidTesterTest() {
         super((Class<E>) DataEnums.class);
     }
-// end - constructors
 
-    // static method
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return prepareParameterNameCheckType();
     }
-// end - static method
 
-    // methods
     @Test
     public void testValidateEnumObjectName() {
         BaseEnumTester<E> o2T = prepareEnumTester();
@@ -68,5 +58,4 @@ public class ObjectNameValidTesterTest<E extends DataEnums> extends BaseEnumTest
         watcher.setParameterValue("" + parameterCodeCheckEnabled + "/" + parameterNameCheckType);
         return o2T;
     }
-// end - methods
 }

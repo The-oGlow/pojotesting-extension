@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 public class DataSimple implements Serializable {
 
-    // static fields
     public static final int CONST_COUNT  = 11;
     public static final int SETTER_COUNT = 3;
     public static final int GETTER_COUNT = 1 + SETTER_COUNT;
@@ -19,15 +18,11 @@ public class DataSimple implements Serializable {
     public static final int    VAL_NEW         = 999;
     public static final String PRIV_CONST_NAME = "PRIV_CONST";
     public static final int    PRIV_CONST      = VAL_PREV;
-// end - static fields
 
-    // fields
     private Integer valI;
     private String  valS;
     private float   primJ;
-// end - fields
 
-    // methods
     public String calcVal(String sep, float comp) {
         return valS + sep + comp;
     }
@@ -55,5 +50,4 @@ public class DataSimple implements Serializable {
     public void setValS(String valS) {
         this.valS = valS;
     }
-// end - methods
 }

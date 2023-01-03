@@ -10,7 +10,6 @@ package com.glowanet.data.entity.equal;
  */
 public class DataEntityLogicalEquals extends DataEntityGenericEquals {
 
-    // methods
     @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     @Override
     public boolean equals(Object obj) {
@@ -21,5 +20,4 @@ public class DataEntityLogicalEquals extends DataEntityGenericEquals {
     public int hashCode() {
         return _hashCode();
     }
-// end - methods
 }

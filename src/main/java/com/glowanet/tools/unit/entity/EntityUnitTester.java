@@ -43,14 +43,11 @@ import static org.hamcrest.MatchersExtend.betweenWithBound;
  */
 public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
 
-    // static fields
     /** Field names in the clazz, which should be generally ignored on testing {@link #toString()}. */
     public static final  Collection<String> FIELDS_COMMON_IGNORE              = Set.of("class");
     public static final  boolean            DEFAULT_CHECK_LOGICAL_EQUALS_ONLY = false;
     private static final Logger             LOGGER                            = LogManager.getLogger();
-// end - static fields
 
-    // fields
     @Rule
     public  ExcludeFromTestingRule excludeFromTestingRule = new ExcludeFromTestingRule();
     private boolean                checkLogicalEqualsOnly = DEFAULT_CHECK_LOGICAL_EQUALS_ONLY;
@@ -58,17 +55,13 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
 
     private Collection<String> allFieldsToIgnoreForToString;
     private Collection<String> allFieldsDeniedForToString;
-// end - fields
 
-    // constructors
     @SuppressWarnings("java:S1699")
     protected EntityUnitTester(Class<T> typeOfo2T) {
         super(typeOfo2T);
         localSetup();
     }
-// end - constructors
 
-    // methods
     protected void localSetup() {
         allFieldsToIgnoreForToString = new HashSet<>(FIELDS_COMMON_IGNORE);
         allFieldsToIgnoreForToString.addAll(fieldsToIgnoreForToString() == null ? List.of() : fieldsToIgnoreForToString());
@@ -352,5 +345,4 @@ public abstract class EntityUnitTester<T> extends AbstractUnitTester<T> {
             }
         }
     }
-// end - methods
 }

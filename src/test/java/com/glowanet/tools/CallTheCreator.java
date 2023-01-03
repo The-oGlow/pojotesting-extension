@@ -9,12 +9,9 @@ import java.util.concurrent.Callable;
  */
 public abstract class CallTheCreator<T> implements Callable<T> {
 
-    // abstract methods
-
     /**
      * @return a new instance of type {@code T}
      */
     @Override
     public abstract T call();
-// end -  abstract methods
 }

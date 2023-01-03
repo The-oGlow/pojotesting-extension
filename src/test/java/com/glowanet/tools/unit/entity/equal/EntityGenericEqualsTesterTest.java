@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.is;
  */
 public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> extends BaseEntityTesterTest<T> {
 
-    // methods
     @Test
     public void testFieldsDeniedForToString_return_emptyList() {
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
@@ -142,5 +141,4 @@ public class EntityGenericEqualsTesterTest<T extends DataEntityGenericEquals> ex
     protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new EntityGenericEqualsTester<>();
     }
-// end - methods
 }

@@ -10,4 +10,5 @@ import com.glowanet.data.entity.BaseDataEntity;
  * </ul>
  */
 public class DataEntityToString extends BaseDataEntity {
+
 }

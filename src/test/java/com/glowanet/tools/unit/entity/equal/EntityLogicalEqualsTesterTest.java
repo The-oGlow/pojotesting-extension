@@ -22,7 +22,6 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
     @Rule
     public ExcludeFromTestingRule rule = new ExcludeFromTestingRule();
 
-    // methods
     @Test
     public void testGetObject2Test_return_newCreatedObject() {
         BaseEntityTester<T> entityUnitTester = prepareEntityTesterGeneric();
@@ -92,5 +91,4 @@ public class EntityLogicalEqualsTesterTest<T extends DataEntityLogicalEquals> ex
     protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new EntityLogicalEqualsTester<>();
     }
-// end - methods
 }

@@ -33,7 +33,6 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
         super(typeOfE);
     }
 
-    // methods
     @Test
     public void testCheckIgnoredFields_existingField_return_false_raise_noException() {
         BaseEnumTester<E> o2T = prepareEnumTester();
@@ -201,5 +200,4 @@ public abstract class BaseEnumTesterTest<E> extends CommonEnumTesterTest<E> {
     protected Field prepareFieldWithOutNoInName() {
         return prepareField(ITEMNAME_WITHOUT_NUMBER);
     }
-// end - methods
 }

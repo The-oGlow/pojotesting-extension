@@ -4,17 +4,13 @@ package com.glowanet.data.entity;
  * The base clazz for all implementation of an entity to use in tests.
  */
 public abstract class BaseDataEntity {
-    // fields
+
     private Integer simInt;
     private String  simString;
-// end - fields
 
-    // constructors
     public BaseDataEntity() {
     }
-// end - constructors
 
-    // methods
     public Integer getSimInt() {
         return simInt;
     }
@@ -53,5 +49,4 @@ public abstract class BaseDataEntity {
                 ", simString='" + simString + '\'' +
                 '}';
     }
-// end - methods
 }

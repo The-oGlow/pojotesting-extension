@@ -14,7 +14,6 @@ import org.junit.Test;
  */
 public class EntitySimpleTesterGetterSetterTest<T extends DataEntitySimple> extends BaseEntityTesterTest<T> {
 
-    // methods
     @Test
     public void testTestAllGetterAccessiblewith_raise_noException() {
         EntityUnitTester<T> entityUnitTester = prepareEntityUnitTester((Class<T>) DataEntitySimple.class);
@@ -46,22 +45,4 @@ public class EntitySimpleTesterGetterSetterTest<T extends DataEntitySimple> exte
     protected BaseEntityTester<T> prepareEntityUnitTester(Class<T> typeOfO2T) {
         return new EntitySimpleTester<>();
     }
-
-//    @Override
-//    protected CallTheCreator<T> prepareTheCreator(Class<T> typeOfO2T) {
-//        return new CallTheCreator<>() {
-//            // methods
-//            /* methods */
-//            @Override
-//            public T call() {
-//                T newO2T = null;
-//                if (DataEntitySimple.class.equals(typeOfO2T)) {
-//                    newO2T = (T) new DataEntitySimple();
-//                }
-//                return newO2T;
-//            }
-//// end - methods
-//        };
-//    }
-// end - methods
 }

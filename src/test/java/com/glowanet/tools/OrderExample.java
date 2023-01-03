@@ -17,7 +17,6 @@ public abstract class OrderExample {
     protected       int cn = 0;
     int bn = 0;
 
-    /* constructors */
     protected OrderExample(int a) {
     }
 
@@ -30,10 +29,7 @@ public abstract class OrderExample {
     public OrderExample() {
     }
 
-    /* abstract methods */
     public abstract void mav();
-
-    /* static method */
 
     /**
      *
@@ -68,7 +64,6 @@ public abstract class OrderExample {
     public final void mpubfv() {
     }
 
-    /* methods */
     public void testPv() {
     }
 
@@ -89,21 +84,23 @@ public abstract class OrderExample {
     }
 
     abstract class innerAbsClazz {
-        /* abstract methods */
+
         abstract void myM();
     }
 
     protected static class innerStaticClazz {
+
     }
 
     public class innerClazz {
+
     }
 
     class concr extends innerAbsClazz {
+
         @Override
         void myM() {
 
         }
     }
-
 }

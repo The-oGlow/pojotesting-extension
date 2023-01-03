@@ -1,8 +1,7 @@
 package com.glowanet.tools.unit;
 
 import com.glowanet.util.junit.rules.ErrorCollectorExt;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.MutableTriple;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Rule;
@@ -14,17 +13,20 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assume.assumeThat;
 
 @RunWith(Parameterized.class)
 public class ClazzAdapterTest {
 
     private static class ClazzAdapterTestPojo {
+
         private int    intInt;
         private String stringString;
         private Number numberNumber;
@@ -54,25 +56,38 @@ public class ClazzAdapterTest {
         }
     }
 
-    @Parameterized.Parameters(name = "{index}: left:{0}, right:{0}")
-    public static List<Pair<Object, List<?>>> dataForTest() {
+    protected static class TestSet<M extends Number> extends MutableTriple<Object, Matcher<M>, Boolean> {
+
+        /**
+         * @param testObject Testobject for {@link #testCompareTo()}
+         * @param matcher    Matcher for {@link #testCompareTo()}
+         * @param result     Expected result for {@link #testEquals()}
+         */
+        protected TestSet(Object testObject, Matcher<M> matcher, Boolean result) {
+            super(testObject, matcher, result);
+        }
+    }
+
+    @Parameterized.Parameters(name = "{index}: testSet:{0}")
+    public static List<TestSet<Number>> dataForTest() {
         return Arrays.asList(
-                new ImmutablePair<>(ClazzAdapterTestPojo.class, Arrays.asList(equalTo(0), false)),
-                new ImmutablePair<>(ClazzAdapterTest.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(ClazzAdapter.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(Object.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(int.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(Integer.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(Number.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(String.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(CharSequence.class, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(null, Arrays.asList(not(equalTo(0)), false)),
-                new ImmutablePair<>(ClazzAdapter.newI(ClazzAdapterTestPojo.class), Arrays.asList(not(equalTo(99)), true))
+                new TestSet<>(ClazzAdapterTestPojo.class, equalTo(0), false),
+                new TestSet<>(ClazzAdapterTest.class, not(equalTo(0)), false),
+                new TestSet<>(ClazzAdapter.class, not(equalTo(0)), false),
+                new TestSet<>(Object.class, not(equalTo(0)), false),
+                new TestSet<>(int.class, not(equalTo(0)), false),
+                new TestSet<>(Integer.class, not(equalTo(0)), false),
+                new TestSet<>(Number.class, not(equalTo(0)), false),
+                new TestSet<>(String.class, not(equalTo(0)), false),
+                new TestSet<>(CharSequence.class, not(equalTo(0)), false),
+                new TestSet<>(null, not(equalTo(0)), false),
+                new TestSet<>("NOTACLAZZ", not(equalTo(99)), false),
+                new TestSet<>(ClazzAdapter.newI(ClazzAdapterTestPojo.class), not(equalTo(99)), true)
         );
     }
 
     @Parameterized.Parameter
-    public Pair<Object, List<?>> itemForTest;
+    public TestSet<Number> itemForTest;
 
     private ClazzAdapter o2T;
 
@@ -86,23 +101,30 @@ public class ClazzAdapterTest {
 
     @Test
     public void testCompareTo() {
-        assumeThat(itemForTest.getLeft(), instanceOf(Class.class));
+        assumeThat(itemForTest.getLeft(), anyOf(nullValue(), instanceOf(Class.class)));
         for (var idx = 0; idx <= 10; idx++) {
             ClazzAdapter thisO2T = ClazzAdapter.newI(ClazzAdapterTestPojo.class);
-            Class<?> typedItemForTest = (Class<?>) itemForTest.getLeft();
-            Matcher<Integer> expected = (Matcher<Integer>) itemForTest.getRight().get(0);
-            int actual = thisO2T.compareTo(typedItemForTest);
+            Object typedItemForTest = itemForTest.getLeft();
+            Matcher<Number> expected = itemForTest.getMiddle();
+            int actual = thisO2T.compareTo((Class<?>) typedItemForTest);
             collector.checkThat(
-                    String.format("%s: not matching o2T:%s with actual:%s", idx, thisO2T.hashCode(), itemForTest.getLeft().hashCode()),
+                    String.format("%s: not matching o2T:%s with actual:%s",
+                            idx, thisO2T.hashCode(), itemForTest.getLeft() == null ? "null" : itemForTest.getLeft().hashCode()),
                     actual, expected
             );
         }
     }
 
     @Test
+    public void testCompareToWithItself() {
+        boolean actual = o2T.equals(o2T);
+        assertThat(actual, equalTo(true));
+    }
+
+    @Test
     public void testEquals() {
         boolean actual = o2T.equals(itemForTest.getLeft());
-        assertThat(actual, equalTo(itemForTest.getRight().get(1)));
+        assertThat(actual, equalTo(itemForTest.getRight()));
     }
 
     @Test

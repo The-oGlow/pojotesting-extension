@@ -21,13 +21,10 @@ import static com.glowanet.util.junit.TestResultHelper.WITH_ERROR;
  */
 public abstract class BaseEnumCodeTesterTest<E extends DataEnumsCode> extends CommonEnumTesterTest<E> {
 
-    // constructors
     protected BaseEnumCodeTesterTest(Class<E> typeOfE) {
         super(typeOfE);
     }
-// end - constructors
 
-    // methods
     @Test
     public void testValidateEnumObject_itemNameNoNumber_clazz_return_false_raise_twoException() {
         if (assumeParameterCodeCheckEnabledIsTrue()) {
@@ -110,6 +107,4 @@ public abstract class BaseEnumCodeTesterTest<E extends DataEnumsCode> extends Co
     protected Field prepareFieldWithOutNoInName() {
         return prepareField(ITEMNAME_WITHOUT_NUMBER);
     }
-
-//end -methods
 }

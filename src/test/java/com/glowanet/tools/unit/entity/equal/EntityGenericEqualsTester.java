@@ -12,9 +12,7 @@ import org.junit.Ignore;
 @Ignore("Do not call this as test class!!")
 class EntityGenericEqualsTester<T extends DataEntityGenericEquals> extends BaseEntityTester<T> {
 
-    // constructors
     public EntityGenericEqualsTester() {
         super((Class<T>) DataEntityGenericEquals.class);
     }
-// end - constructors
 }
