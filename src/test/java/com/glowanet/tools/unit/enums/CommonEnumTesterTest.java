@@ -1,6 +1,7 @@
 package com.glowanet.tools.unit.enums;
 
 import com.glowanet.tools.unit.TestFailedWatcher;
+import com.glowanet.tools.unit.entity.enums.NameCheckTypeEnum;
 import com.glowanet.util.reflect.ReflectionHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

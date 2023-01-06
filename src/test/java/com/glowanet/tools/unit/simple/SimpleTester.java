@@ -27,10 +27,6 @@ class SimpleTester extends AbstractUnitTester<DataSimple> {
         AbstractUnitTester.setFinalStatic(clazzA, fieldName, newValue);
     }
 
-    public Field _findField(DataSimple instance, String fieldName) {
-        return super.findField(instance, fieldName);
-    }
-
     public List<PropertyDescriptor> _findGetter() {
         return super.findGetter();
     }
@@ -41,14 +37,6 @@ class SimpleTester extends AbstractUnitTester<DataSimple> {
 
     public Class<DataSimple> _getTypeOfo2T() {
         return super.getTypeOfo2T();
-    }
-
-    protected boolean _hasSerializableIF(Class<?> clazzA) {
-        return super.hasSerializableIF(clazzA);
-    }
-
-    protected void _makeFieldAccessible(Field field, DataSimple instance) {
-        super.makeFieldAccessible(field, instance);
     }
 
     protected List<Field> _retrievePublicConstantsfromClass(Class<?> clazzA) {

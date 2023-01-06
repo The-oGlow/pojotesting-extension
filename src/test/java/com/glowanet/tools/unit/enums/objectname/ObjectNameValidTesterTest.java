@@ -2,9 +2,9 @@ package com.glowanet.tools.unit.enums.objectname;
 
 import com.glowanet.data.enums.DataEnums;
 import com.glowanet.tools.unit.TestFailedWatcher;
+import com.glowanet.tools.unit.entity.enums.NameCheckTypeEnum;
 import com.glowanet.tools.unit.enums.BaseEnumTester;
 import com.glowanet.tools.unit.enums.BaseEnumTesterTest;
-import com.glowanet.tools.unit.enums.NameCheckTypeEnum;
 import com.glowanet.util.junit.TestResultHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

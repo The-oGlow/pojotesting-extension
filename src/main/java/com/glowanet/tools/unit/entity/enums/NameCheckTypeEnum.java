@@ -1,4 +1,4 @@
-package com.glowanet.tools.unit.enums;
+package com.glowanet.tools.unit.entity.enums;
 
 /**
  * Different variants how to check the enum name.

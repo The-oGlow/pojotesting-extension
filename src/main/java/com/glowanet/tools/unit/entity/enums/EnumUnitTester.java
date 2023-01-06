@@ -1,4 +1,4 @@
-package com.glowanet.tools.unit.enums;
+package com.glowanet.tools.unit.entity.enums;
 
 import com.glowanet.tools.unit.AbstractUnitTester;
 import com.glowanet.util.reflect.ReflectionHelper;

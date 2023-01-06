@@ -1,6 +1,6 @@
 package com.glowanet.tools.unit;
 
-import com.glowanet.tools.unit.enums.EnumUnitTester;
+import com.glowanet.tools.unit.entity.enums.EnumUnitTester;
 
 /**
  * @param <T> the type of the entity which will be tested

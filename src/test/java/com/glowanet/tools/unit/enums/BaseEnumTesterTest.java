@@ -1,6 +1,8 @@
 package com.glowanet.tools.unit.enums;
 
 import com.glowanet.data.enums.DataEnums;
+import com.glowanet.tools.unit.entity.enums.EnumUnitTester;
+import com.glowanet.tools.unit.entity.enums.NameCheckTypeEnum;
 import com.glowanet.util.junit.TestResultHelper;
 import com.glowanet.util.junit.rules.ErrorCollectorExt;
 import org.junit.Test;

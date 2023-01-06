@@ -1,7 +1,7 @@
 package com.glowanet.tools.unit.enums.custom;
 
 import com.glowanet.data.enums.DataEnumsCounter;
-import com.glowanet.tools.unit.enums.EnumUnitTester;
+import com.glowanet.tools.unit.entity.enums.EnumUnitTester;
 import org.junit.Ignore;
 
 import java.util.List;

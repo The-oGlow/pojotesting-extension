@@ -3,7 +3,6 @@ package com.glowanet.tools.unit;
 import com.glowanet.tools.random.IRandomStrategy;
 import com.glowanet.tools.random.IRandomStrategyByType;
 import com.glowanet.util.junit.rules.ErrorCollectorExt;
-import org.apache.commons.lang3.ClassUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -13,7 +12,6 @@ import org.hamcrest.core.IsBetween;
 import org.junit.Rule;
 
 import java.beans.PropertyDescriptor;
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -41,6 +39,8 @@ public abstract class AbstractUnitTester<T> {
 
     public static final boolean               DEFAULT_CHECK_SVUID              = true;
     public static final String                SERIAL_VERSION_UID_NAME          = "serialVersionUID";
+    public static final String                MSG_CANNOT_CREATE_FROM_NULL      = "Cannot create from 'null'!";
+    public static final String                MSG_CANNOT_CREATE_FROM_TYPE      = "Cannot create from type";
     /** Range of IDs which are not allowed to use. */
     public static final IsBetween.Range<Long> SERIAL_VERSION_UID_INVALID_RANGE = new IsBetween.Range<>(-100L, 100L);
 
@@ -108,12 +108,12 @@ public abstract class AbstractUnitTester<T> {
             try {
                 newObject = type.getDeclaredConstructor((Class<?>[]) null).newInstance((Object[]) null);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                LOGGER.error("Cannot create from type '{}' : {}!", type, e.getMessage());
-                fail(e.getMessage());
+                LOGGER.error(String.format("%s '%s': %s", MSG_CANNOT_CREATE_FROM_TYPE, type, e.getMessage()));
+                fail(String.format("%s '%s': %s", MSG_CANNOT_CREATE_FROM_TYPE, type, e.getMessage()));
             }
         } else {
-            LOGGER.warn("Cannot create from type 'null'!");
-            fail("Cannot create from type 'null'!");
+            LOGGER.warn(MSG_CANNOT_CREATE_FROM_NULL);
+            fail(MSG_CANNOT_CREATE_FROM_NULL);
         }
         return newObject;
     }
@@ -124,26 +124,6 @@ public abstract class AbstractUnitTester<T> {
     public T getObject2Test() {
         validateObjectAndType();
         return createObject2Test();
-    }
-
-    /**
-     * @param instance  an instance of {@code T}
-     * @param fieldName the name of the field
-     *
-     * @return a field instance
-     */
-    @SuppressWarnings("java:S5960")
-    protected Field findField(T instance, String fieldName) {
-        Field idField = null;
-        try {
-            idField = instance.getClass().getDeclaredField(fieldName);
-            makeFieldAccessible(idField, instance);
-        } catch (NoSuchFieldException e) {
-            fail(String.format("No '%s' defined : %s", fieldName, e));
-        } catch (SecurityException e) {
-            fail(String.format("'%s' not accessible : %s ", fieldName, e));
-        }
-        return idField;
     }
 
     /**
@@ -180,23 +160,6 @@ public abstract class AbstractUnitTester<T> {
     }
 
     /**
-     * @param clazzA the type to inspect
-     *
-     * @return true=this type has the Serializable-IF, false=otherwise
-     */
-    protected boolean hasSerializableIF(Class<?> clazzA) {
-        boolean hasIt = false;
-        List<Class<?>> listIF = ClassUtils.getAllInterfaces(clazzA);
-        for (Class<?> clazzAIF : listIF) {
-            if (Serializable.class.equals(clazzAIF)) {
-                hasIt = true;
-                break;
-            }
-        }
-        return hasIt;
-    }
-
-    /**
      * Initialize the unit tester.
      */
     protected void init() {
@@ -220,21 +183,6 @@ public abstract class AbstractUnitTester<T> {
             }
         }
         return isAnEnum;
-    }
-
-    /**
-     * @param field    a field instance
-     * @param instance the current instance where to make the {@code field} accessible
-     */
-    protected void makeFieldAccessible(Field field, T instance) {
-        try {
-            if (!field.canAccess(instance)) {
-                throw new IllegalArgumentException();
-            }
-        } catch (IllegalArgumentException e) {
-            LOGGER.trace(e);
-            field.trySetAccessible();
-        }
     }
 
     /**

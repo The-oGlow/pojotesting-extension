@@ -1,10 +1,9 @@
 package com.glowanet.tools.unit.simple;
 
-import com.glowanet.data.entity.serial.DataEntityNotSerialVersionUid;
-import com.glowanet.data.entity.serial.DataEntityNotSerializable;
 import com.glowanet.data.simple.DataSimple;
 import com.glowanet.tools.unit.ClazzAdapter;
 import com.glowanet.util.junit.TestResultHelper;
+import com.glowanet.util.reflect.ReflectionHelper;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,9 +19,7 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.equalToObject;
 import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.isA;
-import static org.hamcrest.Matchers.matchesRegex;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
@@ -57,20 +54,18 @@ public class SimpleTesterTest {
     @Test
     public void testFindField_return_fieldIsFound() {
         DataSimple instance = o2T.getObject2Test();
-        Field actual = o2T._findField(instance, DataSimple.FIELD_EXISTS);
+        Field actual = ReflectionHelper.findField(DataSimple.FIELD_EXISTS, instance);
         assertThat(actual, notNullValue());
         assertThat(actual.getName(), equalTo(DataSimple.FIELD_EXISTS));
         assertThat(actual.canAccess(instance), equalTo(true));
     }
 
     @Test
-    public void testFindField_throws_fieldNotFoundException() {
+    public void testFindField_return_null() {
         DataSimple instance = o2T.getObject2Test();
 
-        Throwable actual = TestResultHelper.verifyException(() -> o2T._findField(instance, DataSimple.FIELD_NOT_EXISTS), Throwable.class);
-        assertThat(actual, notNullValue());
-        assertThat(actual, instanceOf(AssertionError.class));
-        assertThat(actual.getMessage(), matchesRegex(String.format("^No '%s' defined : .+$", DataSimple.FIELD_NOT_EXISTS)));
+        Field actual = ReflectionHelper.findField(DataSimple.FIELD_NOT_EXISTS, instance);
+        assertThat(actual, nullValue());
     }
 
     @Test
@@ -100,23 +95,11 @@ public class SimpleTesterTest {
     }
 
     @Test
-    public void testHasSerializableIF_return_false() {
-        boolean actual = o2T._hasSerializableIF(DataEntityNotSerializable.class);
-        assertThat(actual, equalTo(false));
-    }
-
-    @Test
-    public void testHasSerializableIF_return_true() {
-        boolean actual = o2T._hasSerializableIF(DataEntityNotSerialVersionUid.class);
-        assertThat(actual, equalTo(true));
-    }
-
-    @Test
     public void testMakeFieldAccessible_void_fieldIsAccessibleNow() throws NoSuchFieldException {
         DataSimple instance = o2T.getObject2Test();
         Field actual = instance.getClass().getDeclaredField(DataSimple.FIELD_EXISTS);
         assertThat(actual.canAccess(instance), equalTo(false));
-        o2T._makeFieldAccessible(actual, instance);
+        ReflectionHelper.makeFieldAccessible(actual, instance);
         assertThat(actual.canAccess(instance), equalTo(true));
     }
 
